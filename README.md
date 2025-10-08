@@ -123,4 +123,4 @@
 
 Для быстрого создания экранов и view model рекомендуется изменить название папок в templates. Дополнительную информацию о папках и инструкция к их использованию располагается по пути: [./templates/README.md](./templates/README.md)
 
-#TEST STRING FOR TESTING COMMITS 
+# TEST STRING FOR TESTING COMMITS 
