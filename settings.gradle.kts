@@ -28,6 +28,7 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "WidmeyerTemplate"
 include(":androidApp")
 include(":androidApp:features")
