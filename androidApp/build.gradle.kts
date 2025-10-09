@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.widmeyertemplate.android"
+    namespace = "com.zubastikmobile.android"
     compileSdk = 35
 
     flavorDimensions.add(0, "jni")
@@ -25,7 +25,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.widmeyertemplate.android"
+        applicationId = "com.zubastikmobile.android"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

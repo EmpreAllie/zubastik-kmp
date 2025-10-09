@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "WidmeyerTemplate"
+rootProject.name = "Zubastik"
 include(":androidApp")
 include(":androidApp:features")
 include(":androidApp:features:root")
