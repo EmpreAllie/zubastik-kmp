@@ -24,7 +24,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun SplashScreenContent() {
-    Scaffold { padding ->
+    Scaffold (
+        containerColor = MainTheme.colors.primary
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -50,7 +52,7 @@ internal fun SplashScreenContent() {
 
 @Composable
 @Preview
-internal fun SplashScreenContent_Preview() {
+fun SplashScreenContent_Preview() {
     globalApplicationContext = LocalPlatformContext.current
 
     MainTheme {

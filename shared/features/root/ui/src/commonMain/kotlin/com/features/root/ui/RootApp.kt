@@ -31,11 +31,14 @@ fun RootApp(
 
     LockScreenOrientation()
 
+
+    // главный UI-контейнер, который вызывает AppNavHost - навигатор между экранами
     MainTheme {
-        AppNavHost(navHostController)
+        AppNavHost(navHostController) // тут решается, какой экран будет отображён
 
         BackHandler { navHostController.handleBackNavigation() }
     }
+
 
     state.screen?.let {
         val isClearStack = state.isClearStack
