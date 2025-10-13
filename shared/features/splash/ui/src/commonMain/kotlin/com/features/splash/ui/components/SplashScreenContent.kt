@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +37,8 @@ internal fun SplashScreenContent() {
         ) {
             Image(
                 painter = painterResource(Res.drawable.ic_logo_zubastik),
-                contentDescription = "App Logo"
-
+                contentDescription = "App Logo",
+                modifier = Modifier.size(250.dp)
             )
 
             Text(

@@ -31,7 +31,7 @@ data class Typography(private val font: FontFamily) {
 @Immutable
 data class TitleTypography(private val font: FontFamily) {
     val title: TextStyle = TextStyle(
-        fontSize = 20.sp,
+        fontSize = 28.sp,
         lineHeight = 28.sp,
         fontFamily = font,
         fontWeight = FontWeight.W600
