@@ -16,9 +16,10 @@ import coil3.compose.LocalPlatformContext
 import com.core.data.utils.globalApplicationContext
 import com.core.data.utils.localize
 import com.features.ui.Res
-import com.features.ui.ic_back
+import com.features.ui.ic_logo_zubastik
 import com.features.ui.theme.MainTheme
 import com.resources.MultiplatformResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -34,11 +35,9 @@ internal fun SplashScreenContent() {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                modifier = Modifier
-                    .scale(0.8f)
-                    .padding(bottom = 0.dp),
-                painter = painterResource(Res.drawable.ic_back),
-                contentDescription = null,
+                painter = painterResource(Res.drawable.ic_logo_zubastik),
+                contentDescription = "App Logo"
+
             )
 
             Text(
