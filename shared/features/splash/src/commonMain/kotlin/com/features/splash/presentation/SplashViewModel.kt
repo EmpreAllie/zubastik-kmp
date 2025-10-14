@@ -5,9 +5,20 @@ import com.features.base.presentation.model.StateFlow
 import com.features.splash.domain.SplashRepository
 import com.features.splash.presentation.model.SplashEvents
 import com.features.splash.presentation.model.SplashState
+import com.features.splash.presentation.model.SplashNavigationEvent
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 
-class SplashViewModel(private val repository: SplashRepository): BaseViewModel<SplashState, SplashEvents>(SplashState()) {
+class SplashViewModel(private val repository: SplashRepository) :
+    BaseViewModel<SplashState, SplashEvents>(SplashState()) {
+
     val errorText: StateFlow<String?> = StateFlow(null)
+
+    // SharedFlow для навигации
+    private val _navigationEvent = MutableSharedFlow<SplashNavigationEvent>()
+    val navigationEvent: SharedFlow<SplashNavigationEvent> = _navigationEvent
 
     override fun onEvent(events: SplashEvents) = when (events) {
         SplashEvents.OnBack -> {}
@@ -15,4 +26,23 @@ class SplashViewModel(private val repository: SplashRepository): BaseViewModel<S
     }
 
     private fun clearErrorText() = errorText.update(null)
+
+
+    // функция для определения следующего экрана, вызывается 1 раз при запуске приложения
+    fun loadAndNavigate() {
+        viewModelScope.launch {
+            delay(1000)
+
+            val isAuthenticated = repository.isAuthenticated()
+
+            val targetRoute = if (isAuthenticated) {
+                SplashNavigationEvent.NavigateToMain
+            } else {
+                SplashNavigationEvent.NavigateToAuth
+            }
+
+            // "выбросить" новое значение наружу, чтобы все слушатели его поймали
+            _navigationEvent.emit(targetRoute)
+        }
+    }
 }

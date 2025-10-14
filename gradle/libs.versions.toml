@@ -20,6 +20,7 @@ material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.20"
 multiplatformSettingsVersion = "1.3.0"
 composeNavigation = "2.9.0-beta02"
+settings = "1.0.0"
 
 # kotlinx
 kotlinxSerializationVersion = "1.6.3"
@@ -68,7 +69,6 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx"
 appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 
 # Compose
-
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
@@ -138,6 +138,9 @@ mokoNetworkEngine = { module = "dev.icerock.moko:network-engine", version.ref = 
 mokoNetworkErrors = { module = "dev.icerock.moko:network-errors", version.ref = "mokoNetworkVersion" }
 
 mokoGeo = { module = "dev.icerock.moko:geo", version.ref = "mokoGeo" }
+
+settings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "settings" }
+
 
 # android custom view
 swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefreshLayout" }

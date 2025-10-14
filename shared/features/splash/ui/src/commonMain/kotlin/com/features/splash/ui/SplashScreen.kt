@@ -22,7 +22,15 @@ fun SplashScreen(
     val context = LocalPlatformContext.current
     val state by viewModel.state.collectAsState()
 
-    SplashScreenContent()
+    SplashScreenContent(
+        viewModel = viewModel,
+        navigateToAuth = {
+
+        },
+        navigateToMain = {
+
+        }
+    )
 
     state.errorText?.let { errorText ->
         DialogError(
