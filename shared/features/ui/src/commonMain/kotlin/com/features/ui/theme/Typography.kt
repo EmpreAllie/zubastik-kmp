@@ -6,6 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
 @Immutable
@@ -34,7 +35,8 @@ data class TitleTypography(private val font: FontFamily) {
         fontSize = 28.sp,
         lineHeight = 28.sp,
         fontFamily = font,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.W400,
+        letterSpacing = 0.1.em
     ).preciseLineHeight()
 
     val main: TextStyle = TextStyle(

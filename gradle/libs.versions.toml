@@ -57,6 +57,7 @@ colorpicker = "1.1.2"
 
 mokoGeo = "0.8.0"
 annotationJvm = "1.9.1"
+firebaseDatabaseKtx = "22.0.1"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
@@ -162,6 +163,7 @@ core = { group = "androidx.core", name = "core", version.ref = "coreVersion" }
 colorpicker = { group = "com.github.skydoves", name = "colorpicker-compose", version.ref = "colorpicker" }
 yandex-maps = { group = "com.yandex.android", name = "maps.mobile", version.ref = "yandex-maps" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [bundles]
 koin-android = [

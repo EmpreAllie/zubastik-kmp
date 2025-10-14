@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.widmeyertemplate.features.root"
+    namespace = "com.zubastikmobile.features.root"
     compileSdk = 35
 
     flavorDimensions.add(0, "jni")

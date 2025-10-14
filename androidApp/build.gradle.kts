@@ -76,5 +76,8 @@ dependencies {
     implementation(libs.bundles.coil)
 
     implementation(libs.compose.ui.tooling)
+    implementation(libs.firebase.database.ktx)
     debugImplementation(libs.compose.ui.tooling.preview)
+
+    implementation(libs.mokoResources)
 }
