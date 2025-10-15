@@ -14,8 +14,6 @@ import kotlinx.coroutines.launch
 class SplashViewModel(private val repository: SplashRepository) :
     BaseViewModel<SplashState, SplashEvents>(SplashState()) {
 
-    val errorText: StateFlow<String?> = StateFlow(null)
-
     // SharedFlow для навигации
     private val _navigationEvent = MutableSharedFlow<SplashNavigationEvent>()
     val navigationEvent: SharedFlow<SplashNavigationEvent> = _navigationEvent
@@ -25,7 +23,9 @@ class SplashViewModel(private val repository: SplashRepository) :
         SplashEvents.OnCloseDialog -> clearErrorText()
     }
 
-    private fun clearErrorText() = errorText.update(null)
+    private fun clearErrorText() = updateState {
+        it.copy(errorText = null)
+    }
 
 
     // функция для определения следующего экрана, вызывается 1 раз при запуске приложения

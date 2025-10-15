@@ -6,9 +6,5 @@ import com.features.splash.domain.SplashRepository
 class SplashRepositoryImpl(
     //private val settings: Settings
 ): SplashRepository {
-    override suspend fun isAuthenticated(): Boolean {
-        val isUserAuthenticated = false
-
-        return isUserAuthenticated
-    }
+    override suspend fun isAuthenticated() = false
 }
