@@ -83,15 +83,25 @@ kotlin {
 }
 
 android {
-    namespace = "com.posledam"
+    namespace = "com.zubastikmobile"
     compileSdk = 35
     defaultConfig {
         minSdk = 26
+        missingDimensionStrategy("jni", "dev")
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18
         targetCompatibility = JavaVersion.VERSION_18
+    }
+
+    buildTypes {
+        getByName("debug") {
+            matchingFallbacks += "dev";
+        }
+        getByName("release") {
+            matchingFallbacks += "prod";
+        }
     }
 }
 

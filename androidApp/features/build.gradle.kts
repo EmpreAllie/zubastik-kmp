@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.widmeyertemplate.features"
+    namespace = "com.zubastikmobile.features"
     compileSdk = 35
 
     defaultConfig {

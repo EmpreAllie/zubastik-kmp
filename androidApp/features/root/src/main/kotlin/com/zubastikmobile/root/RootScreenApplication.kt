@@ -1,4 +1,4 @@
-package com.widmeyertemplate.root
+package com.zubastikmobile.root
 
 import android.app.Application
 import com.root.di.startKoin

@@ -37,6 +37,15 @@ kotlin {
             isStatic = true
         }
     }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.settings)
+        }
+        androidMain.dependencies {
+            implementation(libs.settings)
+        }
+    }
 }
 
 android {

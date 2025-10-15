@@ -14,11 +14,12 @@ sealed class Colors {
     abstract val gray: Color
     abstract val green: Color
     abstract val transparent: Color
+    abstract val buttonYellow: Color
 
     data class Light(
-        override val primary: Color = Color(0xFFFDE1CC),
-        override val secondary: Color = Color(0xFFF18A3B),
-        override val thirdly: Color = Color(0xFF333333),
+        override val primary: Color = Color(0xFFC4D3FF), // фиолетово-голубой для фона
+        override val secondary: Color = Color(0xFF14316F), // темно-синий для шрифтов
+        override val thirdly: Color = Color(0xFF333333), // серый
         override val error: Color = Color(0xFFFB4545),
         override val border: Color = Color(0xFFFFFFFF),
         override val white: Color = Color(0xFFFFFFFF),
@@ -27,11 +28,12 @@ sealed class Colors {
         override val gray: Color = Color(0xFFF2F0F0),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
+        override val buttonYellow: Color = Color(0xFFFFCA56), // желтый для кнопок
     ) : Colors()
 
     data class Dark(
-        override val primary: Color = Color(0xFFFDE1CC),
-        override val secondary: Color = Color(0xFFF18A3B),
+        override val primary: Color = Color(0xFFC4D3FF),
+        override val secondary: Color = Color(0xFF14316F),
         override val thirdly: Color = Color(0xFF333333),
         override val error: Color = Color(0xFFFB4545),
         override val border: Color = Color(0xFFFFFFFF),
@@ -41,6 +43,7 @@ sealed class Colors {
         override val gray: Color = Color(0xFFF2F0F0),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
+        override val buttonYellow: Color = Color(0xFFFFCA56),
     ) : Colors()
 }
 

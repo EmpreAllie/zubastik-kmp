@@ -6,7 +6,9 @@ import com.root.presentation.model.RootEvents
 import com.root.presentation.model.RootState
 
 class RootViewModel : BaseViewModel<RootState, RootEvents>(RootState()) {
+
     private val openScreens: MutableList<Screen> = mutableListOf()
+
     override fun onEvent(events: RootEvents) = when (events) {
         is RootEvents.OnSetScreen -> setScreen(
             screen = events.screen,

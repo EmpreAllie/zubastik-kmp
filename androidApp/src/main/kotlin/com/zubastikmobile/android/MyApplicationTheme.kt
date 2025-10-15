@@ -1,4 +1,4 @@
-package com.widmeyertemplate.android
+package com.zubastikmobile.android
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

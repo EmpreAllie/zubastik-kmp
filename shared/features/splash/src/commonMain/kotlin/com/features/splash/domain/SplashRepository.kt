@@ -1,3 +1,5 @@
 package com.features.splash.domain
 
-interface SplashRepository
+interface SplashRepository {
+    suspend fun isAuthenticated() : Boolean
+}

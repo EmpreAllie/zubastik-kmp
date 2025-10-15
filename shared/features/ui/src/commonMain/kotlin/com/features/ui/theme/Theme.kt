@@ -10,7 +10,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import org.jetbrains.compose.resources.Font
 import com.features.ui.Res
-import com.features.ui.timesnewroman_regular
+import com.features.ui.jura_bold
+import com.features.ui.jura_regular
 
 @Composable
 fun MainTheme(
@@ -21,22 +22,22 @@ fun MainTheme(
 
     CompositionLocalProvider(
         localColors provides colors,
-        localTypography provides Typography(font)
+        localTypography provides Typography(fontJura)
     ) {
         MaterialTheme(content = content)
     }
 }
 
-private val font
+private val fontJura
     @Composable get() = FontFamily(
         Font(
-            resource = Res.font.timesnewroman_regular,
+            resource = Res.font.jura_regular,
             weight = FontWeight.Normal
         ),
         Font(
-            resource = Res.font.timesnewroman_regular,
+            resource = Res.font.jura_bold,
             weight = FontWeight.Bold
-        ),
+        )
     )
 
 private val localColors = compositionLocalOf<Colors> { Colors.Light() }
