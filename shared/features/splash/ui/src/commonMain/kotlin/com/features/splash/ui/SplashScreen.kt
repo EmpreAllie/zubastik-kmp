@@ -8,12 +8,13 @@ import coil3.compose.LocalPlatformContext
 import com.core.data.utils.localize
 import com.features.splash.presentation.model.SplashEvents
 import com.features.splash.presentation.SplashViewModel
-import com.features.splash.presentation.model.SplashNavigationEvent
+import com.features.splash.presentation.model.SplashEffects
 import com.features.splash.ui.components.SplashScreenContent
 import com.features.ui.dialog.DialogError
 import com.features.ui.extension.CloseApp
 import com.resources.MultiplatformResource
 import com.root.presentation.RootViewModel
+import com.root.presentation.model.RootEvents
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -24,26 +25,20 @@ fun SplashScreen(
     val context = LocalPlatformContext.current
     val state by viewModel.state.collectAsState()
 
-    // для запуска в первый раз, т.к. Unit никогда не изменится,
-    // и LaunchedEffect вызовет функцию loadAndNavigate() только 1 раз
     LaunchedEffect(Unit) {
-        viewModel.loadAndNavigate()
-    }
+        viewModel.onEvent(SplashEvents.Initialize)
 
-    // для запуска и ожидания остальных событий
-    LaunchedEffect(viewModel.navigationEvent) {
-        viewModel.navigationEvent.collect { event ->
-            when(event) {
-                SplashNavigationEvent.NavigateToAuth -> {
-                    //rootViewModel.navigateTo()
-                }
-                SplashNavigationEvent.NavigateToMain -> {
-                    //rootViewModel.navigateTo()
-                }
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SplashEffects.NavigateToScreen -> rootViewModel.onEvent(
+                    RootEvents.OnSetScreen(
+                        screen = effect.screen,
+                        isClearStack = true
+                    )
+                )
             }
         }
     }
-
 
     SplashScreenContent(
         state = state,

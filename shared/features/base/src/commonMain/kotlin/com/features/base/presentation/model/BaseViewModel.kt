@@ -1,25 +1,22 @@
 package com.features.base.presentation.model
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<S, E>(
-    initialState: S,
-) : ViewModel() {
+abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE) : ViewModel() {
     private val _state = MutableStateFlow(initialState)
-    val state: StateFlow<S> = _state
+    val state: StateFlow<STATE> = _state
 
-    abstract fun onEvent(events: E)
-    fun updateState(reducer: (S) -> S) = _state.update { reducer(it) }
+    private val _effect = MutableSharedFlow<EFFECT>()
+    val effect = _effect.asSharedFlow()
 
+    abstract fun onEvent(event: EVENT)
 
-    protected suspend fun withContextMain(block: suspend CoroutineScope. () -> Unit) =
-        withContext(Dispatchers.Main) {
-            block()
-        }
+    protected fun updateState(reducer: (STATE) -> STATE) = _state.update { reducer(it) }
+    protected fun sendEffect(effect: EFFECT) = viewModelScope.launch { _effect.emit(effect) }
 }
