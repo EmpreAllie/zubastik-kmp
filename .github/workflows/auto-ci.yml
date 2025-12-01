@@ -3,12 +3,12 @@ name: Android CI
 on:
   push:
     branches:
-      - mobile
-      - mobile-prod
+      - master
+      - dev
   pull_request:
     branches:
-      - mobile
-      - mobile-prod
+      - master
+      - dev
 
 jobs:
   build:
@@ -38,9 +38,9 @@ jobs:
 
       - name: Build APK
         run: |
-          if [ "${{ github.ref_name }}" = "mobile" ]; then
+          if [ "${{ github.ref_name }}" = "dev" ]; then
             ./gradlew assembleDevDebug
-          elif [ "${{ github.ref_name }}" = "mobile-prod" ]; then
+          elif [ "${{ github.ref_name }}" = "master" ]; then
             ./gradlew assembleProdRelease
           else
             echo "No valid branch. Skipping build."
