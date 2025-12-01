@@ -31,7 +31,7 @@ fun AppNavHost(
             composable(screen.name) {
                 when (screen) {
                     Screen.SPLASH -> SplashScreen()
-                    Screen.AUTHORIZATION -> {
+                    Screen.AUTH -> {
                         //AuthorizationScreen()
                         BackHandler {}
                     }

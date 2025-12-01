@@ -33,7 +33,7 @@ class SplashViewModel(private val repository: SplashRepository) :
         val isAuthenticated = repository.isAuthenticated()
 
         val screen = if (isAuthenticated) Screen.MAIN
-        else Screen.AUTHORIZATION
+        else Screen.AUTH
 
         sendEffect(SplashEffects.NavigateToScreen(screen))
     }
