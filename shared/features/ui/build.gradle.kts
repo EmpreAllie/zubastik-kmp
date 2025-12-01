@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -9,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.features.ui"
-    compileSdk = 35
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 
@@ -31,20 +29,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
+
 }
 
-
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
 
     listOf(
@@ -70,9 +61,6 @@ kotlin {
             implementation(projects.shared.resources)
             implementation(projects.shared.entity)
             implementation(projects.shared.features.base)
-
-            implementation(libs.mokoResourcesCompose)
-            implementation(libs.bundles.moko.network)
 
             implementation(libs.bundles.coil)
 

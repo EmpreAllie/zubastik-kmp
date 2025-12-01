@@ -14,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.LocalPlatformContext
-import com.core.data.utils.globalApplicationContext
-import com.core.data.utils.localize
 import com.features.splash.presentation.model.SplashEvents
 import com.features.splash.presentation.model.SplashState
 import com.features.ui.Res
+import com.features.ui.appName
 import com.features.ui.ic_logo
 import com.features.ui.theme.MainTheme
-import com.resources.MultiplatformResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -50,7 +49,7 @@ internal fun SplashScreenContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = MultiplatformResource.strings.appName.localize(),
+                text = stringResource(Res.string.appName),
                 style = MainTheme.typography.main.title,
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center,
@@ -62,15 +61,11 @@ internal fun SplashScreenContent(
 @Composable
 @Preview
 fun SplashScreenContent_Preview() {
-    globalApplicationContext = LocalPlatformContext.current
-
     MainTheme {
-        /*
+
         SplashScreenContent(
-            viewModel = dummyVM,
-            navigateToAuth = {},
-            navigateToMain = {}
+            state = SplashState(),
+            onEvent = { }
         )
-         */
     }
 }

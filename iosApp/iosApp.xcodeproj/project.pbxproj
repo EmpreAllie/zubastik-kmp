@@ -12,12 +12,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		46007B48F822739AE285282D /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0772C71EB999B514DCF58B4 /* Pods_iosApp.framework */; };
 		A0B8DA3C2CA2EE1E0064DD18 /* KotlinMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA2B2CA2EE1E0064DD18 /* KotlinMapping.swift */; };
-		A0B8DA3D2CA2EE1E0064DD18 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA2C2CA2EE1E0064DD18 /* Observer.swift */; };
-		A0B8DA3E2CA2EE1E0064DD18 /* KoinHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA2F2CA2EE1E0064DD18 /* KoinHelper.swift */; };
-		A0B8DA3F2CA2EE1E0064DD18 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA312CA2EE1E0064DD18 /* iOSApp.swift */; };
-		A0B8DA402CA2EE1E0064DD18 /* RootViewModelWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA322CA2EE1E0064DD18 /* RootViewModelWrapper.swift */; };
 		A0B8DA412CA2EE1E0064DD18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B8DA362CA2EE1E0064DD18 /* Preview Assets.xcassets */; };
-		A0B8DA422CA2EE1E0064DD18 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA382CA2EE1E0064DD18 /* Screen.swift */; };
 		A0B8DA442CA2F0EE0064DD18 /* SecureKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0B8DA432CA2F0EE0064DD18 /* SecureKeys.plist */; };
 		A0B8DA462CA2F11B0064DD18 /* SecureKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B8DA452CA2F11B0064DD18 /* SecureKeys.swift */; };
 /* End PBXBuildFile section */
@@ -29,12 +24,7 @@
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0B8DA2B2CA2EE1E0064DD18 /* KotlinMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KotlinMapping.swift; sourceTree = "<group>"; };
-		A0B8DA2C2CA2EE1E0064DD18 /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
-		A0B8DA2F2CA2EE1E0064DD18 /* KoinHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoinHelper.swift; sourceTree = "<group>"; };
-		A0B8DA312CA2EE1E0064DD18 /* iOSApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
-		A0B8DA322CA2EE1E0064DD18 /* RootViewModelWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewModelWrapper.swift; sourceTree = "<group>"; };
 		A0B8DA362CA2EE1E0064DD18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A0B8DA382CA2EE1E0064DD18 /* Screen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		A0B8DA432CA2F0EE0064DD18 /* SecureKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SecureKeys.plist; sourceTree = "<group>"; };
 		A0B8DA452CA2F11B0064DD18 /* SecureKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureKeys.swift; sourceTree = "<group>"; };
 		A10BF418CF7A88A89F1DEE75 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -83,14 +73,11 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				A0B8DA302CA2EE1E0064DD18 /* Di */,
 				A0B8DA2A2CA2EE1E0064DD18 /* Extensions */,
 				A0B8DA342CA2EE1E0064DD18 /* Features */,
 				A0B8DA2E2CA2EE1E0064DD18 /* Helpers */,
-				A0B8DA352CA2EE1E0064DD18 /* Models */,
 				A0B8DA372CA2EE1E0064DD18 /* Preview Content */,
 				A0B8DA3B2CA2EE1E0064DD18 /* Resources */,
-				A0B8DA392CA2EE1E0064DD18 /* Routes */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
@@ -119,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				A0B8DA2B2CA2EE1E0064DD18 /* KotlinMapping.swift */,
-				A0B8DA2C2CA2EE1E0064DD18 /* Observer.swift */,
 			);
 			path = MultiplatformLibrary;
 			sourceTree = "<group>";
@@ -132,19 +118,9 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		A0B8DA302CA2EE1E0064DD18 /* Di */ = {
-			isa = PBXGroup;
-			children = (
-				A0B8DA2F2CA2EE1E0064DD18 /* KoinHelper.swift */,
-			);
-			path = Di;
-			sourceTree = "<group>";
-		};
 		A0B8DA332CA2EE1E0064DD18 /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				A0B8DA312CA2EE1E0064DD18 /* iOSApp.swift */,
-				A0B8DA322CA2EE1E0064DD18 /* RootViewModelWrapper.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -157,27 +133,12 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
-		A0B8DA352CA2EE1E0064DD18 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		A0B8DA372CA2EE1E0064DD18 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
 				A0B8DA362CA2EE1E0064DD18 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		A0B8DA392CA2EE1E0064DD18 /* Routes */ = {
-			isa = PBXGroup;
-			children = (
-				A0B8DA382CA2EE1E0064DD18 /* Screen.swift */,
-			);
-			path = Routes;
 			sourceTree = "<group>";
 		};
 		A0B8DA3A2CA2EE1E0064DD18 /* Config */ = {
@@ -216,7 +177,6 @@
 				7555FF77242A565900829871 /* Sources */,
 				7555FF79242A565900829871 /* Resources */,
 				1522176EC31145C38E212FE2 /* Frameworks */,
-				2268908F713DFE10C8017602 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -275,23 +235,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2268908F713DFE10C8017602 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4FBCE5299247938CECD0964F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -321,12 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0B8DA422CA2EE1E0064DD18 /* Screen.swift in Sources */,
-				A0B8DA402CA2EE1E0064DD18 /* RootViewModelWrapper.swift in Sources */,
-				A0B8DA3E2CA2EE1E0064DD18 /* KoinHelper.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
-				A0B8DA3D2CA2EE1E0064DD18 /* Observer.swift in Sources */,
-				A0B8DA3F2CA2EE1E0064DD18 /* iOSApp.swift in Sources */,
 				A0B8DA462CA2F11B0064DD18 /* SecureKeys.swift in Sources */,
 				A0B8DA3C2CA2EE1E0064DD18 /* KotlinMapping.swift in Sources */,
 			);

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.kotlinCocoapods).apply(false)
     alias(libs.plugins.kotlinSerialization).apply(false)
+    alias(libs.plugins.openapi.generator)
 }
 
 
@@ -16,7 +17,6 @@ buildscript {
     }
 
     dependencies {
-        classpath(libs.mokoResourcesGeneratorGradle)
-        classpath(libs.mokoNetworkGenerator)
+        classpath(libs.openapi.generator.gradle)
     }
 }

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -8,12 +6,9 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
 
     listOf(
@@ -32,6 +27,7 @@ kotlin {
             implementation(libs.sql.delight.driver)
         }
         commonMain.dependencies {
+            implementation(projects.shared.core)
             implementation(projects.shared.resources)
             implementation(projects.shared.entity)
             implementation(libs.kotlinSerialization)
@@ -46,16 +42,28 @@ kotlin {
     }
 }
 
+
 android {
     namespace = "com.database"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         minSdk = 26
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
+
+    flavorDimensions.add(0, "jni")
+
+    productFlavors {
+        create("dev") {
+            dimension = "jni"
+            matchingFallbacks.add("dev")
+        }
+
+        create("prod") {
+            dimension = "jni"
+            matchingFallbacks.add("prod")
+        }
     }
+
 }
 
 sqldelight {

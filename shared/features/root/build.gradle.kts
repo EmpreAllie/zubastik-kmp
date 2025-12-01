@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -7,12 +5,9 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
 
     listOf(
@@ -36,9 +31,9 @@ kotlin {
             implementation(projects.shared.features.base)
             implementation(projects.shared.features.splash)
 
-            implementation(libs.bundles.moko.mvvm)
-            implementation(libs.bundles.moko.network)
             implementation(libs.bundles.ktor)
+            implementation(libs.bundles.viewmodel)
+
             implementation(libs.koinCore)
             implementation(libs.multiplatformSettings)
         }
@@ -47,7 +42,7 @@ kotlin {
 
 android {
     namespace = "com.features.root"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         minSdk = 26
     }
@@ -66,8 +61,5 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
+
 }

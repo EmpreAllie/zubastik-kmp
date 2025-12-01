@@ -1,5 +1,6 @@
 package com.features.splash.presentation
 
+import androidx.lifecycle.viewModelScope
 import com.features.base.domain.enum.Screen
 import com.features.base.presentation.model.BaseViewModel
 import com.features.splash.domain.SplashRepository
@@ -12,15 +13,17 @@ import kotlinx.coroutines.launch
 class SplashViewModel(private val repository: SplashRepository) :
     BaseViewModel<SplashState, SplashEvents, SplashEffects>(SplashState()) {
 
+        init {
+            loadAndNavigate()
+        }
     override fun onEvent(event: SplashEvents) {
         when (event) {
-            SplashEvents.Initialize -> loadAndNavigate()
             SplashEvents.OnCloseDialog -> clearErrorText()
         }
     }
 
     private fun clearErrorText() = updateState {
-        it.copy(errorText = null)
+        it.copy(error = null)
     }
 
 

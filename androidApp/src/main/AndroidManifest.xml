@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.zubastikmobile.root.RootScreenApplication"
+        android:name="com.zubastik.root.RootScreenApplication"
         android:label="@string/appName"
         android:allowBackup="false"
         android:requestLegacyExternalStorage="true"
@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="com.zubastikmobile.root.RootActivity"
+            android:name="com.zubastik.root.RootActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

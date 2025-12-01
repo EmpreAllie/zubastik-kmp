@@ -1,7 +1,7 @@
 package com.core.domain.constants
 
 object TransferArguments {
-    private val tag = "widmeyer"
+    private val tag = "zubastik"
 
     /**
      * Local save phoneNumber

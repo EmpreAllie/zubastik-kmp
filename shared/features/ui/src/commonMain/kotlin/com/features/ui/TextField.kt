@@ -48,7 +48,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun InputTextField(
+fun InputTextField( // TODO: Переписать под обычный InputTextField//OutlinedTextField
     modifier: Modifier = Modifier,
     text: String = "",
     hintText: String,
@@ -70,12 +70,10 @@ fun InputTextField(
     val focusManager = LocalFocusManager.current
     val isFocused: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    val borderColor = if (isError || !errorText.isNullOrEmpty()) {
-        MainTheme.colors.error
-    } else if (isFocused.value) {
-        MainTheme.colors.primary
-    } else {
-        MainTheme.colors.border
+    val borderColor = when {
+        isError || !errorText.isNullOrBlank() -> MainTheme.colors.error
+        isFocused.value -> MainTheme.colors.primary
+        else -> MainTheme.colors.border
     }
 
     Box(

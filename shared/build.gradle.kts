@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
@@ -8,13 +6,11 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -37,27 +33,14 @@ kotlin {
             isStatic = true
         }
     }
-
-    sourceSets {
-        commonMain.dependencies {
-            implementation(libs.settings)
-        }
-        androidMain.dependencies {
-            implementation(libs.settings)
-        }
-    }
 }
 
 android {
     namespace = "com.shared"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
 }

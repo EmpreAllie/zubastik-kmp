@@ -1,7 +1,6 @@
 package com.core.di
 
 import android.content.Context
-import com.core.data.infrastructure.ConfigAppProvider
 import com.core.data.utils.NativeHost
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SharedPreferencesSettings
@@ -17,6 +16,5 @@ actual val platformModule: Module = module {
         )
     }
 
-    singleOf(::ConfigAppProvider)
     singleOf(::NativeHost)
 }

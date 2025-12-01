@@ -25,8 +25,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun MainDialog(
     title: String,
     description: String,
-    confirmText: String? = null,
     cancelText: String,
+    confirmText: String? = null,
     confirmAction: () -> Unit = {},
     cancelAction: () -> Unit,
 ) {

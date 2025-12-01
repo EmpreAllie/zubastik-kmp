@@ -13,6 +13,12 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 
+fun Modifier.conditional(
+    condition: Boolean,
+    modifier: Modifier.() -> Modifier
+): Modifier = if (condition) then(modifier(Modifier))
+else this
+
 fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
     this.clickable(
         indication = null,

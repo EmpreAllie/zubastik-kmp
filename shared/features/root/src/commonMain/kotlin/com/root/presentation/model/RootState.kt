@@ -7,5 +7,4 @@ data class RootState(
     val screen: Screen? = null,
     val isPopScreen: Boolean = false,
     var arguments: List<String> = emptyList(),
-    var isClearStack: Boolean = false
-): BaseState(isLoading = false, errorText = null)
+): BaseState(isLoading = false, error = null)

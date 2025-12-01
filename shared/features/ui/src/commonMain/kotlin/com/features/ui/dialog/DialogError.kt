@@ -20,20 +20,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.features.base.domain.model.Error
 import com.features.ui.Res
+import com.features.ui.appName
 import com.features.ui.ic_back
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DialogError(
     title: String,
-    description: String,
+    error: Error,
     onClose: () -> Unit,
+    onNavigateToAuthorization: () -> Unit = {}
 ) {
     Dialog(
-        onDismissRequest = { onClose() },
+        onDismissRequest = if (error == Error.TOKEN) onNavigateToAuthorization else onClose,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Box(
@@ -65,7 +69,11 @@ fun DialogError(
                 )
 
                 Text(
-                    text = description,
+                    text = when (error) {
+                        Error.CONNECTION -> stringResource(Res.string.appName) // TODO: Change text to String Resource
+                        Error.TOKEN -> stringResource(Res.string.appName) // TODO: Change text to Token
+                        Error.OTHER -> error.message ?: stringResource(Res.string.appName) // TODO: Change default text
+                    },
                     style = MainTheme.typography.dialog.main,
                     color = MainTheme.colors.black.copy(alpha = 0.5f),
                     textAlign = TextAlign.Center,
@@ -93,16 +101,14 @@ fun DialogError(
     }
 }
 
-
 @Preview
 @Composable
 internal fun DialogError_Preview() {
     MainTheme {
         DialogError(
-            title = "Ой споткнулся",
-            description = "Описание в две строки, Описание в две строки"
-        ) {
-
-        }
+            title = "Текст ошибки",
+            error = Error.CONNECTION,
+            onClose = {}
+        )
     }
 }

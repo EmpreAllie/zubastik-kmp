@@ -10,6 +10,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val splashModule: Module = module {
-    singleOf(::SplashRepositoryImpl) bind SplashRepository::class
     factoryOf(::SplashViewModel)
+    singleOf(::SplashRepositoryImpl) bind SplashRepository::class
 }

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -9,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.features.splash.ui"
-    compileSdk = 35
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 
@@ -31,19 +29,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
+
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
 
     listOf(
@@ -80,9 +72,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.bundles.koin.compose)
-            implementation(libs.bundles.moko.mvvm)
             implementation(libs.bundles.coil)
-            implementation(libs.mokoNetworkErrors)
             implementation(libs.kotlinSerialization)
         }
 

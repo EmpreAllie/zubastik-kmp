@@ -11,9 +11,10 @@ class KeyValueStorage(private val settings: Settings) {
     var accessToken by settings.nullableString("access_token")
     var refreshToken by settings.nullableString("refresh_token")
 
-
     fun clearTokens() {
         accessToken = null
         refreshToken = null
     }
+
+    fun isHaveTokens() = !(accessToken.isNullOrBlank() && refreshToken.isNullOrBlank())
 }

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -18,12 +16,9 @@ val features = listOf(
 )
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JvmTarget.JVM_18.target
-            }
-        }
+    androidTarget()
+    kotlin {
+        jvmToolchain(21)
     }
 
     listOf(
@@ -63,10 +58,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.composeNavigation)
-            implementation(libs.mokoNetworkErrors)
             implementation(libs.kotlinSerialization)
             implementation(libs.bundles.koin.compose)
-            implementation(libs.bundles.moko.mvvm)
             implementation(libs.bundles.coil)
             implementation(libs.bundles.ktor)
         }
@@ -80,7 +73,7 @@ kotlin {
 
 android {
     namespace = "com.features.root.ui"
-    compileSdk = 35
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 
@@ -101,17 +94,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
 }
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-
-compose.resources {
-    publicResClass = false
 }

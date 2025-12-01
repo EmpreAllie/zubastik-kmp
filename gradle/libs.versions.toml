@@ -1,8 +1,9 @@
 [versions]
-agp = "8.13.0"
-kotlin = "2.1.0"
-coil = "3.2.0"
-compose = "1.8.2"
+agp = "8.11.2"
+kotlin = "2.2.0"
+coil = "3.3.0"
+compose = "1.9.5"
+compose-resource = "1.9.3"
 compose-plugin = "1.8.1"
 compose-material3 = "1.3.2"
 compose-swipeToPullRefresh = "1.0.0"
@@ -17,30 +18,26 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-jetbrainsKotlinJvm = "1.9.20"
+jetbrainsKotlinJvm = "2.1.0"
 multiplatformSettingsVersion = "1.3.0"
 composeNavigation = "2.9.0-beta02"
-settings = "1.0.0"
+compottie = "2.0.1"
+exo-player = "2.18.7"
+pullrefresh = "1.4.0-beta03"
+
 
 # kotlinx
-kotlinxSerializationVersion = "1.6.3"
-kotlinxDateTimeVersion = "0.6.0"
+kotlinxSerializationVersion = "1.9.0"
+kotlinxDateTimeVersion = "0.7.1"
 
 # ktor
-ktorClientVersion = "2.3.12"
+ktorClientVersion = "3.3.1"
 
 # koin
 koin = "4.0.3"
 
 # SQL
 sql-delight = "2.0.2"
-
-# moko
-mokoMultiplatformPluginVersion = "0.14.2"
-mokoResourcesVersion = "0.24.0-alpha-5"
-mokoMvvmVersion = "0.16.1"
-mokoNetworkVersion = "0.21.2"
-mokoGraphicsVersion = "0.9.0"
 
 # android custom view
 swipeRefreshLayout = "1.1.0"
@@ -52,15 +49,27 @@ picasso = "2.8"
 lifecycleRuntime = "2.6.2"
 composeBom = "2025.05.01"
 coreVersion = "1.16.0"
-mockk-version = "1.13.0"
-yandex-maps = "4.13.0-full"
-colorpicker = "1.1.2"
+lifecycle-viewmodel = "2.9.6"
 
-mokoGeo = "0.8.0"
 annotationJvm = "1.9.1"
-firebaseDatabaseKtx = "22.0.1"
+
+composeBlur = "1.6.10"
+shimmer = "1.3.3"
+
+# OpenApi
+openapi = "7.10.0"
+
+# Google
+google-service = "4.4.3"
+google-firebase-bom = "33.16.0"
+google-firebase-crashlytics = "3.0.4"
+google-firebase-firestore = "26.0.2"
+
+# Supabase
+supabase = "3.2.2"
 
 [libraries]
+
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
@@ -69,6 +78,7 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx"
 appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 
 # Compose
+
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
@@ -76,6 +86,13 @@ activityCompose = { module = "androidx.activity:activity-compose", version.ref =
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 composeNavigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
+compose-blur = { module = "dev.chrisbanes.haze:haze", version.ref = "composeBlur" }
+compose-blur-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "composeBlur" }
+compose-resource = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-resource" }
+
+# lifecycle
+lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle-viewmodel" }
+lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose",  version.ref = "lifecycle-viewmodel" }
 
 # androidx
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -87,7 +104,6 @@ material = { group = "com.google.android.material", name = "material", version.r
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettingsVersion" }
 multiplatformSettingsCoroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettingsVersion" }
 multiplatformSettingsTest = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettingsVersion" }
-kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "multiplatformSettingsVersion" }
 multiplatformSettingsSerialization = { module = "com.russhwolf:multiplatform-settings-serialization", version.ref = "multiplatformSettingsVersion" }
 
 # kotlinx
@@ -99,9 +115,11 @@ ktorClient = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientVer
 ktorClientOkHttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientVersion" }
 ktorClientDarwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClientVersion" }
 ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientVersion" }
-ktorClientMock = { module = "io.ktor:ktor-client-mock", version.ref = "ktorClientVersion" }
-ktorClientIos = { module = "io.ktor:ktor-client-ios", version.ref = "ktorClientVersion" }
+ktorClientAuth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorClientVersion" }
 ktorClientJson = { module = "io.ktor:ktor-client-json", version.ref = "ktorClientVersion" }
+ktorClientSerialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktorClientVersion" }
+ktorClientSerializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClientVersion" }
+ktorClientNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientVersion" }
 ktorClientCio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClientVersion" }
 
 # koni
@@ -117,40 +135,11 @@ sql-delight-driver = { group = "app.cash.sqldelight", name = "android-driver", v
 sql-delight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sql-delight" }
 sql-delight-native = { group = "app.cash.sqldelight", name = "native-driver", version.ref = "sql-delight" }
 
-# moko
-mokoResources = { module = "dev.icerock.moko:resources", version.ref = "mokoResourcesVersion" }
-mokoResourcesCompose = { module = "dev.icerock.moko:resources-compose", version.ref = "mokoResourcesVersion" }
-mokoResourcesGeneratorGradle = { module = "dev.icerock.moko:resources-generator", version.ref = "mokoResourcesVersion" }
-mokoNetworkGenerator = { module = "dev.icerock.moko:network-generator", version.ref = "mokoNetworkVersion" }
-mokoMvvmCore = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvmVersion" }
-mokoMvvmFlow = { module = "dev.icerock.moko:mvvm-flow", version.ref = "mokoMvvmVersion" }
-mokoMvvmFlowCompose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "mokoMvvmVersion" }
-mokoMvvmLiveData = { module = "dev.icerock.moko:mvvm-livedata", version.ref = "mokoMvvmVersion" }
-mokoMvvmLiveDataResources = { module = "dev.icerock.moko:mvvm-livedata-resources", version.ref = "mokoMvvmVersion" }
-mokoMvvmLiveDataCompose = { module = "dev.icerock.moko:mvvm-livedata-compose", version.ref = "mokoMvvmVersion" }
-mokoMvvmState = { module = "dev.icerock.moko:mvvm-state", version.ref = "mokoMvvmVersion" }
-mokoMvvmViewBinding = { module = "dev.icerock.moko:mvvm-viewbinding", version.ref = "mokoMvvmVersion" }
-mokoMvvmTest = { module = "dev.icerock.moko:mvvm-test", version.ref = "mokoMvvmVersion" }
-mokoGraphics = { module = "dev.icerock.moko:graphics", version.ref = "mokoGraphicsVersion" }
-
-mokoNetwork = { module = "dev.icerock.moko:network", version.ref = "mokoNetworkVersion" }
-mokoNetworkEngine = { module = "dev.icerock.moko:network-engine", version.ref = "mokoNetworkVersion" }
-mokoNetworkErrors = { module = "dev.icerock.moko:network-errors", version.ref = "mokoNetworkVersion" }
-
-mokoGeo = { module = "dev.icerock.moko:geo", version.ref = "mokoGeo" }
-
-settings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "settings" }
-
-
 # android custom view
+exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exo-player"}
 swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefreshLayout" }
 swipeButton = { module = "com.github.mhdmoh:swipe-button", version.ref = "swipeButton" }
-gmsPlayServiceLocation = { module = "com.google.android.gms:play-services-location", version.ref = "gmsPlayServiceLocation" }
 threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreenVersion" }
-picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntime" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntime" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
@@ -159,14 +148,30 @@ compose-swipeToPullRefresh = { module = "eu.bambooapps:compose-material3-pullref
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
-coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
-coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 core = { group = "androidx.core", name = "core", version.ref = "coreVersion" }
-colorpicker = { group = "com.github.skydoves", name = "colorpicker-compose", version.ref = "colorpicker" }
-yandex-maps = { group = "com.yandex.android", name = "maps.mobile", version.ref = "yandex-maps" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
+
+compottie-lite = { module = "io.github.alexzhirkevich:compottie-lite", version.ref = "compottie" }
+compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
+compottie-network = { module = "io.github.alexzhirkevich:compottie-network", version.ref = "compottie" }
+compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
+
+materii-pullrefresh = { group = "dev.materii.pullrefresh", name = "pullrefresh", version.ref = "pullrefresh" }
+
+# Google
+google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "google-firebase-bom" }
+google-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "google-firebase-firestore" }
+
+# Supabase
+supabase-postgrest = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt", version.ref = "supabase" }
+supabase-auth = { group = "io.github.jan-tennert.supabase", name = "auth-kt", version.ref = "supabase" }
+supabase-realtime = { group = "io.github.jan-tennert.supabase", name = "realtime-kt", version.ref = "supabase" }
+
+# OpenApi
+openapi-generator-gradle = { group = "org.openapitools", name = "openapi-generator-gradle-plugin", version.ref = "openapi" }
 
 [bundles]
 koin-android = [
@@ -182,17 +187,11 @@ ktor = [
     "ktorClient",
     "ktorClientJson",
     "ktorClientCio",
-    "ktorClientLogging"
-]
-moko-mvvm = [
-    "mokoMvvmCore",
-    "mokoMvvmFlow",
-    "mokoMvvmLiveData"
-]
-moko-network = [
-    "mokoNetwork",
-    "mokoNetworkEngine",
-    "mokoNetworkErrors"
+    "ktorClientLogging",
+    "ktorClientAuth",
+    "ktorClientSerialization",
+    "ktorClientNegotiation",
+    "ktorClientSerializationJson"
 ]
 
 android = [
@@ -208,10 +207,33 @@ compose = [
     "compose-material3",
     "compose-foundation"
 ]
+viewmodel = [
+    "lifecycle-viewmodel",
+    "lifecycle-viewmodel-compose"
+]
 coil = [
     "coil",
     "coil-compose",
-    "coil-compose-core"
+    "coil-compose-core",
+    "coil-ktor"
+]
+compottie = [
+    "compottie",
+    "compottie-lite",
+    "compottie-dot",
+    "compottie-network",
+    "compottie-resources"
+]
+
+blur = [
+    "compose-blur",
+    "compose-blur-materials"
+]
+
+supabase = [
+    "supabase-postgrest",
+    "supabase-auth",
+    "supabase-realtime"
 ]
 
 [plugins]
@@ -225,3 +247,9 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 sql-delight = { id = "app.cash.sqldelight", version.ref = "sql-delight" }
+
+# Google Firebase
+google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
+
+# Open Api
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }

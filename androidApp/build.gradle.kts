@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -7,8 +5,8 @@ plugins {
 }
 
 android {
-    namespace = "com.zubastikmobile.android"
-    compileSdk = 35
+    namespace = "com.zubastik.android"
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 
@@ -25,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.zubastikmobile.android"
+        applicationId = "com.zubastik.android"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -42,7 +40,7 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -50,17 +48,8 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
-    kotlinOptions {
-        jvmTarget = JvmTarget.JVM_18.target
+    kotlin {
+        jvmToolchain(21)
     }
 }
 
@@ -77,6 +66,4 @@ dependencies {
 
     implementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.tooling.preview)
-
-    implementation(libs.mokoResources)
 }

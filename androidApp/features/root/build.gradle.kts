@@ -8,8 +8,8 @@ plugins {
 }
 
 android {
-    namespace = "com.zubastikmobile.features.root"
-    compileSdk = 35
+    namespace = "com.zubastik.features.root"
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 
@@ -33,12 +33,8 @@ android {
         minSdk = 26
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
-    kotlinOptions {
-        jvmTarget = JvmTarget.JVM_18.target
+    kotlin {
+        jvmToolchain(21)
     }
 }
 
@@ -51,9 +47,7 @@ dependencies {
     implementation(libs.bundles.android)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin.android)
-    implementation(libs.bundles.moko.mvvm)
     implementation(libs.bundles.coil)
-    implementation(libs.mokoNetworkErrors)
     implementation(libs.kotlinSerialization)
     implementation(libs.composeNavigation)
 
