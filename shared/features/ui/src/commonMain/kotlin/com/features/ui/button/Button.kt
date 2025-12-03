@@ -48,7 +48,7 @@ fun MainButton(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(5.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(if (isEnabled) backgroundColor else disabledColor)
             .fillMaxWidth()
             .height(48.dp)

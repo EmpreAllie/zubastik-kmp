@@ -46,4 +46,6 @@ include(":shared:features:root:ui")
 include(":shared:features:splash")
 include(":shared:features:splash:ui")
 include(":iosExport")
+include(":shared:features:auth")
+include(":shared:features:auth:ui")
 

@@ -11,6 +11,7 @@ import coil3.compose.setSingletonImageLoaderFactory
 import com.features.base.domain.enum.Screen
 import com.features.root.ui.components.newImageLoader
 import com.features.splash.ui.SplashScreen
+import com.features.auth.ui.AuthNavHost
 import com.features.ui.extension.BackHandler
 
 @Composable
@@ -32,11 +33,7 @@ fun AppNavHost(
             composable(screen.name) {
                 when (screen) {
                     Screen.SPLASH -> SplashScreen()
-                    Screen.AUTH -> {
-                        //AuthNavHost()
-                        BackHandler {}
-                        Text("AuthScreen")
-                    }
+                    Screen.AUTH -> AuthNavHost()
                     Screen.MAIN -> SplashScreen()//MainScreen()
                 }
             }
