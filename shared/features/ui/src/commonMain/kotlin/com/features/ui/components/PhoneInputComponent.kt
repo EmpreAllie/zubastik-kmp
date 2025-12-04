@@ -1,0 +1,63 @@
+package com.features.ui.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.features.auth.presentation.model.AuthEvents
+import com.features.auth.presentation.model.AuthState
+import com.features.ui.DisabledTextField
+import com.features.ui.InputTextField
+import com.features.ui.Res
+import com.features.ui.enterNumber
+import com.features.ui.ic_down
+import com.features.ui.theme.MainTheme
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+
+@Composable
+fun PhoneInputComponent(
+    modifier: Modifier = Modifier,
+    state: AuthState,
+    onEvent: (AuthEvents) -> Unit
+) {
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        DisabledTextField(
+            modifier = Modifier.width(90.dp),
+            text = "+7",
+            hintText = "",
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_down),
+                    contentDescription = "Down Arrow",
+                    tint = MainTheme.colors.black.copy(alpha = 0.5f)
+                )
+            },
+            onClick = {
+                //TODO onEvent(AuthEvents.OnCountryCodeClicked) - выбор кода страны
+            }
+        )
+
+        InputTextField(
+            modifier = Modifier.weight(1f),
+            text = state.phoneNumber,
+            hintText = stringResource(Res.string.enterNumber),
+            onTextChange = { newNumber ->
+                onEvent(AuthEvents.OnPhoneNumberChanged(newNumber))
+            },
+            isError = state.isPhoneNumberError,
+            keyboardType = KeyboardType.Phone,
+            singleLine = true,
+            maxLength = 10
+        )
+    }
+
+}

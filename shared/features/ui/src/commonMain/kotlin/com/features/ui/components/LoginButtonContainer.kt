@@ -13,18 +13,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.features.ui.Res
 import com.features.ui.button.MainButton
-import com.features.ui.ic_back
 import com.features.ui.ic_logo_yandex
 import com.features.ui.login
 import com.features.ui.loginWithYandexID
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import com.features.auth.presentation.model.AuthEvents
 
 @Composable
 fun LoginButtonContainer(
     modifier: Modifier = Modifier,
-    onLoginClick: () -> Unit
+    onEvent: (AuthEvents) -> Unit,
+    isLoading: Boolean
 ) {
     Column(
         modifier = modifier
@@ -37,7 +38,8 @@ fun LoginButtonContainer(
             text = stringResource(Res.string.login),
             backgroundColor = MainTheme.colors.gray,
             contentColor = MainTheme.colors.black,
-            onClick = onLoginClick
+            isLoading = isLoading,
+            onClick = { onEvent(AuthEvents.OnLoginClicked) }
         )
 
         OrDivider(
@@ -48,17 +50,18 @@ fun LoginButtonContainer(
             text = stringResource(Res.string.loginWithYandexID),
             backgroundColor = MainTheme.colors.black,
             contentColor = MainTheme.colors.white,
+            isLoading = isLoading,
             leadingIcon = {
                 Image(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .size(24.dp),
                     painter = painterResource(Res.drawable.ic_logo_yandex),
-                    contentDescription = null,
+                    contentDescription = "Yandex ID",
                     alpha = 1.0f
                 )
             },
-            onClick = {}
+            onClick = { onEvent(AuthEvents.OnYandexLoginClicked) }
         )
     }
 }

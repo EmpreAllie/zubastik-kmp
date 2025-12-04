@@ -72,18 +72,18 @@ fun InputTextField( // TODO: Переписать под обычный InputTex
 
     val borderColor = when {
         isError || !errorText.isNullOrBlank() -> MainTheme.colors.error
-        isFocused.value -> MainTheme.colors.primary
-        else -> MainTheme.colors.border
+        isFocused.value -> MainTheme.colors.secondary
+        else -> MainTheme.colors.disabledContent
     }
 
     Box(
         modifier = modifier
             .border(
-                width = 1.dp,
+                width = 1.5.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(12.dp)
             )
-            .clip(RoundedCornerShape(5.dp))
+            .clip(RoundedCornerShape(12.dp))
             .background(MainTheme.colors.white)
             .heightIn(min = height),
         contentAlignment = Alignment.CenterStart,
@@ -218,36 +218,46 @@ fun DisabledTextField(
     onClick: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
+    val isFocused: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    val borderColor = if (isError || !errorText.isNullOrEmpty()) MainTheme.colors.error
-    else MainTheme.colors.primary
+    val borderColor = when {
+        isError || !errorText.isNullOrEmpty() -> MainTheme.colors.error
+        isFocused.value -> MainTheme.colors.secondary
+        else -> MainTheme.colors.secondary // disabledContent
+    }
 
 
     Column(modifier = modifier) {
+        /*
         if (text.isNotEmpty()) {
+
             Text(
-                modifier = Modifier
-                    .padding(bottom = 4.dp)
-                    .fillMaxWidth(),
+
+                modifier = Modifier,
+                    //.padding(bottom = 4.dp)
+                    //.fillMaxWidth(),
                 text = hintText,
                 style = MainTheme.typography.main.disabledTextField,
                 color = MainTheme.colors.thirdly.copy(alpha = 0.6f),
             )
         }
+
+         */
         Box(
             modifier = Modifier
                 .border(
-                    width = 1.dp,
+                    width = 1.5.dp,
                     color = borderColor,
-                    shape = RoundedCornerShape(5.dp)
+                    shape = RoundedCornerShape(12.dp)
                 )
-                .clip(RoundedCornerShape(5.dp))
-                .background(MainTheme.colors.primary)
+                .clip(RoundedCornerShape(12.dp))
+                .background(MainTheme.colors.white)
                 .heightIn(min = height)
                 .clickable {
                     if (isEnabled) {
                         onClick()
                     }
+                    isFocused.value = true
                 },
             contentAlignment = Alignment.CenterStart,
         ) {
@@ -274,7 +284,7 @@ fun DisabledTextField(
             if (textFieldValue.text.isEmpty()) {
                 Text(
                     modifier = Modifier
-                        .padding(start = 12.dp)
+                        .padding(start = 24.dp)
                         .fillMaxWidth(),
                     text = hintText,
                     style = MainTheme.typography.main.disabledTextField,
@@ -284,7 +294,7 @@ fun DisabledTextField(
 
             Row(
                 modifier = Modifier
-                    .padding(start = 12.dp, end = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -292,6 +302,9 @@ fun DisabledTextField(
                     BasicTextField(
                         modifier = Modifier
                             .weight(1.0f)
+                            .onFocusChanged {
+                                isFocused.value = it.isFocused
+                            }
                             .padding(
                                 end = 16.dp
                             ),
@@ -308,7 +321,7 @@ fun DisabledTextField(
                                 focusManager.moveFocus(FocusDirection.Down)
                                 focusManager.clearFocus()
                             }),
-                        textStyle = MainTheme.typography.main.disabledTextField.copy(color = MainTheme.colors.thirdly),
+                        textStyle = MainTheme.typography.auth.countryCode.copy(color = MainTheme.colors.thirdly),
                         onValueChange = { _ -> },
                         visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else VisualTransformation.None,
                     )
@@ -354,7 +367,7 @@ internal fun TextField_Preview() {
                             .size(24.dp),
                         painter = painterResource(Res.drawable.ic_arrow),
                         contentDescription = null,
-                        tint = MainTheme.colors.thirdly,
+                        tint = MainTheme.colors.thirdly.copy(alpha = 0.5f),
                     )
                 }
             )

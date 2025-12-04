@@ -1,4 +1,9 @@
 package com.features.auth.data
 
-class AuthRepositoryImpl {
+import com.features.auth.domain.AuthRepository
+
+class AuthRepositoryImpl(
+
+) : AuthRepository {
+
 }

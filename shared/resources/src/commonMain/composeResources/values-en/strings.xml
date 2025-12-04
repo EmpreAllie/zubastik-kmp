@@ -4,4 +4,7 @@
 	<string name="login">Enter</string>
 	<string name="loginWithYandexID">Enter with Yandex ID</string>
 	<string name="or">or</string>
+	<string name="authorization">Authorization</string>
+	<string name="enterPhoneNumber">Enter your phone number</string>
+	<string name="enterNumber">Enter the number</string>
 </resources>

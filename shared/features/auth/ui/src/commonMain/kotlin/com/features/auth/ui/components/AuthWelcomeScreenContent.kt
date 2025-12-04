@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.unit.dp
+import com.features.auth.presentation.model.AuthEvents
+import com.features.auth.presentation.model.AuthState
 import com.features.ui.button.MainButton
 import com.features.ui.components.AppLogo
 import com.features.ui.components.LoginButtonContainer
@@ -26,13 +28,14 @@ import com.features.ui.theme.MainTheme
 
 @Composable
 fun AuthWelcomeScreenContent(
-    onLoginClick: () -> Unit
+    state: AuthState,
+    onEvent: (AuthEvents) -> Unit
 ) {
     Scaffold (
         containerColor = MainTheme.colors.primary
     )
     // ... , content =
-    { padding -> // параметр из лямбда-функции
+    { padding -> // параметр из анонимной лямбда-функции
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -51,7 +54,8 @@ fun AuthWelcomeScreenContent(
 
             LoginButtonContainer(
                 modifier = Modifier.padding(horizontal = 12.dp), // внешний отступ у контейнера
-                onLoginClick = onLoginClick
+                onEvent = onEvent,
+                isLoading = state.isLoading
             )
 
 

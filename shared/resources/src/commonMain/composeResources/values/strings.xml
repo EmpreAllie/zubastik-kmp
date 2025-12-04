@@ -4,4 +4,7 @@
 	<string name="login">Войти</string>
 	<string name="loginWithYandexID">Войти с Яндекс ID</string>
 	<string name="or">или</string>
+	<string name="authorization">Авторизация</string>
+	<string name="enterPhoneNumber">Введите номер телефона</string>
+	<string name="enterNumber">Введите номер</string>
 </resources>

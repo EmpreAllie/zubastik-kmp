@@ -26,6 +26,7 @@ fun SplashScreen(
     val context = LocalPlatformContext.current
     val state by viewModel.state.collectAsState()
 
+    // глобальная навигация между флоу, поэтому используем RootViewModel
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {

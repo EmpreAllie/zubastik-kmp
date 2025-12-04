@@ -30,6 +30,7 @@ kotlin {
             implementation(projects.shared.database)
             implementation(projects.shared.features.base)
             implementation(projects.shared.features.splash)
+            implementation(projects.shared.features.auth)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)

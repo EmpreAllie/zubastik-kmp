@@ -61,6 +61,7 @@ kotlin {
             implementation(projects.shared.resources)
             implementation(projects.shared.entity)
             implementation(projects.shared.features.base)
+            implementation(projects.shared.features.auth)
 
             implementation(libs.bundles.coil)
 
