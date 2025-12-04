@@ -2,6 +2,7 @@ package com.features.root.ui.components
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -32,8 +33,9 @@ fun AppNavHost(
                 when (screen) {
                     Screen.SPLASH -> SplashScreen()
                     Screen.AUTH -> {
-                        //AuthorizationScreen()
+                        //AuthNavHost()
                         BackHandler {}
+                        Text("AuthScreen")
                     }
                     Screen.MAIN -> SplashScreen()//MainScreen()
                 }

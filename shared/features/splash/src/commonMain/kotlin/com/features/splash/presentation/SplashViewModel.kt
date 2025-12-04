@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 
 class SplashViewModel(private val repository: SplashRepository) :
     BaseViewModel<SplashState, SplashEvents, SplashEffects>(SplashState()) {
-
         init {
             loadAndNavigate()
         }
+
     override fun onEvent(event: SplashEvents) {
         when (event) {
             SplashEvents.OnCloseDialog -> clearErrorText()
@@ -28,7 +28,7 @@ class SplashViewModel(private val repository: SplashRepository) :
 
 
     private fun loadAndNavigate() = viewModelScope.launch {
-        delay(1000)
+        delay(1500)
 
         val isAuthenticated = repository.isAuthenticated()
 
