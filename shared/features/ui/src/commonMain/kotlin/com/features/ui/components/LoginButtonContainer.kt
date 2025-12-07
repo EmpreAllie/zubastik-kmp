@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.features.ui.Res
 import com.features.ui.button.MainButton
 import com.features.ui.ic_logo_yandex
-import com.features.ui.login
 import com.features.ui.loginWithYandexID
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import com.features.auth.presentation.model.AuthEvents
+import com.features.ui.login
 
 @Composable
 fun LoginButtonContainer(

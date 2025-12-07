@@ -9,15 +9,11 @@ import com.features.base.presentation.model.BaseViewModel
 class AuthViewModel(private val repository: AuthRepository) :
     BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
 
-    // слушатель событий (Events) во флоу авторизации
-    // вместе с этим - еще и функция из абстрактного класса, которую обязательно надо переопределить
+
     override fun onEvent(event: AuthEvents) {
 
-        // типо "когда происходит какое-то событие"
         when(event) {
 
-            // то отправляется эффект, который подхватывается слушателем из основной функции с экраном
-            // (в данном случае - AuthWelcomeScreen())
             is AuthEvents.OnLoginClicked -> {
                 sendEffect(AuthEffects.NavigateToPhoneInput)
             }
@@ -32,18 +28,12 @@ class AuthViewModel(private val repository: AuthRepository) :
 
             // обновляем State, когда меняется введенный номер телефона
             is AuthEvents.OnPhoneNumberChanged -> {
-                var newNumber = event.number
 
-                newNumber = newNumber.filter { it.isDigit() }
-                if (newNumber.length > 10) {
-                    newNumber = newNumber.substring(0, 10)
-                }
-
-                val isError = newNumber.isNotEmpty() && !newNumber.startsWith("9")
+                val isError = event.number.isNotEmpty() && !event.number.startsWith("9")
 
                 updateState {
                     it.copy(
-                        phoneNumber = newNumber,
+                        phoneNumber = event.number,
                         isPhoneNumberError = isError
                     )
                 }
@@ -51,6 +41,10 @@ class AuthViewModel(private val repository: AuthRepository) :
 
             is AuthEvents.OnGotoCodeClicked -> {
                 sendEffect(AuthEffects.NavigateToCodeInput)
+            }
+
+            is AuthEvents.OnBackClicked -> {
+                sendEffect(AuthEffects.NavigateToPhoneInput)
             }
         }
     }

@@ -21,7 +21,8 @@ import com.features.ui.Res
 import com.features.ui.button.MainButton
 import com.features.ui.components.PhoneInputComponent
 import com.features.ui.enterPhoneNumber
-import com.features.ui.login
+import com.features.ui.loginWithYandexID
+import com.features.ui.next
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -68,9 +69,10 @@ fun AuthPhoneScreenContent(
             )
 
             MainButton(
-                text = stringResource(Res.string.login),
+                text = stringResource(Res.string.next),
                 backgroundColor = MainTheme.colors.secondary,
                 contentColor = MainTheme.colors.white,
+                isEnabled = state.phoneNumber.length == 10 && !state.isPhoneNumberError,
                 onClick = { onEvent(AuthEvents.OnGotoCodeClicked) }
             )
 

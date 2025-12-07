@@ -7,4 +7,8 @@
 	<string name="authorization">Авторизация</string>
 	<string name="enterPhoneNumber">Введите номер телефона</string>
 	<string name="enterNumber">Введите номер</string>
+	<string name="next">Далее</string>
+	<string name="enterCode">Введите код, отправленный на номер</string>
+	<string name="sendCodeAgain">Повторно отправить код можно будет через X секунд</string>
+	<string name="code">Код</string>
 </resources>

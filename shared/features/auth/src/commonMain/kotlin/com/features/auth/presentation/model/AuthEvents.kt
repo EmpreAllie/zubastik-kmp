@@ -17,4 +17,6 @@ sealed interface AuthEvents {
 
     data object OnGotoCodeClicked: AuthEvents
 
+    data object OnBackClicked: AuthEvents
+
 }

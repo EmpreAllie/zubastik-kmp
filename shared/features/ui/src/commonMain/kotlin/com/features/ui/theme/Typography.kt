@@ -354,6 +354,27 @@ data class AuthTypography(private val font: FontFamily) {
         fontFamily = font,
         fontWeight = FontWeight.Medium
     )
+
+    val secondary: TextStyle = TextStyle(
+        fontSize = 18.sp,
+        lineHeight = 34.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val phoneNumberOnCodeScreen: TextStyle = TextStyle(
+        fontSize = 24.sp,
+        lineHeight = 34.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val sendCodeAgain: TextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
 }
 
 expect fun TextStyle.preciseLineHeight(): TextStyle

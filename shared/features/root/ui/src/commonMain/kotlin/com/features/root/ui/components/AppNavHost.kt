@@ -4,9 +4,11 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil3.compose.setSingletonImageLoaderFactory
 import com.features.base.domain.enum.Screen
 import com.features.root.ui.components.newImageLoader
@@ -23,6 +25,9 @@ fun AppNavHost(
         newImageLoader(context = context, debug = true)
     }
 
+    val authNavController = rememberNavController()
+
+
     NavHost(
         navController = navHostController,
         startDestination = startDestination.name,
@@ -33,7 +38,7 @@ fun AppNavHost(
             composable(screen.name) {
                 when (screen) {
                     Screen.SPLASH -> SplashScreen()
-                    Screen.AUTH -> AuthNavHost()
+                    Screen.AUTH -> AuthNavHost(authNavController = authNavController)
                     Screen.MAIN -> SplashScreen()//MainScreen()
                 }
             }

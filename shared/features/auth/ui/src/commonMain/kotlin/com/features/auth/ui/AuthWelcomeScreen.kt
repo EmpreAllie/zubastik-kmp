@@ -20,7 +20,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthWelcomeScreen(
-    viewModel: AuthViewModel = koinViewModel(),
+    viewModel: AuthViewModel,// = koinViewModel(),
     onNavigateToPhoneInput: () -> Unit,
     onNavigateToYandexLogin: () -> Unit
 ) {

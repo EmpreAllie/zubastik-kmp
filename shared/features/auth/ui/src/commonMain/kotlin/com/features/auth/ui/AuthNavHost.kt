@@ -1,14 +1,14 @@
 package com.features.auth.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.features.auth.presentation.AuthViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 
 // Enum для определения каждого из экранов во флоу авторизации
@@ -19,16 +19,22 @@ private enum class AuthScreen {
 }
 
 @Composable
-fun AuthNavHost() {
-    val authNavController = rememberNavController()
+fun AuthNavHost(
+    authNavController: NavHostController
+) {
+    //val authNavController = rememberNavController()
+
+    val viewModel: AuthViewModel = koinViewModel()
 
     NavHost(
         navController = authNavController,
         startDestination = AuthScreen.WELCOME.name
     ) {
+
         composable(AuthScreen.WELCOME.name) {
 
             AuthWelcomeScreen(
+                viewModel = viewModel,
                 onNavigateToPhoneInput = {
                     authNavController.navigate(AuthScreen.PHONE_INPUT.name)
                 },
@@ -41,6 +47,7 @@ fun AuthNavHost() {
 
         composable (AuthScreen.PHONE_INPUT.name) {
             AuthPhoneScreen(
+                viewModel = viewModel,
                 onNavigateToCodeInput = {
                     authNavController.navigate(AuthScreen.CODE_INPUT.name)
                 }
@@ -48,12 +55,12 @@ fun AuthNavHost() {
         }
 
         composable (AuthScreen.CODE_INPUT.name) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Code Input Screen")
-            }
+            AuthCodeScreen(
+                viewModel = viewModel,
+                onNavigateBack = {
+                    authNavController.popBackStack()
+                }
+            )
         }
 
     }

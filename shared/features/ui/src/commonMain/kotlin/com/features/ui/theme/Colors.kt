@@ -6,6 +6,7 @@ sealed class Colors {
     abstract val primary: Color
     abstract val secondary: Color
     abstract val thirdly: Color
+    abstract val disabled: Color
     abstract val disabledContent: Color
     abstract val error: Color
     abstract val border: Color
@@ -20,6 +21,7 @@ sealed class Colors {
         override val primary: Color = Color(0xFFD0E4FF), // голубой для фона
         override val secondary: Color = Color(0xFF3C65A6), // темно-синий для шрифтов
         override val thirdly: Color = Color(0xFF333333), // серый
+        override val disabled: Color = Color(0xFFC3D3E9),
         override val disabledContent: Color = Color(0xFF7792BE),
         override val error: Color = Color(0xFFFF6B6B),
         override val border: Color = Color(0xFFFFFFFF),
@@ -35,6 +37,7 @@ sealed class Colors {
         override val primary: Color = Color(0xFFD0E4FF),
         override val secondary: Color = Color(0xFF3C65A6),
         override val thirdly: Color = Color(0xFF333333),
+        override val disabled: Color = Color(0xFFC3D3E9),
         override val disabledContent: Color = Color(0xFF7792BE),
         override val error: Color = Color(0xFFFF6B6B),
         override val border: Color = Color(0xFFFFFFFF),

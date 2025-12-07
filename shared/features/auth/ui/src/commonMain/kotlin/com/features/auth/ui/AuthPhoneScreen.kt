@@ -19,7 +19,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthPhoneScreen(
-    viewModel: AuthViewModel = koinViewModel(),
+    viewModel: AuthViewModel,// = koinViewModel(),
     onNavigateToCodeInput: () -> Unit
 ) {
     val context = LocalPlatformContext.current
