@@ -32,8 +32,9 @@ fun PhoneInputComponent(
     ) {
         DisabledTextField(
             modifier = Modifier.width(90.dp),
-            text = "+7",
+            text = state.countryCode,//"+7", // TODO брать откуда-то еще
             hintText = "",
+            textStyle = MainTheme.typography.auth.inputNumber,
             trailingIcon = {
                 Icon(
                     painter = painterResource(Res.drawable.ic_down),
@@ -43,6 +44,7 @@ fun PhoneInputComponent(
             },
             onClick = {
                 //TODO onEvent(AuthEvents.OnCountryCodeClicked) - выбор кода страны
+                // надо сохранить код страны в в state.countryCode
             }
         )
 
@@ -51,12 +53,13 @@ fun PhoneInputComponent(
             text = state.phoneNumber,
             hintText = stringResource(Res.string.enterNumber),
             onTextChange = { newNumber ->
-                onEvent(AuthEvents.OnPhoneNumberChanged(newNumber))
+                onEvent(AuthEvents.OnPhoneNumberChanged(newNumber, state.countryCode))
             },
             isError = state.isPhoneNumberError,
             keyboardType = KeyboardType.Phone,
             singleLine = true,
-            maxLength = 10
+            maxLength = 10,
+            textStyle = MainTheme.typography.auth.inputNumber.copy(color = MainTheme.colors.black)
         )
     }
 

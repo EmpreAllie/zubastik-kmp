@@ -366,7 +366,7 @@ data class AuthTypography(private val font: FontFamily) {
         fontSize = 24.sp,
         lineHeight = 34.sp,
         fontFamily = font,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.SemiBold
     )
 
     val sendCodeAgain: TextStyle = TextStyle(
@@ -374,6 +374,20 @@ data class AuthTypography(private val font: FontFamily) {
         lineHeight = 18.sp,
         fontFamily = font,
         fontWeight = FontWeight.Medium
+    )
+
+    val inputNumber: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val inputCode: TextStyle = TextStyle(
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Bold
     )
 }
 

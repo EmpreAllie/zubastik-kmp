@@ -404,7 +404,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -434,22 +436,24 @@ fun InputTextField(
     onClickIcon: () -> Unit = {},
     onKeyboardNext: () -> Unit = {},
     onKeyboardDone: () -> Unit = {},
-    maxLength: Int
+    maxLength: Int,
+    textStyle: TextStyle,
+    borderColor: Color? = null
 ) {
     val focusManager = LocalFocusManager.current
     var isFocused by remember { mutableStateOf(false) }
 
-    val borderColor = when {
-        isError || !errorText.isNullOrBlank() -> MainTheme.colors.error
+    val calculatedBorderColor = when {
+        isError || !errorText.isNullOrEmpty() -> MainTheme.colors.error
         isFocused -> MainTheme.colors.secondary
-        else -> MainTheme.colors.disabledContent
+        else -> borderColor ?: MainTheme.colors.disabledContent
     }
 
     Box(
         modifier = modifier
             .border(
                 width = 1.5.dp,
-                color = borderColor,
+                color = borderColor ?: calculatedBorderColor,
                 shape = RoundedCornerShape(12.dp)
             )
             .clip(RoundedCornerShape(12.dp))
@@ -478,7 +482,7 @@ fun InputTextField(
                 value = text,
                 onValueChange = onTextChange,
                 enabled = isEnabled,
-                textStyle = MainTheme.typography.main.inputText.copy(color = MainTheme.colors.thirdly),
+                textStyle = textStyle,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 keyboardActions = KeyboardActions(
                     onNext = {
@@ -509,7 +513,7 @@ fun InputTextField(
     }
 
     if (errorText != null) {
-        // ... (код для отображения errorText)
+        // код для отображения errorText
     }
 }
 
@@ -521,6 +525,7 @@ fun DisabledTextField(
     text: String,
     hintText: String,
     height: Dp = 56.dp,
+    textStyle: TextStyle,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {},
 ) {
@@ -549,7 +554,7 @@ fun DisabledTextField(
             Text(
                 modifier = Modifier.weight(1f),
                 text = textToShow,
-                style = MainTheme.typography.main.inputText,
+                style = textStyle,
                 color = textColor
             )
 

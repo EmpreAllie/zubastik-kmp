@@ -1,14 +1,16 @@
 package com.features.auth.presentation
 
+import androidx.lifecycle.viewModelScope
 import com.features.auth.domain.AuthRepository
 import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
+import com.features.auth.presentation.model.VerificationStatus
 import com.features.base.presentation.model.BaseViewModel
+import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository) :
     BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
-
 
     override fun onEvent(event: AuthEvents) {
 
@@ -34,6 +36,7 @@ class AuthViewModel(private val repository: AuthRepository) :
                 updateState {
                     it.copy(
                         phoneNumber = event.number,
+                        countryCode = event.countryCode,
                         isPhoneNumberError = isError
                     )
                 }
@@ -46,9 +49,54 @@ class AuthViewModel(private val repository: AuthRepository) :
             is AuthEvents.OnBackClicked -> {
                 sendEffect(AuthEffects.NavigateToPhoneInput)
             }
+
+            is AuthEvents.OnVerificationCodeChanged -> {
+
+                val newCode = event.code
+
+                if (newCode.length <= 4 && newCode.all {it.isDigit()}) {
+                    updateState {
+                        it.copy(
+                            verificationCode = newCode,
+                            verificationStatus = VerificationStatus.NEUTRAL
+                        )
+                    }
+
+                    if (newCode.length == 4) {
+                        onEvent(AuthEvents.OnCodeVerificationStarted)
+                    }
+                }
+            }
+
+
+            is AuthEvents.OnCodeVerificationStarted -> {
+                verifyCode()
+            }
         }
     }
 
+
+    private fun verifyCode() {
+        viewModelScope.launch {
+            updateState {it.copy(isLoading = true)}
+
+            val phone = state.value.countryCode + state.value.phoneNumber
+            val code = state.value.verificationCode
+            val isSuccess = repository.verifyCode(phone, code)
+
+            updateState {
+                it.copy(
+                    isLoading = false,
+                    verificationStatus = if (isSuccess) VerificationStatus.SUCCESS else VerificationStatus.ERROR
+                )
+            }
+
+            if (isSuccess) {
+                // TODO sendEffect(AuthEffects.NavigateToMain)
+            }
+
+        }
+    }
 
 
     // обновляем наш State, присваивая параметру error значение null

@@ -103,14 +103,21 @@ fun AuthCodeScreenContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = state.phoneNumber,
+                text = state.countryCode + state.phoneNumber, // TODO ReturnNiceNumberFromFunction()
                 style = MainTheme.typography.auth.phoneNumberOnCodeScreen,
-                color = MainTheme.colors.secondary
+                color = MainTheme.colors.secondary,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            CodeInputComponent()
+            CodeInputComponent(
+                code = state.verificationCode,
+                onCodeChanged = { newCode ->
+                    onEvent(AuthEvents.OnVerificationCodeChanged(newCode))
+                },
+                verificationStatus = state.verificationStatus
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 

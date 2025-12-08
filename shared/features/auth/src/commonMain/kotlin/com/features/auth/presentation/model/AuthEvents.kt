@@ -13,10 +13,14 @@ sealed interface AuthEvents {
     data object OnCloseDialog: AuthEvents
 
     // Событие при изменении текста в форме ввода телефона
-    data class OnPhoneNumberChanged(val number: String) : AuthEvents
+    data class OnPhoneNumberChanged(val number: String, val countryCode: String) : AuthEvents
 
     data object OnGotoCodeClicked: AuthEvents
 
     data object OnBackClicked: AuthEvents
 
+    data class OnVerificationCodeChanged(val code: String): AuthEvents
+
+    data object OnCodeVerificationStarted: AuthEvents
 }
+
