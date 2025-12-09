@@ -31,6 +31,10 @@ fun AuthCodeScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.onCodeScreenEntered()
+    }
+
     AuthCodeScreenContent(
         state = state,
         onEvent = viewModel::onEvent

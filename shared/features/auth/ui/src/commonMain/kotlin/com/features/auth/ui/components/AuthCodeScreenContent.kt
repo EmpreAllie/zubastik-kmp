@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
 import com.features.ui.InputTextField
 import com.features.ui.Res
+import com.features.ui.button.TextButton
 import com.features.ui.code
 import com.features.ui.components.CodeInputComponent
 import com.features.ui.enterCode
@@ -120,7 +122,7 @@ fun AuthCodeScreenContent(
             )
 
             Spacer(modifier = Modifier.height(24.dp))
-
+/*
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -129,6 +131,26 @@ fun AuthCodeScreenContent(
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center
             )
+ */
+            if (state.resendCodeTimerSeconds > 0) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Повторно отправить код можно через ${state.resendCodeTimerSeconds} секунд",
+                    style = MainTheme.typography.auth.sendCodeAgain,
+                    color = MainTheme.colors.secondary,
+                    textAlign = TextAlign.Center
+                )
+            }
+            else {
+                TextButton(onClick = { onEvent(AuthEvents.OnResendCodeClicked) }) {
+                    Text(
+                        text = "Отправить снова",
+                        style = MainTheme.typography.auth.sendCodeAgain,
+                        color = MainTheme.colors.secondary,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 }
