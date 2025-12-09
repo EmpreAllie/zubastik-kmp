@@ -6,6 +6,9 @@ sealed class Colors {
     abstract val primary: Color
     abstract val secondary: Color
     abstract val thirdly: Color
+    abstract val disabled: Color
+    abstract val disabledContent: Color
+    abstract val success: Color
     abstract val error: Color
     abstract val border: Color
     abstract val white: Color
@@ -14,13 +17,15 @@ sealed class Colors {
     abstract val gray: Color
     abstract val green: Color
     abstract val transparent: Color
-    abstract val buttonYellow: Color
 
     data class Light(
         override val primary: Color = Color(0xFFD0E4FF), // голубой для фона
-        override val secondary: Color = Color(0xFF14316F), // темно-синий для шрифтов
+        override val secondary: Color = Color(0xFF3C65A6), // темно-синий для шрифтов
         override val thirdly: Color = Color(0xFF333333), // серый
-        override val error: Color = Color(0xFFFB4545),
+        override val disabled: Color = Color(0xFFC3D3E9),
+        override val disabledContent: Color = Color(0xFF7792BE),
+        override val success: Color = Color(0xFF34C759),
+        override val error: Color = Color(0xFFFF6B6B),
         override val border: Color = Color(0xFFFFFFFF),
         override val white: Color = Color(0xFFFFFFFF),
         override val black: Color = Color(0xFF000000),
@@ -28,14 +33,16 @@ sealed class Colors {
         override val gray: Color = Color(0xFFF2F0F0),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
-        override val buttonYellow: Color = Color(0xFFFFCA56), // желтый для кнопок
     ) : Colors()
 
     data class Dark(
         override val primary: Color = Color(0xFFD0E4FF),
-        override val secondary: Color = Color(0xFF14316F),
+        override val secondary: Color = Color(0xFF3C65A6),
         override val thirdly: Color = Color(0xFF333333),
-        override val error: Color = Color(0xFFFB4545),
+        override val disabled: Color = Color(0xFFC3D3E9),
+        override val disabledContent: Color = Color(0xFF7792BE),
+        override val success: Color = Color(0xFF34C759),
+        override val error: Color = Color(0xFFFF6B6B),
         override val border: Color = Color(0xFFFFFFFF),
         override val white: Color = Color(0xFFFFFFFF),
         override val black: Color = Color(0xFF000000),
@@ -43,7 +50,6 @@ sealed class Colors {
         override val gray: Color = Color(0xFFF2F0F0),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
-        override val buttonYellow: Color = Color(0xFFFFCA56),
     ) : Colors()
 }
 

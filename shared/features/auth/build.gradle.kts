@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -13,10 +12,10 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "root"
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "auth"
             isStatic = true
         }
     }
@@ -27,22 +26,21 @@ kotlin {
             implementation(projects.shared.entity)
             implementation(projects.shared.network)
             implementation(projects.shared.resources)
-            implementation(projects.shared.database)
             implementation(projects.shared.features.base)
-            implementation(projects.shared.features.splash)
-            implementation(projects.shared.features.auth)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)
-
             implementation(libs.koinCore)
-            implementation(libs.multiplatformSettings)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }
 
 android {
-    namespace = "com.features.root"
+    namespace = "com.features.splash"
     compileSdk = 36
     defaultConfig {
         minSdk = 26

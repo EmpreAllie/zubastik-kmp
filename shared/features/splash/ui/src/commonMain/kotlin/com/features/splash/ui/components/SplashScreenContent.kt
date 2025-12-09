@@ -18,6 +18,7 @@ import com.features.splash.presentation.model.SplashEvents
 import com.features.splash.presentation.model.SplashState
 import com.features.ui.Res
 import com.features.ui.appName
+import com.features.ui.components.AppLogo
 import com.features.ui.ic_logo
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
@@ -39,21 +40,7 @@ internal fun SplashScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(
-                modifier = Modifier
-                    .size(250.dp),
-                painter = painterResource(Res.drawable.ic_logo),
-                contentDescription = "App Logo",
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(Res.string.appName),
-                style = MainTheme.typography.main.title,
-                color = MainTheme.colors.secondary,
-                textAlign = TextAlign.Center,
-            )
+            AppLogo()
         }
     }
 }
