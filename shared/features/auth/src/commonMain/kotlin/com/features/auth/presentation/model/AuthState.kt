@@ -26,6 +26,7 @@ data class AuthState(
     // код
     val verificationCode: String = "",
     val verificationStatus: VerificationStatus = VerificationStatus.NEUTRAL,
+    val resendCodeTimerSeconds: Int = 59,
 
 ) : BaseState(isLoading = isLoading, error = error) {
 

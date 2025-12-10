@@ -7,6 +7,8 @@ import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
 import com.features.auth.presentation.model.VerificationStatus
 import com.features.base.presentation.model.BaseViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository) :
@@ -71,6 +73,35 @@ class AuthViewModel(private val repository: AuthRepository) :
 
             is AuthEvents.OnCodeVerificationStarted -> {
                 verifyCode()
+            }
+
+
+            // первое событие
+            is AuthEvents.OnStartResendCodeTimer -> {
+                startResendCodeTimer()
+            }
+
+            // последующие события
+            is AuthEvents.OnResendCodeClicked -> {
+                // repository.sendPhoneNumberToServer()
+                startResendCodeTimer()
+            }
+        }
+    }
+
+    fun onCodeScreenEntered() {
+        onEvent(AuthEvents.OnStartResendCodeTimer)
+    }
+
+    private fun startResendCodeTimer() {
+        viewModelScope.launch() {
+            flow {
+                for (i in 59 downTo 0) {
+                    emit(i)
+                    delay(1000)
+                }
+            }.collect { seconds ->
+                updateState { it.copy(resendCodeTimerSeconds = seconds) }
             }
         }
     }
