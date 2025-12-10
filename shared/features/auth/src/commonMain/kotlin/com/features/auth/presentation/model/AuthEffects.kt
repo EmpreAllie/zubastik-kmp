@@ -6,4 +6,6 @@ interface AuthEffects {
     data object NavigateToPhoneInput: AuthEffects
     data object NavigateToYandexLogin: AuthEffects
     data object NavigateToCodeInput: AuthEffects
+
+    data object NavigateToMain: AuthEffects
 }

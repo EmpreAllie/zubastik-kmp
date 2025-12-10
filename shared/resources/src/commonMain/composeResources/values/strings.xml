@@ -10,5 +10,6 @@
 	<string name="next">Далее</string>
 	<string name="enterCode">Введите код, отправленный на номер</string>
 	<string name="sendCodeAgain">Повторно отправить код можно будет через X секунд</string>
+    <string name="sendCodeAgainTextButton">Отправить снова</string>
 	<string name="code">Код</string>
 </resources>

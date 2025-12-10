@@ -37,6 +37,7 @@ import com.features.ui.enterPhoneNumber
 import com.features.ui.ic_back_arrow
 import com.features.ui.ic_down
 import com.features.ui.sendCodeAgain
+import com.features.ui.sendCodeAgainTextButton
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -122,16 +123,10 @@ fun AuthCodeScreenContent(
             )
 
             Spacer(modifier = Modifier.height(24.dp))
-/*
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(Res.string.sendCodeAgain),
-                style = MainTheme.typography.auth.sendCodeAgain,
-                color = MainTheme.colors.secondary,
-                textAlign = TextAlign.Center
-            )
- */
+
+            // Обновление цифры с секундами
+            // TODO stringResource для текста
+            // TODO Секунды/секунд/секунду
             if (state.resendCodeTimerSeconds > 0) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -144,7 +139,7 @@ fun AuthCodeScreenContent(
             else {
                 TextButton(onClick = { onEvent(AuthEvents.OnResendCodeClicked) }) {
                     Text(
-                        text = "Отправить снова",
+                        text = stringResource(Res.string.sendCodeAgainTextButton),
                         style = MainTheme.typography.auth.sendCodeAgain,
                         color = MainTheme.colors.secondary,
                         textAlign = TextAlign.Center

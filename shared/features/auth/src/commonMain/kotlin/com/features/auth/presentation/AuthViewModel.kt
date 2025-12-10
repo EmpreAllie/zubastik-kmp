@@ -123,7 +123,7 @@ class AuthViewModel(private val repository: AuthRepository) :
             }
 
             if (isSuccess) {
-                // TODO sendEffect(AuthEffects.NavigateToMain)
+                sendEffect(AuthEffects.NavigateToMain)
             }
 
         }
