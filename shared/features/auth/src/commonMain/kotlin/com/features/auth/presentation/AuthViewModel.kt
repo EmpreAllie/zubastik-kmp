@@ -10,10 +10,14 @@ import com.features.base.presentation.model.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import com.features.base.domain.Result
+import com.features.base.domain.model.Error
+
 
 class AuthViewModel(private val repository: AuthRepository) :
     BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
 
+    // ловим события от UI
     override fun onEvent(event: AuthEvents) {
 
         when(event) {
@@ -33,7 +37,7 @@ class AuthViewModel(private val repository: AuthRepository) :
             // обновляем State, когда меняется введенный номер телефона
             is AuthEvents.OnPhoneNumberChanged -> {
 
-                val isError = event.number.isNotEmpty() && !event.number.startsWith("9")
+                val isError = !event.number.startsWith("9")
 
                 updateState {
                     it.copy(
@@ -65,14 +69,9 @@ class AuthViewModel(private val repository: AuthRepository) :
                     }
 
                     if (newCode.length == 4) {
-                        onEvent(AuthEvents.OnCodeVerificationStarted)
+                        verifyCode()
                     }
                 }
-            }
-
-
-            is AuthEvents.OnCodeVerificationStarted -> {
-                verifyCode()
             }
 
 
@@ -89,10 +88,12 @@ class AuthViewModel(private val repository: AuthRepository) :
         }
     }
 
+    // при заходе на экран с кодом вызываем Event, который ловит onEvent()
     fun onCodeScreenEntered() {
         onEvent(AuthEvents.OnStartResendCodeTimer)
     }
 
+    // запуск корутины отсчета от 59 до 0
     private fun startResendCodeTimer() {
         viewModelScope.launch() {
             flow {
@@ -106,31 +107,113 @@ class AuthViewModel(private val repository: AuthRepository) :
         }
     }
 
+    private fun sendPhoneNumberToServer() {
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true) }
+            val phone = state.value.countryCode + state.value.phoneNumber
 
+            when (repository.sendPhoneNumberToServer(phone)) {
+                is Result.Success -> {
+                    updateState { it.copy(isLoading = false) }
+
+                    sendEffect(AuthEffects.NavigateToCodeInput)
+                }
+
+                is Result.Failure -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            isPhoneNumberError = true,
+                            errorMessage = ""
+                        )
+                    }
+                }
+
+                else -> {
+
+                }
+
+            }
+        }
+    }
+
+    // обрабатываем результат из репозитория
     private fun verifyCode() {
         viewModelScope.launch {
             updateState {it.copy(isLoading = true)}
 
             val phone = state.value.countryCode + state.value.phoneNumber
             val code = state.value.verificationCode
-            val isSuccess = repository.verifyCode(phone, code)
 
-            updateState {
-                it.copy(
-                    isLoading = false,
-                    verificationStatus = if (isSuccess) VerificationStatus.SUCCESS else VerificationStatus.ERROR
-                )
+            // получаем результат из репозитория
+            repository.verifyCode(phone,code).collect { result ->
+                when(result) {
+                    is Result.Loading -> updateState { it.copy(isLoading = true) }
+                    else -> {
+                        // TODO все остальные состояния
+                    }
+                }
             }
 
-            if (isSuccess) {
-                sendEffect(AuthEffects.NavigateToMain)
+            /*
+            when (val result = repository.verifyCode(phone, code)) {
+                is Result.Success -> {
+
+                    // действия с val result, т.е. AuthData(accessToken, refreshToken)
+                    // ***
+
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            verificationStatus = VerificationStatus.SUCCESS,
+                        )
+                    }
+                    sendEffect(AuthEffects.NavigateToMain)
+                }
+
+                is Result.Failure -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            verificationStatus = VerificationStatus.ERROR,
+                            errorMessage = result.error.message
+                        )
+                    }
+                }
+
+                is Result.Loading -> {
+                    updateState {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+
+                is Result.TokenExpired -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
+                }
+
+                is Result.ConnectionError -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            verificationStatus = VerificationStatus.ERROR,
+                            isConnectionError = true
+                        )
+                    }
+                }
             }
+
+             */
 
         }
     }
 
-
-    // обновляем наш State, присваивая параметру error значение null
+    // обновляем наш State, присваивая параметру error значение nullё
     private fun clearErrorText() = updateState {
         it.copy(error = null)
     }

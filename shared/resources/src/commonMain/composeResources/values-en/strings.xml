@@ -12,4 +12,6 @@
 	<string name="sendCodeAgain">Send the code again in X secongs</string>
     <string name="sendCodeAgainTextButton">Send again</string>
 	<string name="code">Code</string>
+    <string name="checkInternetConnection">Check your internet connection</string>
+    <string name="unableToSendCode">Unable to send the code</string>
 </resources>
