@@ -149,67 +149,12 @@ class AuthViewModel(private val repository: AuthRepository) :
             repository.verifyCode(phone,code).collect { result ->
                 when(result) {
                     is Result.Loading -> updateState { it.copy(isLoading = true) }
-                    else -> {
-                        // TODO все остальные состояния
-                    }
+                    is Result.Failure -> updateState { it.copy(isLoading = false, verificationStatus = VerificationStatus.SUCCESS) }
+                    is Result.Success -> updateState { it.copy(isLoading = false, verificationStatus = VerificationStatus.SUCCESS) }
+                    is Result.ConnectionError -> updateState { it.copy(isLoading = false, verificationStatus = VerificationStatus.ERROR, isConnectionError = true) }
+                    is Result.TokenExpired -> updateState { it.copy(isLoading = false) }
                 }
             }
-
-            /*
-            when (val result = repository.verifyCode(phone, code)) {
-                is Result.Success -> {
-
-                    // действия с val result, т.е. AuthData(accessToken, refreshToken)
-                    // ***
-
-                    updateState {
-                        it.copy(
-                            isLoading = false,
-                            verificationStatus = VerificationStatus.SUCCESS,
-                        )
-                    }
-                    sendEffect(AuthEffects.NavigateToMain)
-                }
-
-                is Result.Failure -> {
-                    updateState {
-                        it.copy(
-                            isLoading = false,
-                            verificationStatus = VerificationStatus.ERROR,
-                            errorMessage = result.error.message
-                        )
-                    }
-                }
-
-                is Result.Loading -> {
-                    updateState {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-
-                is Result.TokenExpired -> {
-                    updateState {
-                        it.copy(
-                            isLoading = false
-                        )
-                    }
-                }
-
-                is Result.ConnectionError -> {
-                    updateState {
-                        it.copy(
-                            isLoading = false,
-                            verificationStatus = VerificationStatus.ERROR,
-                            isConnectionError = true
-                        )
-                    }
-                }
-            }
-
-             */
-
         }
     }
 
