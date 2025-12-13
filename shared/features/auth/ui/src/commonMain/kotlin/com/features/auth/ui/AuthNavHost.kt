@@ -1,13 +1,12 @@
 package com.features.auth.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.features.auth.presentation.AuthViewModel
+import com.features.auth.presentation.model.AuthEffects
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -20,11 +19,20 @@ private enum class AuthScreen {
 
 @Composable
 fun AuthNavHost(
-    authNavController: NavHostController
+    authNavController: NavHostController,
+    onNavigateToMain: () -> Unit
 ) {
-    //val authNavController = rememberNavController()
-
     val viewModel: AuthViewModel = koinViewModel()
+
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is AuthEffects.NavigateToMain -> {
+                    onNavigateToMain()
+                }
+            }
+        }
+    }
 
     NavHost(
         navController = authNavController,

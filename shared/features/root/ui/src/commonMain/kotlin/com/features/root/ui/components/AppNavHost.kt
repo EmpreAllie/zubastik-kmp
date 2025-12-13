@@ -14,6 +14,7 @@ import com.features.base.domain.enum.Screen
 import com.features.root.ui.components.newImageLoader
 import com.features.splash.ui.SplashScreen
 import com.features.auth.ui.AuthNavHost
+import com.features.main.ui.MainNavHost
 import com.features.ui.extension.BackHandler
 
 @Composable
@@ -34,12 +35,18 @@ fun AppNavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
+        // Навигационные графы
         Screen.entries.forEach { screen ->
             composable(screen.name) {
                 when (screen) {
                     Screen.SPLASH -> SplashScreen()
-                    Screen.AUTH -> AuthNavHost(authNavController = authNavController)
-                    Screen.MAIN -> SplashScreen()//MainScreen()
+                    Screen.AUTH -> AuthNavHost(
+                        authNavController = authNavController,
+                        onNavigateToMain = {
+                            navHostController.resetStackAndNavigateTo(Screen.MAIN.name)
+                        }
+                    )
+                    Screen.MAIN -> MainNavHost()
                 }
             }
         }

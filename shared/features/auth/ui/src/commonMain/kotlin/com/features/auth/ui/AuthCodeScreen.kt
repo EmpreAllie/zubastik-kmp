@@ -32,7 +32,7 @@ fun AuthCodeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.onCodeScreenEntered()
+        viewModel.onEvent(AuthEvents.OnStartResendCodeTimer)
     }
 
     AuthCodeScreenContent(

@@ -1,12 +1,17 @@
 package com.features.auth.domain
 
-interface AuthRepository {
-    suspend fun sendPhoneNumberToServer(phone: String)
+import com.features.base.domain.Result
+import com.features.base.domain.model.Error
+import kotlinx.coroutines.flow.Flow
 
-    /**
-     * @param phone Номер телефона, который надо отправить на сервер.
-     * @param code Код, введенный пользователем.
-     * @return true, если код верный, иначе false.
-    */
-    suspend fun verifyCode(phone: String, code: String): Boolean
+data class AuthData(val accessToken: String, val refreshToken: String)
+
+interface AuthRepository {
+
+    // возвращаем Result.Success(Unit), что означает "просто успех/неудача, без данных"
+    suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error>
+
+    // возвращаем Flow из объектов Result.Loading, .Success, .Failure
+    suspend fun verifyCode(phone: String, code: String): Flow<Result<AuthData, Error>>
+
 }

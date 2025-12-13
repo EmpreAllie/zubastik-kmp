@@ -28,6 +28,10 @@ data class AuthState(
     val verificationStatus: VerificationStatus = VerificationStatus.NEUTRAL,
     val resendCodeTimerSeconds: Int = 59,
 
+    // ошибки
+    val isConnectionError: Boolean = false,
+    val errorMessage: String? = null
+
 ) : BaseState(isLoading = isLoading, error = error) {
 
 }

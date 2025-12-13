@@ -15,7 +15,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "auth"
+            baseName = "main"
             isStatic = true
         }
     }
@@ -40,7 +40,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.features.auth"
+    namespace = "com.features.main"
     compileSdk = 36
     defaultConfig {
         minSdk = 26

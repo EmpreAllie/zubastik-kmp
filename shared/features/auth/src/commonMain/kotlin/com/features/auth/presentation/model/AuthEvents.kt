@@ -21,8 +21,6 @@ sealed interface AuthEvents {
 
     data class OnVerificationCodeChanged(val code: String): AuthEvents
 
-    data object OnCodeVerificationStarted: AuthEvents
-
     data object OnStartResendCodeTimer: AuthEvents
 
     data object OnResendCodeClicked: AuthEvents
