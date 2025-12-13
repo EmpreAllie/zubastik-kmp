@@ -30,33 +30,11 @@ class AuthRepositoryImpl: AuthRepository {
                     refreshToken = "mock-refresh-token"
                 )
                 emit(Result.Success(mockData))
-            }
-            else {
+            } else {
                 emit(Result.Failure(Error.other("Неверный код")))
             }
-        }
-        catch(e: Exception) {
+        } catch (e: Exception) {
             emit(Result.ConnectionError)
         }
     }
-/*
-        return try {
-            delay(1000)
-
-            if (code == "1234") {
-                val mockData = AuthData(
-                    accessToken = "mock-access-token",
-                    refreshToken = "mock-refresh-token"
-                )
-
-                Result.Success(mockData)
-            } else {
-                Result.Failure(Error.other("Неверный код"))
-            }
-        } catch (e: Exception) {
-            Result.Failure(Error.CONNECTION)
-        }
-    }
-
- */
 }

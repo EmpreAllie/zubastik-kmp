@@ -48,7 +48,6 @@ fun SplashScreen(
             error = error,
             onClose = {
                 viewModel.onEvent(SplashEvents.OnCloseDialog)
-                CloseApp(context)
             }
         )
     }

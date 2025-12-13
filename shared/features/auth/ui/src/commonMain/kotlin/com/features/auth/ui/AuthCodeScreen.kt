@@ -47,7 +47,6 @@ fun AuthCodeScreen(
             error = error,
             onClose = {
                 viewModel.onEvent(AuthEvents.OnCloseDialog)
-                CloseApp(context)
             }
         )
     }

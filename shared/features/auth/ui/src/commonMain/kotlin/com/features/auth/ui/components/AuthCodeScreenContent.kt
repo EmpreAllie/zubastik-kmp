@@ -118,7 +118,7 @@ fun AuthCodeScreenContent(
 
             // Обновление цифры с секундами
             // TODO stringResource для текста
-            // TODO Секунды/секунд/секунду
+            // TODO Секунды/секунд/секунду - Plurals
             if (state.resendCodeTimerSeconds > 0) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
