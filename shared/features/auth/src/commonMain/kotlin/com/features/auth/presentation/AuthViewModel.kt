@@ -2,6 +2,7 @@ package com.features.auth.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.features.auth.domain.AuthRepository
+import com.features.auth.domain.TimerRepository
 import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
@@ -14,8 +15,14 @@ import com.features.base.domain.Result
 import com.features.base.domain.model.Error
 
 
-class AuthViewModel(private val repository: AuthRepository) :
-    BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
+class AuthViewModel(
+    private val repository: AuthRepository,
+    private val timerRepository: TimerRepository
+) : BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
+
+    init {
+        collectTimerUpdates()
+    }
 
     // ловим события от UI
     override fun onEvent(event: AuthEvents) {
@@ -77,13 +84,15 @@ class AuthViewModel(private val repository: AuthRepository) :
 
             // первое событие
             is AuthEvents.OnStartResendCodeTimer -> {
-                startResendCodeTimer()
+                // startResendCodeTimer()
+                timerRepository.startTimer()
             }
 
             // последующие события
             is AuthEvents.OnResendCodeClicked -> {
                 // repository.sendPhoneNumberToServer()
-                startResendCodeTimer()
+                // startResendCodeTimer()
+                timerRepository.startTimer()
             }
         }
     }
@@ -161,5 +170,13 @@ class AuthViewModel(private val repository: AuthRepository) :
     // обновляем наш State, присваивая параметру error значение nullё
     private fun clearErrorText() = updateState {
         it.copy(error = null)
+    }
+
+    private fun collectTimerUpdates() {
+        viewModelScope.launch {
+            timerRepository.secondsRemaining.collect { seconds ->
+                updateState { it.copy(resendCodeTimerSeconds = seconds) }
+            }
+        }
     }
 }
