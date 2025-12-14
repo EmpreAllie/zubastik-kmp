@@ -14,16 +14,20 @@ import com.features.ui.theme.MainTheme
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEffect
 import com.root.presentation.model.RootEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RootApp(
-    viewModel: RootViewModel,
+    viewModel: RootViewModel = koinViewModel(),
     navHostController: NavHostController = rememberNavController(),
 ) {
     LockScreenOrientation()
 
     MainTheme {
-        AppNavHost(navHostController)
+        AppNavHost(
+            navHostController = navHostController,
+            rootViewModel = viewModel
+        )
         BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
     }
 

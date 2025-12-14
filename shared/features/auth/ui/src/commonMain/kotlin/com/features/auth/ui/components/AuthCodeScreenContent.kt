@@ -26,7 +26,9 @@ import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
 import com.features.ui.Res
 import com.features.ui.code
+import com.features.ui.components.AppTopBar
 import com.features.ui.components.CodeInputComponent
+import com.features.ui.components.TopBarBackButton
 import com.features.ui.enterCode
 import com.features.ui.ic_back_arrow
 import com.features.ui.sendCodeAgainTextButton
@@ -45,6 +47,15 @@ fun AuthCodeScreenContent(
         containerColor = MainTheme.colors.primary,
 
         topBar = {
+            AppTopBar(
+                title = stringResource(Res.string.code),
+                navigationIcon = {
+                    TopBarBackButton {
+                        onEvent(AuthEvents.OnBackClicked)
+                    }
+                }
+            )
+            /*
             CenterAlignedTopAppBar(
                 title = {
                     Text(
@@ -72,6 +83,7 @@ fun AuthCodeScreenContent(
                     containerColor = MainTheme.colors.transparent
                 )
             )
+            */
         }
     ) { padding ->
         Column(

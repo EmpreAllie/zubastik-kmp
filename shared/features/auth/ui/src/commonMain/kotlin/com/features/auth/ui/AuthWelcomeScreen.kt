@@ -4,29 +4,51 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import coil3.compose.LocalPlatformContext
+import androidx.compose.runtime.remember
 import com.features.auth.presentation.AuthViewModel
 import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.ui.components.AuthWelcomeScreenContent
+import com.features.base.domain.enum.Graph
+import com.features.base.domain.enum.Screen
 import com.features.ui.Res
 import com.features.ui.authorization
 import com.features.ui.dialog.DialogError
-import com.features.ui.extension.CloseApp
 import com.root.presentation.RootViewModel
+import com.root.presentation.model.RootEvent
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.qualifier.named
 
 
 @Composable
 fun AuthWelcomeScreen(
-    viewModel: AuthViewModel,// = koinViewModel(),
-    onNavigateToPhoneInput: () -> Unit,
-    onNavigateToYandexLogin: () -> Unit
+    //viewModel: AuthViewModel = koinViewModel(),
+    //onNavigateToPhoneInput: () -> Unit,
+    //onNavigateToYandexLogin: () -> Unit
 ) {
-    // доступ к системному API
-    val context = LocalPlatformContext.current
 
+    val viewModel: AuthViewModel = koinViewModel(qualifier = named(Graph.AUTH.route))
+    val rootViewModel: RootViewModel = koinViewModel()
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                // Когда AuthViewModel говорит "перейти к вводу телефона"...
+                is AuthEffects.NavigateToPhoneInput -> {
+                    // ...мы говорим RootViewModel "установи экран ввода телефона".
+                    rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.PHONE))
+                }
+                is AuthEffects.NavigateToYandexLogin -> {
+                    // TODO: Реализовать логику для Яндекс логина,
+                    // например, rootViewModel.onEvent(RootEvent.OnOpenYandexAuth)
+                }
+            }
+        }
+    }
+    /*
     // AuthWelcomeScreen подписывается на State, чтобы получать из него изменения
     val state by viewModel.state.collectAsState()
 
@@ -38,7 +60,7 @@ fun AuthWelcomeScreen(
                 is AuthEffects.NavigateToYandexLogin -> onNavigateToYandexLogin()
             }
         }
-    }
+    }*/
 
     // наполнение (UI) экрана
     // передаем туда состояние и обработчик событий, чтобы получать их обратно
@@ -54,7 +76,6 @@ fun AuthWelcomeScreen(
             error = error,
             onClose = {
                 viewModel.onEvent(AuthEvents.OnCloseDialog)
-                CloseApp(context)
             }
         )
     }

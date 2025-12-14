@@ -31,7 +31,7 @@ fun SplashScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is SplashEffects.NavigateToScreen -> rootViewModel.onEvent(
-                    RootEvent.OnSetScreen(screen = effect.screen, isClearStack = true)
+                    RootEvent.OnSetScreen(destination = effect.screen, isClearStack = true)
                 )
             }
         }

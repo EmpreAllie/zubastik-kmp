@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -76,6 +77,7 @@ kotlin {
             implementation(libs.bundles.coil)
             implementation(libs.kotlinSerialization)
             implementation(libs.composeNavigation)
+
         }
 
         commonTest.dependencies {

@@ -1,6 +1,7 @@
 package com.features.splash.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
 import com.features.base.presentation.model.BaseViewModel
 import com.features.splash.domain.SplashRepository
@@ -35,7 +36,8 @@ class SplashViewModel(private val repository: SplashRepository) :
         if (isAuthenticated) {
             sendEffect(SplashEffects.NavigateToScreen(Screen.MAIN))
         } else {
-            sendEffect(SplashEffects.NavigateToScreen(Screen.AUTH))
+            //sendEffect(SplashEffects.NavigateToScreen(Screen.AUTH))
+            sendEffect(SplashEffects.NavigateToScreen(Graph.AUTH))
         }
     }
 }
