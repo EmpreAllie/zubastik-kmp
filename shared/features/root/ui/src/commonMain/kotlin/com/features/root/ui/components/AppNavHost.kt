@@ -1,17 +1,18 @@
 package com.features.root.ui.components
 
-//import com.features.main.ui.MainNavHost
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import coil3.compose.setSingletonImageLoaderFactory
-import com.features.auth.ui.authGraph
+import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
 import com.features.splash.ui.SplashScreen
+import com.features.ui.extension.BackHandler
 
 @Composable
 fun AppNavHost(
@@ -28,47 +29,32 @@ fun AppNavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
-
-        composable(Screen.SPLASH.name) {
+        composable(Screen.SPLASH.route) {
             SplashScreen()
         }
 
         navigation(
-            startDestination = "auth_welcome_route",
-            route = Screen.AUTH.name
+            route = Graph.AUTH.route,
+            startDestination = Screen.WELCOME.route
         ) {
-            authGraph(
-                navController = navHostController,
-                onNavigateToMain = {
-                    navHostController.resetStackAndNavigateTo(Screen.MAIN.name)
-                }
-            )
-        }
-
-        composable(Screen.MAIN.name) {
-
-        }
-        /*
-        // Навигационные графы
-        Screen.entries.forEach { screen ->
-            composable(screen.name) {
-                when (screen) {
-                    Screen.SPLASH -> SplashScreen()
-                    /*
-                    Screen.AUTH -> AuthNavHost(
-                        authNavController = authNavController,
-                        onNavigateToMain = {
-                            navHostController.resetStackAndNavigateTo(Screen.MAIN.name)
-                        }
-                    )
-
-                     */
-                    Screen.MAIN -> {}
-                }
+            composable(Screen.WELCOME.route) {
+                BackHandler {}
+                Text("WelcomeScreen")
+            }
+            composable(Screen.PHONE.route) {
+                BackHandler {}
+                Text("PhoneScreen")
+            }
+            composable(Screen.CONFIRM.route) {
+                BackHandler {}
+                Text("ConfirmScreen")
             }
         }
 
-         */
+        composable(Screen.MAIN.route) {
+            BackHandler {}
+            Text("MainScreen")
+        }
     }
 }
 
