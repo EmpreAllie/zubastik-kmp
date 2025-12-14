@@ -32,28 +32,20 @@ fun AppNavHost(
         composable(Screen.SPLASH.route) {
             SplashScreen()
         }
-
-        navigation(
-            route = Graph.AUTH.route,
-            startDestination = Screen.WELCOME.route
-        ) {
-            composable(Screen.WELCOME.route) {
-                BackHandler {}
-                Text("WelcomeScreen")
-            }
-            composable(Screen.PHONE.route) {
-                BackHandler {}
-                Text("PhoneScreen")
-            }
-            composable(Screen.CONFIRM.route) {
-                BackHandler {}
-                Text("ConfirmScreen")
-            }
-        }
-
         composable(Screen.MAIN.route) {
             BackHandler {}
             Text("MainScreen")
+        }
+
+        Graph.entries.forEach { graph ->
+            navigation(route = graph.route, startDestination = graph.screens.first().name) {
+                graph.screens.forEach { screen ->
+                    composable(screen.route) {
+                        BackHandler {}
+                        Text("${screen.route}Screen")
+                    }
+                }
+            }
         }
     }
 }
