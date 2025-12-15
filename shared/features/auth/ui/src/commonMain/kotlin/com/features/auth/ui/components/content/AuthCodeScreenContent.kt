@@ -1,4 +1,4 @@
-package com.features.auth.ui.components
+package com.features.auth.ui.components.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,15 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,16 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
+import com.features.auth.ui.components.input.CodeInputComponent
 import com.features.ui.Res
 import com.features.ui.code
 import com.features.ui.components.AppTopBar
-import com.features.ui.components.CodeInputComponent
 import com.features.ui.components.TopBarBackButton
 import com.features.ui.enterCode
-import com.features.ui.ic_back_arrow
 import com.features.ui.sendCodeAgainTextButton
 import com.features.ui.theme.MainTheme
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,7 +103,7 @@ fun AuthCodeScreenContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = state.countryCode + state.phoneNumber, // TODO ReturnNiceNumberFromFunction()
+                text = state.phoneNumber.format(),
                 style = MainTheme.typography.auth.phoneNumberOnCodeScreen,
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center

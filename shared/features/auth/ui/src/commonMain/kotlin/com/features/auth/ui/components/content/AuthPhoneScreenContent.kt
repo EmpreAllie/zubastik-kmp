@@ -1,4 +1,4 @@
-package com.features.auth.ui.components
+package com.features.auth.ui.components.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,11 +17,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
+import com.features.auth.ui.components.input.PhoneInputComponent
 import com.features.ui.Res
 import com.features.ui.button.MainButton
-import com.features.ui.components.PhoneInputComponent
 import com.features.ui.enterPhoneNumber
-import com.features.ui.loginWithYandexID
 import com.features.ui.next
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
@@ -45,37 +44,33 @@ fun AuthPhoneScreenContent(
         ) {
 
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.enterPhoneNumber),
                 style = MainTheme.typography.auth.title,
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(
-                modifier = Modifier.height(48.dp)
-            )
+            Spacer(modifier = Modifier.height(48.dp))
 
 
             PhoneInputComponent(
-                state = state,
-                onEvent = onEvent
+                phoneNumber = state.phoneNumber,
+                onTextChange = { value ->
+                    onEvent(AuthEvents.OnPhoneNumberChanged(state.phoneNumber.copy(number = value)))
+                }
             )
 
 
-            Spacer(
-                modifier = Modifier.height(56.dp)
-            )
+            Spacer(modifier = Modifier.height(56.dp))
 
             MainButton(
                 text = stringResource(Res.string.next),
                 backgroundColor = MainTheme.colors.secondary,
                 contentColor = MainTheme.colors.white,
-                isEnabled = state.phoneNumber.length == 10 && !state.isPhoneNumberError,
+                isEnabled = state.phoneNumber.isCorrect(),
                 onClick = { onEvent(AuthEvents.OnGotoCodeClicked) }
             )
-
         }
     }
 }

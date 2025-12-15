@@ -20,6 +20,4 @@ enum class Graph(val screens: List<Screen>): Destination {
 
     override val route: String
         get() = name
-
-    fun startScreen() = screens.first()
 }

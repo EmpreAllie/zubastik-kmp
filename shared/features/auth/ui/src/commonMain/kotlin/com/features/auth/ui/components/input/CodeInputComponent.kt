@@ -1,4 +1,4 @@
-package com.features.ui.components
+package com.features.auth.ui.components.input
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,10 +15,8 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.features.auth.presentation.model.AuthState
-import com.features.auth.presentation.model.VerificationStatus
+import com.features.auth.domain.model.VerificationStatus
 import com.features.ui.InputTextField
 import com.features.ui.theme.MainTheme
 

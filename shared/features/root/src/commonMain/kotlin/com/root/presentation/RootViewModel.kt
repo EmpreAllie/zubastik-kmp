@@ -7,67 +7,48 @@ import com.root.presentation.model.RootEvent
 import com.root.presentation.model.RootState
 
 class RootViewModel : BaseViewModel<RootState, RootEvent, RootEffect>(RootState()) {
-    private val openScreens: MutableList<Destination> = mutableListOf()
     override fun onEvent(event: RootEvent) {
         when (event) {
             is RootEvent.OnSetScreen -> setDestination(
                 destination = event.destination,
-                arguments = event.arguments,
                 isClearStack = event.isClearStack
             )
 
-            is RootEvent.OnReplaceScreen -> replaceScreen(
-                destination = event.destination,
-                arguments = event.arguments,
-            )
-
+            is RootEvent.OnReplaceScreen -> replaceScreen(event.destination)
             RootEvent.OnClickBack -> finishScreen()
         }
     }
 
-
     private fun setDestination(
         destination: Destination,
-        arguments: List<String> = emptyList(),
         isClearStack: Boolean,
     ) {
-        val currentScreen = this.state.value.destination
+        val currentDestination = state.value.destination
+        if (destination == currentDestination) return
 
-        if (destination == currentScreen) return
+        val effect = if (isClearStack) RootEffect.NavigateWithClearStack(destination)
+        else RootEffect.Navigate(destination)
 
-        if (isClearStack) openScreens.clear()
-
-        openScreens.add(destination)
-
-        updateState { it.copy(destination = destination, arguments = arguments) }
-
-        val effect = if (isClearStack) RootEffect.NavigateWithClearStack(destination.route)
-        else RootEffect.Navigate(destination.route)
+        updateState {
+            it.copy(destination = destination)
+        }
 
         sendEffect(effect)
     }
 
-    private fun areThereOtherOpenScreens() = openScreens.size > 1
     private fun finishScreen() {
-        updateState { it.copy(destination = null, isPopScreen = true) }
+        updateState { it.copy(destination = null) }
         sendEffect(RootEffect.PopBackStack)
     }
-    private fun replaceScreen(
-        destination: Destination,
-        arguments: List<String> = emptyList()
-    ) {
-        val currentScreen = this.state.value.destination
 
+    private fun replaceScreen(destination: Destination) {
+        val currentScreen = this.state.value.destination
         if (destination == currentScreen) return
 
-        if (openScreens.isNotEmpty()) openScreens.removeAt(openScreens.size-1)
-
-        openScreens.add(destination)
-
         updateState {
-            it.copy(destination = destination, arguments = arguments,)
+            it.copy(destination = destination)
         }
 
-        sendEffect(RootEffect.ReplaceScreen(destination.route))
+        sendEffect(RootEffect.ReplaceScreen(destination))
     }
 }

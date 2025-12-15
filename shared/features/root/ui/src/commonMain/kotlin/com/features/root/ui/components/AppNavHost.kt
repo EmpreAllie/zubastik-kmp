@@ -18,11 +18,12 @@ import com.features.splash.ui.SplashScreen
 import com.features.ui.extension.BackHandler
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppNavHost(
     navHostController: NavHostController,
-    rootViewModel: RootViewModel,
+    viewModel: RootViewModel = koinViewModel(),
     startDestination: Screen = Screen.SPLASH,
 ) {
     setSingletonImageLoaderFactory { context ->
@@ -31,7 +32,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navHostController,
-        startDestination = startDestination.name,
+        startDestination = startDestination.route,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
@@ -39,78 +40,41 @@ fun AppNavHost(
             SplashScreen()
         }
         composable(Screen.MAIN.route) {
-            BackHandler {}
             Text("MainScreen")
+            BackHandler {}
         }
 
         Graph.entries.forEach { graph ->
-            navigation(route = graph.route, startDestination = graph.screens.first().name) {
+            navigation(
+                route = graph.route,
+                startDestination = graph.screens.first().route
+            ) {
                 graph.screens.forEach { screen ->
                     composable(screen.route) {
-
-                        when(screen) {
-                            Screen.WELCOME -> AuthWelcomeScreen() // Просто вызываем экран
-                            Screen.PHONE -> AuthPhoneScreen()       // Просто вызываем экран
-                            Screen.CONFIRM -> AuthCodeScreen()      // Просто вызываем экран
-                            else -> {
-                                BackHandler {}
-                                Text("${screen.route}Screen")
-                            }
-                            /*
-                            Screen.WELCOME -> AuthWelcomeScreen(
-                                onNavigateToPhoneInput = {
-                                    //navHostController.navigate(Screen.PHONE.route)
-                                    rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.PHONE))
-                                },
-                                onNavigateToYandexLogin = {
-
-                                }
-                            )
-
-                            Screen.PHONE -> AuthPhoneScreen(
-                                onNavigateToCodeInput = {
-                                    //navHostController.navigate(Screen.CONFIRM.route)
-                                    rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.PHONE))
-                                }
-                            )
-
-                            Screen.CONFIRM -> AuthCodeScreen(
-                                onNavigateBack = {
-                                    //navHostController.popBackStack()
-                                    rootViewModel.onEvent(RootEvent.OnClickBack)
-                                }
-                            )
-
-                            else -> {
-                                BackHandler {}
-                                Text("${screen.route}Screen")
+                        when (screen) {
+                            Screen.WELCOME -> {
+                                AuthWelcomeScreen()
+                                BackHandler { }
                             }
 
-                             */
+                            Screen.PHONE -> {
+                                AuthPhoneScreen()
+                                BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
+                            }
+
+                            Screen.CONFIRM -> {
+                                AuthCodeScreen()
+                                BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
+                            }
+
+                            else -> {
+                                Text("${screen.route}Screen")
+                                BackHandler {}
+                            }
                         }
                     }
                 }
             }
-        }
-    }
-}
-
-fun NavHostController.handleBackNavigation() {
-    val previousRoute = previousBackStackEntry?.destination?.route
-    if (previousRoute != null) popBackStack()
-    else resetStackAndNavigateTo(Screen.MAIN.name)
-}
-
-fun NavHostController.resetStackAndNavigateTo(route: String) = navigate(route) {
-    popUpTo(0) {
-        inclusive = true
-    }
-}
-
-fun NavHostController.replaceScreen(oldRoute: String?, newRoute: String) = navigate(newRoute) {
-    oldRoute?.let {
-        popUpTo(it) {
-            inclusive = true
         }
     }
 }

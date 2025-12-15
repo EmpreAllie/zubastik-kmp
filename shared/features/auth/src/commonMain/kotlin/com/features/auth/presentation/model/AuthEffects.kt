@@ -1,11 +1,12 @@
 package com.features.auth.presentation.model
 
-// эффекты, которые будут отражены на UI вследствие событий (Events)
+import com.features.auth.domain.model.LoginType
+
 
 interface AuthEffects {
-    data object NavigateToPhoneInput: AuthEffects
-    data object NavigateToYandexLogin: AuthEffects
+    data object NavigateToBack: AuthEffects
     data object NavigateToCodeInput: AuthEffects
 
     data object NavigateToMain: AuthEffects
+    data class NavigateToLogin(val type: LoginType): AuthEffects
 }

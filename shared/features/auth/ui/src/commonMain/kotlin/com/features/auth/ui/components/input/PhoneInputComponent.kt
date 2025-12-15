@@ -1,4 +1,4 @@
-package com.features.ui.components
+package com.features.auth.ui.components.input
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,8 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.features.auth.presentation.model.AuthEvents
-import com.features.auth.presentation.model.AuthState
+import com.entity.model.PhoneNumber
 import com.features.ui.DisabledTextField
 import com.features.ui.InputTextField
 import com.features.ui.Res
@@ -22,17 +21,16 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun PhoneInputComponent(
     modifier: Modifier = Modifier,
-    state: AuthState,
-    onEvent: (AuthEvents) -> Unit
+    phoneNumber: PhoneNumber,
+    onTextChange: (String) -> Unit,
 ) {
-
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         DisabledTextField(
             modifier = Modifier.width(90.dp),
-            text = state.countryCode,//"+7", // TODO брать откуда-то еще
+            text = phoneNumber.countryCode, // TODO брать откуда-то еще
             hintText = "",
             textStyle = MainTheme.typography.auth.inputNumber,
             trailingIcon = {
@@ -50,17 +48,14 @@ fun PhoneInputComponent(
 
         InputTextField(
             modifier = Modifier.weight(1f),
-            text = state.phoneNumber,
+            text = phoneNumber.number,
             hintText = stringResource(Res.string.enterNumber),
-            onTextChange = { newNumber ->
-                onEvent(AuthEvents.OnPhoneNumberChanged(newNumber, state.countryCode))
-            },
-            isError = state.isPhoneNumberError,
+            isError = phoneNumber.isCorrect(),
             keyboardType = KeyboardType.Phone,
             singleLine = true,
             maxLength = 10,
-            textStyle = MainTheme.typography.auth.inputNumber.copy(color = MainTheme.colors.black)
+            textStyle = MainTheme.typography.auth.inputNumber.copy(color = MainTheme.colors.black),
+            onTextChange = onTextChange
         )
     }
-
 }

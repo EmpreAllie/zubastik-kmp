@@ -20,13 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.features.base.domain.model.Error
+import com.features.base.domain.model.error.Error
 import com.features.ui.Res
-import com.features.ui.appName
 import com.features.ui.ic_back_arrow
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -69,16 +67,11 @@ fun DialogError(
                 )
 
                 Text(
-                    text = when (error) {
-                        Error.CONNECTION -> stringResource(Res.string.appName) // TODO: Change text to String Resource
-                        Error.TOKEN -> stringResource(Res.string.appName) // TODO: Change text to Token
-                        Error.OTHER -> error.message ?: stringResource(Res.string.appName) // TODO: Change default text
-                    },
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    text = error.toText(),
                     style = MainTheme.typography.dialog.main,
                     color = MainTheme.colors.black.copy(alpha = 0.5f),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
                 )
             }
         }

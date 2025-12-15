@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import coil3.compose.LocalPlatformContext
 import com.features.splash.presentation.SplashViewModel
 import com.features.splash.presentation.model.SplashEffects
 import com.features.splash.presentation.model.SplashEvents
@@ -12,7 +11,6 @@ import com.features.splash.ui.components.SplashScreenContent
 import com.features.ui.Res
 import com.features.ui.appName
 import com.features.ui.dialog.DialogError
-import com.features.ui.extension.CloseApp
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEvent
 import org.jetbrains.compose.resources.stringResource
@@ -23,10 +21,8 @@ fun SplashScreen(
     viewModel: SplashViewModel = koinViewModel(),
     rootViewModel: RootViewModel = koinViewModel(),
 ) {
-    val context = LocalPlatformContext.current
     val state by viewModel.state.collectAsState()
 
-    // глобальная навигация между флоу, поэтому используем RootViewModel
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {

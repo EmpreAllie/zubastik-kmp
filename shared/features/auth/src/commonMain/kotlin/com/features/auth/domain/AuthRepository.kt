@@ -1,7 +1,7 @@
 package com.features.auth.domain
 
 import com.features.base.domain.Result
-import com.features.base.domain.model.Error
+import com.features.base.domain.model.error.Error
 import kotlinx.coroutines.flow.Flow
 
 data class AuthData(val accessToken: String, val refreshToken: String)

@@ -1,6 +1,6 @@
 package com.features.splash.presentation.model
 
-import com.features.base.domain.model.Error
+import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseState
 
 data class SplashState(
