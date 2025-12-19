@@ -27,6 +27,7 @@ fun AuthWelcomeScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
+        viewModel.clearEffects()
         viewModel.effect.collect { effect ->
             when (effect) {
                 AuthEffects.NavigateToBack -> rootViewModel.onEvent(RootEvent.OnClickBack)

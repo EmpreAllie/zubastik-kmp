@@ -1,6 +1,7 @@
 package com.features.base.presentation.model
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,4 +21,7 @@ abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE) : ViewMo
     protected fun sendEffect(effect: EFFECT) {
         _effect.tryEmit(effect)
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun clearEffects() = _effect.resetReplayCache()
 }
