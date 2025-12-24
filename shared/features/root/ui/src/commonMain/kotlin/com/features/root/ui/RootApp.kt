@@ -29,15 +29,20 @@ fun RootApp(
         viewModel.effect.collect { effect ->
             when (effect) {
                 RootEffect.PopBackStack -> navHostController.handleBackNavigation(basicNavOption)
+
                 is RootEffect.NavigateWithClearStack ->
                     navHostController.resetStackAndNavigateTo(effect.destination.route, basicNavOption)
 
-                is RootEffect.Navigate -> navHostController.navigate(
-                    effect.destination.route, basicNavOption
-                )
+                is RootEffect.Navigate ->  {
+                    navHostController.navigate(effect.destination.route, basicNavOption)
+                }
 
                 is RootEffect.ReplaceScreen -> {
-                    navHostController.navigate(effect.destination.route, basicNavOption)
+                    val curRoute = navHostController.currentBackStackEntry?.destination?.route
+                    navHostController.replaceScreen(
+                        oldRoute = curRoute,
+                        newRoute = effect.destination.route
+                    )
                 }
             }
         }
@@ -56,7 +61,9 @@ private fun NavHostController.handleBackNavigation(basicNavOptions: NavOptions) 
     else resetStackAndNavigateTo(Screen.MAIN.route, basicNavOptions)
 }
 
-private fun NavHostController.resetStackAndNavigateTo(route: String, basicNavOptions: NavOptions) = navigate(route, basicNavOptions)
+private fun NavHostController.resetStackAndNavigateTo(route: String, basicNavOptions: NavOptions) {
+    navigate(route, basicNavOptions)
+}
 
 private fun NavHostController.replaceScreen(oldRoute: String?, newRoute: String) =
     navigate(newRoute) {
