@@ -25,6 +25,7 @@ import com.features.ui.code
 import com.features.ui.components.AppTopBar
 import com.features.ui.components.TopBarBackButton
 import com.features.ui.enterCode
+import com.features.ui.resendCode
 import com.features.ui.sendCodeAgainTextButton
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
@@ -127,7 +128,7 @@ fun AuthCodeScreenContent(
             if (state.resendCodeTimerSeconds > 0) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Повторно отправить код можно через ${state.resendCodeTimerSeconds} секунд",
+                    text = stringResource(Res.string.resendCode, state.resendCodeTimerSeconds),//"Повторно отправить код можно через ${state.resendCodeTimerSeconds} секунд",
                     style = MainTheme.typography.auth.sendCodeAgain,
                     color = MainTheme.colors.secondary,
                     textAlign = TextAlign.Center

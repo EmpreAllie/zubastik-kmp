@@ -9,7 +9,7 @@
 	<string name="enterNumber">Enter the number</string>
 	<string name="next">Next</string>
 	<string name="enterCode">Enter the code sent to number</string>
-	<string name="sendCodeAgain">Send the code again in X secongs</string>
+	<string name="resendCode">Code can be sent again in %1$s secongs</string>
     <string name="sendCodeAgainTextButton">Send again</string>
 	<string name="code">Code</string>
     <string name="checkInternetConnection">Check your internet connection</string>
