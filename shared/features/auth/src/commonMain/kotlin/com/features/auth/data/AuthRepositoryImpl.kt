@@ -21,7 +21,9 @@ class AuthRepositoryImpl: AuthRepository {
         }
     }
 
-    override suspend fun verifyCode(phone: String, code: String) = flow {
+
+
+    override fun verifyCode(phone: String, code: String) = flow {
         emit(Result.Loading)
 
         try {
@@ -32,11 +34,21 @@ class AuthRepositoryImpl: AuthRepository {
                     refreshToken = "mock-refresh-token"
                 )
                 emit(Result.Success(mockData))
-            } else emit(Error.AUTH(AuthErrorType.CODE).toResult())
-        } catch (e: Exception) {
+            }
+            else {
+                emit(Error.AUTH(AuthErrorType.CODE).toResult())
+            }
+
+        }
+        catch (e: Exception) {
             e.printStackTrace()
-            if (e.isConnectionException()) Result.ConnectionError
-            else Error.OTHER(e.message.orEmpty())
+
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
+
+            emit(result)
         }
     }
 }

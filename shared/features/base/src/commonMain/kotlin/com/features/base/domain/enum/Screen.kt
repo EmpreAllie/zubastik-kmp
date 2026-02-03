@@ -8,7 +8,7 @@ enum class Screen: Destination {
     SPLASH,
     WELCOME,
     PHONE,
-    CONFIRM,
+    CODE,
     MAIN;
 
     override val route: String
@@ -16,7 +16,7 @@ enum class Screen: Destination {
 }
 
 enum class Graph(val screens: List<Screen>): Destination {
-    AUTH(listOf(Screen.WELCOME, Screen.PHONE, Screen.CONFIRM));
+    AUTH(listOf(Screen.WELCOME, Screen.PHONE, Screen.CODE));
 
     override val route: String
         get() = name

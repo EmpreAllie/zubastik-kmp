@@ -49,35 +49,6 @@ fun AuthCodeScreenContent(
                     }
                 }
             )
-            /*
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(Res.string.code),
-                        style = MainTheme.typography.auth.title,
-                        color = MainTheme.colors.secondary
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        modifier = Modifier.padding(start = 8.dp),
-                        onClick = {
-                            onEvent(AuthEvents.OnBackClicked)
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(32.dp),
-                            painter = painterResource(Res.drawable.ic_back_arrow),
-                            contentDescription = "Back",
-                            tint = MainTheme.colors.secondary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MainTheme.colors.transparent
-                )
-            )
-            */
         }
     ) { padding ->
         Column(
@@ -92,27 +63,27 @@ fun AuthCodeScreenContent(
 
             Text(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
                 text = stringResource(Res.string.enterCode),
                 style = MainTheme.typography.auth.secondary,
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             Text(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
                 text = state.phoneNumber.format(),
                 style = MainTheme.typography.auth.phoneNumberOnCodeScreen,
                 color = MainTheme.colors.secondary,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
             CodeInputComponent(
+                modifier = Modifier
+                    .padding(bottom = 24.dp),
                 code = state.verificationCode,
                 onCodeChanged = { newCode ->
                     onEvent(AuthEvents.OnVerificationCodeChanged(newCode))
@@ -120,10 +91,7 @@ fun AuthCodeScreenContent(
                 verificationStatus = state.verificationStatus
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
             // Обновление цифры с секундами
-            // TODO stringResource для текста
             // TODO Секунды/секунд/секунду - Plurals
             if (state.resendCodeTimerSeconds > 0) {
                 Text(

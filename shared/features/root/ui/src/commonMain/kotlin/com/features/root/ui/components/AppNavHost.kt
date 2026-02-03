@@ -36,13 +36,11 @@ fun AppNavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
+
         composable(Screen.SPLASH.route) {
             SplashScreen()
         }
-        composable(Screen.MAIN.route) {
-            Text("MainScreen")
-            BackHandler {}
-        }
+
 
         Graph.entries.forEach { graph ->
             navigation(
@@ -54,7 +52,7 @@ fun AppNavHost(
                         when (screen) {
                             Screen.WELCOME -> {
                                 AuthWelcomeScreen()
-                                BackHandler { }
+                                BackHandler {}
                             }
 
                             Screen.PHONE -> {
@@ -62,7 +60,7 @@ fun AppNavHost(
                                 BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
                             }
 
-                            Screen.CONFIRM -> {
+                            Screen.CODE -> {
                                 AuthCodeScreen()
                                 BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
                             }
@@ -75,6 +73,11 @@ fun AppNavHost(
                     }
                 }
             }
+        }
+
+        composable(Screen.MAIN.route) {
+            Text("MainScreen")
+            BackHandler {}
         }
     }
 }

@@ -33,7 +33,9 @@ kotlin {
             isStatic = true
         }
     }
+
 }
+
 
 android {
     namespace = "com.shared"

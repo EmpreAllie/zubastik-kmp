@@ -23,6 +23,7 @@ import com.features.ui.theme.MainTheme
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CodeInputComponent(
+    modifier: Modifier,
     code: String,
     onCodeChanged: (String) -> Unit,
     verificationStatus: VerificationStatus
@@ -40,11 +41,11 @@ fun CodeInputComponent(
     }
 
     Row(
-        modifier = Modifier,
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        (0..3).forEach { index ->
-            val currentChar = code.getOrNull(index)?.toString() ?: ""
+        repeat(4) { index ->
+            val currentChar = code.getOrNull(index)?.toString().orEmpty()
 
             InputTextField(
                 modifier = Modifier

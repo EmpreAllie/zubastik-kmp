@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.features.auth.domain.model.LoginType
-import com.features.auth.presentation.AuthViewModel
+import com.features.auth.presentation.AuthWelcomeViewModel
 import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.ui.components.content.AuthWelcomeScreenContent
@@ -21,28 +24,39 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthWelcomeScreen(
-    viewModel: AuthViewModel = koinViewModel(),
+    viewModel: AuthWelcomeViewModel = koinViewModel(),
     rootViewModel: RootViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.clearEffects()
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                AuthEffects.NavigateToBack -> rootViewModel.onEvent(RootEvent.OnClickBack)
-                AuthEffects.NavigateToCodeInput -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.CONFIRM))
-                AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN))
-                is AuthEffects.NavigateToLogin -> {
-                    val screen = when (effect.type) {
-                        LoginType.PHONE -> Screen.PHONE
-                        LoginType.YANDEX -> TODO("Yandex Login")
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel, lifecycleOwner.lifecycle) {
+
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+
+                    AuthEffects.NavigateBack -> {
+                        rootViewModel.onEvent(RootEvent.OnClickBack)
                     }
 
-                    rootViewModel.onEvent(RootEvent.OnSetScreen(screen))
+                    is AuthEffects.NavigateToLogin -> {
+                        val screen = when (effect.type) {
+                            LoginType.PHONE -> Screen.PHONE
+                            LoginType.YANDEX -> TODO("Yandex Login")
+                        }
+
+                        rootViewModel.onEvent(RootEvent.OnSetScreen(screen))
+                    }
+
                 }
             }
         }
+        //viewModel.clearEffects()
+
+
+
     }
 
     // наполнение (UI) экрана

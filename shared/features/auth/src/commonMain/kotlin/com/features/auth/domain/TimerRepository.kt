@@ -18,22 +18,25 @@ object TimerRepository {
     private var timerJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.Default)
 
+
+
+
     fun startTimer() {
 
         if(timerJob?.isActive == true)
             return
 
         timerJob = scope.launch {
-
-            timerJob = scope.launch {
-                for (i in TIMER_DURATION_SECONDS downTo 0) {
-                    _secondsRemaining.value = i
-                    delay(1000)
-                }
+            for (i in TIMER_DURATION_SECONDS downTo 0) {
+                _secondsRemaining.value = i
+                delay(1000)
             }
         }
 
     }
+
+
+
 
     fun stopTimer() {
         timerJob?.cancel()

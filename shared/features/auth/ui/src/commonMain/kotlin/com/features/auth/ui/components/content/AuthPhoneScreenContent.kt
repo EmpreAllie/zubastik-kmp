@@ -28,7 +28,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun AuthPhoneScreenContent(
     state: AuthState,
-    onEvent: (AuthEvents) -> Unit // лямбда-функция, стрелка разделяет параметры и возвращаемое значение. Unit == void
+    onEvent: (AuthEvents) -> Unit
 ) {
     Scaffold(
         containerColor = MainTheme.colors.primary

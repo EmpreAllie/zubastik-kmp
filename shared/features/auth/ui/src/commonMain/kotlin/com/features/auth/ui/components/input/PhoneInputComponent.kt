@@ -20,12 +20,11 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PhoneInputComponent(
-    modifier: Modifier = Modifier,
     phoneNumber: PhoneNumber,
     onTextChange: (String) -> Unit,
 ) {
     Row(
-        modifier = modifier,
+        modifier = Modifier,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         DisabledTextField(

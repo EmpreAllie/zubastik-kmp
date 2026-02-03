@@ -25,6 +25,8 @@ compottie = "2.0.1"
 exo-player = "2.18.7"
 pullrefresh = "1.4.0-beta03"
 
+# napier
+napier = "2.7.1"
 
 # kotlinx
 kotlinxSerializationVersion = "1.9.0"
@@ -172,6 +174,9 @@ supabase-realtime = { group = "io.github.jan-tennert.supabase", name = "realtime
 
 # OpenApi
 openapi-generator-gradle = { group = "org.openapitools", name = "openapi-generator-gradle-plugin", version.ref = "openapi" }
+
+# Logging
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
 [bundles]
 koin-android = [

@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.features.auth.domain.model.LoginType
-import com.features.auth.presentation.AuthViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
+import com.features.auth.presentation.AuthCodeViewModel
 import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.ui.components.content.AuthCodeScreenContent
@@ -17,25 +19,22 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthCodeScreen(
-    viewModel: AuthViewModel = koinViewModel(),
+    viewModel: AuthCodeViewModel = koinViewModel(),
     rootViewModel: RootViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(Unit) {
-        viewModel.clearEffects()
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                AuthEffects.NavigateToBack -> rootViewModel.onEvent(RootEvent.OnClickBack)
-                AuthEffects.NavigateToCodeInput -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.CONFIRM))
-                AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN))
-                is AuthEffects.NavigateToLogin -> {
-                    val screen = when (effect.type) {
-                        LoginType.PHONE -> Screen.PHONE
-                        LoginType.YANDEX -> TODO("Yandex Login")
-                    }
+    LaunchedEffect(viewModel, lifecycleOwner.lifecycle) {
+        //viewModel.clearEffects()
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collect { effect ->
+                when (effect) {
 
-                    rootViewModel.onEvent(RootEvent.OnSetScreen(screen))
+                    AuthEffects.NavigateBack -> rootViewModel.onEvent(RootEvent.OnClickBack)
+
+                    AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN))
+
                 }
             }
         }
