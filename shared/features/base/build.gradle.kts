@@ -31,6 +31,7 @@ kotlin {
             implementation(libs.bundles.viewmodel)
 
             implementation(libs.kotlinSerialization)
+            implementation(libs.compose.resource)
         }
     }
 }

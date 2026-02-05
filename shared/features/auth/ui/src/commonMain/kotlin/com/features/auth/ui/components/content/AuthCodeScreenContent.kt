@@ -1,8 +1,8 @@
 package com.features.auth.ui.components.content
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
@@ -25,9 +26,10 @@ import com.features.ui.code
 import com.features.ui.components.AppTopBar
 import com.features.ui.components.TopBarBackButton
 import com.features.ui.enterCode
-import com.features.ui.resendCode
+import com.features.ui.resend_code_seconds
 import com.features.ui.sendCodeAgainTextButton
 import com.features.ui.theme.MainTheme
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,26 +94,37 @@ fun AuthCodeScreenContent(
             )
 
             // Обновление цифры с секундами
-            // TODO Секунды/секунд/секунду - Plurals
-            if (state.resendCodeTimerSeconds > 0) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(Res.string.resendCode, state.resendCodeTimerSeconds),//"Повторно отправить код можно через ${state.resendCodeTimerSeconds} секунд",
-                    style = MainTheme.typography.auth.sendCodeAgain,
-                    color = MainTheme.colors.secondary,
-                    textAlign = TextAlign.Center
-                )
-            }
-            else {
-                TextButton(onClick = { onEvent(AuthEvents.OnResendCodeClicked) }) {
+            Box(
+                modifier = Modifier.height(48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.resendCodeTimerSeconds > 0) {
                     Text(
-                        text = stringResource(Res.string.sendCodeAgainTextButton),
+                        modifier = Modifier.fillMaxWidth(),
+                        text = pluralStringResource(
+                            resource = Res.plurals.resend_code_seconds,
+                            quantity = state.resendCodeTimerSeconds,
+                            state.resendCodeTimerSeconds
+                        ),
                         style = MainTheme.typography.auth.sendCodeAgain,
                         color = MainTheme.colors.secondary,
                         textAlign = TextAlign.Center
                     )
                 }
+                else {
+                    TextButton(onClick = { onEvent(AuthEvents.OnResendCodeClicked) }) {
+                        Text(
+                            text = stringResource(Res.string.sendCodeAgainTextButton),
+                            style = MainTheme.typography.auth.sendCodeAgain.copy(
+                                textDecoration = TextDecoration.Underline
+                            ),
+                            color = MainTheme.colors.secondary,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
+
         }
     }
 }

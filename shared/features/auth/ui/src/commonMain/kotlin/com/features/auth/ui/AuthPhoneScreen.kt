@@ -39,13 +39,8 @@ fun AuthPhoneScreen(
                         rootViewModel.onEvent(RootEvent.OnClickBack)
                     }
 
-                    is AuthEffects.NavigateToCodeInput -> {
-                        /*
-                        val phone = effect.phone
-                        val route = Screen.CODE.route.replace("{phone}", phone)
-                        */
+                    AuthEffects.NavigateToCodeInput -> {
                         rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.CODE))
-                        //rootViewModel.onEvent(RootEvent.OnSetScreen(route))
                     }
                 }
             }

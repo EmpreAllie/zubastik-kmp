@@ -26,8 +26,10 @@ fun AuthCodeScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel, lifecycleOwner.lifecycle) {
-        //viewModel.clearEffects()
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+            viewModel.onEvent(AuthEvents.OnStartResendCodeTimer)
+
             viewModel.effect.collect { effect ->
                 when (effect) {
 
@@ -35,13 +37,17 @@ fun AuthCodeScreen(
 
                     AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN))
 
+                    else -> {}
+
                 }
             }
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(AuthEvents.OnStartResendCodeTimer)
+    LaunchedEffect(viewModel, lifecycleOwner.lifecycle) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+        }
     }
 
     AuthCodeScreenContent(

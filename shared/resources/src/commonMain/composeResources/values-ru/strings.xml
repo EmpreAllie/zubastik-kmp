@@ -14,4 +14,10 @@
 	<string name="code">Код</string>
     <string name="checkInternetConnection">Проверьте интернет-соединение</string>
     <string name="unableToSendCode">Не удалось отправить код</string>
+
+    <!-- Текст для вывода ошибок -->
+    <string name="connectionError">Ошибка сетевого подключения</string>
+    <string name="phoneError">Неверный номер телефона</string>
+    <string name="codeError">Неверный код</string>
+    <string name="otherError">Что-то пошло не так...</string>
 </resources>

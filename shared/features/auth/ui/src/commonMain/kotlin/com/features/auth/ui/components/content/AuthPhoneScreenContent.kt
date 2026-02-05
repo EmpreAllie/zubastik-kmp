@@ -58,7 +58,9 @@ fun AuthPhoneScreenContent(
                 phoneNumber = state.phoneNumber,
                 onTextChange = { value ->
                     onEvent(AuthEvents.OnPhoneNumberChanged(state.phoneNumber.copy(number = value)))
-                }
+                },
+                isError = state.error != null || !state.phoneNumber.isCorrect(),
+                errorText = state.error?.getDisplayMessage()
             )
 
 

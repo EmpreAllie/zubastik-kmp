@@ -5,12 +5,24 @@ data class PhoneNumber(
     val number: String = ""
 ) {
 
-    fun format() = "$countryCode$number" // TODO: Format to "+X (XXX) XXX-XX-XX
+    fun format(): String {
+
+        if (number.isBlank())
+            return countryCode
+
+        val formattedNumber = buildString {
+            number.take(3).also { if (it.isNotEmpty()) append(" ($it)") }
+            number.drop(3).take(3).also { if (it.isNotEmpty()) append(" $it") }
+            number.drop(6).take(2).also { if (it.isNotEmpty()) append("-$it") }
+            number.drop(8).take(2).also { if (it.isNotEmpty()) append("-$it") }
+        }
+
+        return "$countryCode$formattedNumber"
+    }
 
     fun isCorrect(): Boolean {
-        val phoneNumber = format()
-        return (phoneNumber.startsWith("+79") || phoneNumber.startsWith("8"))
-                && phoneNumber.length == 12
+        // Окей, эта функция отрабатывает правильно и возаращает TRUE только тогда, когда номер полностью введен и начинается с 9
+        return number.length == 10 && number.startsWith("9")
     }
 
 }

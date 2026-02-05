@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,9 +21,7 @@ object TimerRepository {
 
 
     fun startTimer() {
-
-        if(timerJob?.isActive == true)
-            return
+        timerJob?.cancel()
 
         timerJob = scope.launch {
             for (i in TIMER_DURATION_SECONDS downTo 0) {

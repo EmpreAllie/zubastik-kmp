@@ -6,19 +6,35 @@ import kotlinx.coroutines.delay
 import com.features.base.domain.model.error.Error
 import com.features.base.domain.Result
 import com.features.base.domain.model.error.AuthErrorType
+import com.network.api.apis.UserApi
 import com.network.domain.model.isConnectionException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
-class AuthRepositoryImpl: AuthRepository {
+class AuthRepositoryImpl(
+    userApi: UserApi
+) : AuthRepository {
+
+    override var phone: String? = null
+
     override suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error> {
-        return try {
-            delay(1000)
-            // TODO обращение к серверу
-            Result.Success(Unit)
 
-        } catch (e: Exception) {
-            Result.Failure(Error.CONNECTION)
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                delay(1000)
+                // TODO обращение к серверу
+
+                Result.Success(Unit)
+
+
+            } catch (e: Exception) {
+                Result.Failure(Error.CONNECTION)
+            }
         }
+
     }
 
 
@@ -50,5 +66,5 @@ class AuthRepositoryImpl: AuthRepository {
 
             emit(result)
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

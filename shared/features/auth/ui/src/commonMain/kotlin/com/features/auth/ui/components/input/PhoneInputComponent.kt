@@ -22,6 +22,8 @@ import org.jetbrains.compose.resources.stringResource
 fun PhoneInputComponent(
     phoneNumber: PhoneNumber,
     onTextChange: (String) -> Unit,
+    isError: Boolean,
+    errorText: String?
 ) {
     Row(
         modifier = Modifier,
@@ -29,7 +31,7 @@ fun PhoneInputComponent(
     ) {
         DisabledTextField(
             modifier = Modifier.width(90.dp),
-            text = phoneNumber.countryCode, // TODO брать откуда-то еще
+            text = phoneNumber.countryCode, // TODO ПОТОМ написать expect/actual-функцию и брать из нативных классов Androis/iOS
             hintText = "",
             textStyle = MainTheme.typography.auth.inputNumber,
             trailingIcon = {
@@ -40,8 +42,8 @@ fun PhoneInputComponent(
                 )
             },
             onClick = {
-                //TODO onEvent(AuthEvents.OnCountryCodeClicked) - выбор кода страны
-                // надо сохранить код страны в в state.countryCode
+                //TODO потом onEvent(AuthEvents.OnCountryCodeClicked) - выбор кода страны
+                // надо сохранить код страны в state.phoneNumber.countryCode
             }
         )
 
@@ -49,12 +51,15 @@ fun PhoneInputComponent(
             modifier = Modifier.weight(1f),
             text = phoneNumber.number,
             hintText = stringResource(Res.string.enterNumber),
-            isError = phoneNumber.isCorrect(),
+            //isError = !phoneNumber.isCorrect(),
+            isError = isError,
+            errorText = errorText,
             keyboardType = KeyboardType.Phone,
             singleLine = true,
             maxLength = 10,
             textStyle = MainTheme.typography.auth.inputNumber.copy(color = MainTheme.colors.black),
-            onTextChange = onTextChange
+            onTextChange = onTextChange,
+            visualTransformation = PhoneVisualTransformation()
         )
     }
 }

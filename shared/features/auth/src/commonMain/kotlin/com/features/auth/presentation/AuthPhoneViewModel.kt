@@ -6,8 +6,6 @@ import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.presentation.model.AuthState
 import com.features.base.domain.Result
-import com.features.base.domain.model.error.AuthErrorType
-import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -47,21 +45,21 @@ class AuthPhoneViewModel(
 
     private fun sendPhoneNumberToServer() = viewModelScope.launch {
         updateState { it.copy(isLoading = true) }
-        val phone = state.value.phoneNumber.format()
+        val formattedPhone = state.value.phoneNumber.format()
 
-        when (val result = repository.sendPhoneNumberToServer(phone)) {
+        when (val result = repository.sendPhoneNumberToServer(formattedPhone)) {
 
             is Result.Success -> {
                 updateState { it.copy(isLoading = false) }
+                repository.phone = state.value.phoneNumber.number
 
-                sendEffect(AuthEffects.NavigateToCodeInput(phone = state.value.phoneNumber.format()))
+                sendEffect(AuthEffects.NavigateToCodeInput)
             }
 
             is Result.Failure -> {
                 updateState {
                     it.copy(
                         isLoading = false,
-                        //error = Error.AUTH(AuthErrorType.PHONE), // здесь было туду: Anton: Получать ошибку с репозитория
                         error = result.error
                     )
                 }

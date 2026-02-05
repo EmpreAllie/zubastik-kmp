@@ -9,9 +9,15 @@
 	<string name="enterNumber">Enter the number</string>
 	<string name="next">Next</string>
 	<string name="enterCode">Enter the code sent to number</string>
-	<string name="resendCode">Code can be sent again in %1$s secongs</string>
-    <string name="sendCodeAgainTextButton">Send again</string>
+	<string name="resendCode">Code can be sent again in %1$s seconds</string>
+    <string name="sendCodeAgainTextButton">Send code again</string>
 	<string name="code">Code</string>
     <string name="checkInternetConnection">Check your internet connection</string>
     <string name="unableToSendCode">Unable to send the code</string>
+
+    <!-- Текст для вывода ошибок -->
+    <string name="connectionError">Network connection error</string>
+    <string name="phoneError">Wrong format of phone number</string>
+    <string name="codeError">Wrong code</string>
+    <string name="otherError">Something went wrong...</string>
 </resources>

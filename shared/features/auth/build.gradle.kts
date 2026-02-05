@@ -31,7 +31,6 @@ kotlin {
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)
             implementation(libs.koinCore)
-            implementation(libs.napier)
         }
 
         commonTest.dependencies {

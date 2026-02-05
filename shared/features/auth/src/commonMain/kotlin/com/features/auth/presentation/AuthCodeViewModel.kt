@@ -12,7 +12,6 @@ import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseViewModel
 import kotlinx.coroutines.launch
 
-
 // ViewModel экрана с кодом подтверждения
 class AuthCodeViewModel(
     private val repository: AuthRepository,
@@ -22,6 +21,17 @@ class AuthCodeViewModel(
     init {
         println("ZUB_DEBUG: --- Создана AuthCodeViewModel ---")
         collectTimerUpdates()
+
+        val savedPhone = repository.phone
+
+        // сохраняем телефон из репозитория в State
+        if(savedPhone != null) {
+            updateState {
+                it.copy(
+                    phoneNumber = it.phoneNumber.copy(number = savedPhone)
+                )
+            }
+        }
     }
 
 
@@ -34,7 +44,6 @@ class AuthCodeViewModel(
             }
 
             AuthEvents.OnResendCodeClicked -> {
-                // repository.askServerForaNewCode();
                 timerRepository.startTimer()
             }
 

@@ -8,6 +8,9 @@ data class AuthData(val accessToken: String, val refreshToken: String)
 
 interface AuthRepository {
 
+    // номер телефона, который хранится в памяти, т.к. AuthRepositoryImpl - это синглтон
+    var phone: String?
+
     // возвращаем Result.Success(Unit), что означает "просто успех/неудача, без данных"
     suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error>
 
