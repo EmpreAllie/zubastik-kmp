@@ -64,7 +64,7 @@ kotlin {
 
 android {
     namespace = "com.network"
-    compileSdk = 35
+    compileSdk = 36
 
     flavorDimensions.add(0, "jni")
 

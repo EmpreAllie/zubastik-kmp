@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="appName">Зубастик</string>
+
+	<string name="login">Войти</string>
+	<string name="loginWithYandexID">Войти с Яндекс ID</string>
+	<string name="or">или</string>
+	<string name="authorization">Авторизация</string>
+
+	<string name="enterPhoneNumber">Введите номер телефона</string>
+	<string name="enterNumber">Введите номер</string>
+	<string name="next">Далее</string>
+
+	<string name="enterCode">Введите код, отправленный на номер</string>
+
+	<string name="resendCode">Повторно отправить код можно будет через %1$s секунд</string>
+    <string name="sendCodeAgainTextButton">Отправить снова</string>
+	<string name="code">Код</string>
+    <string name="checkInternetConnection">Проверьте подключение к Интернету</string>
+    <string name="unableToSendCode">Не удалось отправить код</string>
+
+    <!-- Текст для вывода ошибок -->
+    <string name="connectionError">Ошибка сетевого подключения</string>
+    <string name="phoneError">Неверный номер телефона</string>
+    <string name="codeError">Неверный код</string>
+    <string name="otherError">Что-то пошло не так...</string>
 </resources>

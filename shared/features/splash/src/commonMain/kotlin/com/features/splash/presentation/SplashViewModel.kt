@@ -1,6 +1,8 @@
 package com.features.splash.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.features.base.domain.enum.Destination
+import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
 import com.features.base.presentation.model.BaseViewModel
 import com.features.splash.domain.SplashRepository
@@ -31,10 +33,8 @@ class SplashViewModel(private val repository: SplashRepository) :
         delay(1500)
 
         val isAuthenticated = repository.isAuthenticated()
+        val destination: Destination = if (isAuthenticated) Screen.MAIN else Graph.AUTH
 
-        val screen = if (isAuthenticated) Screen.MAIN
-        else Screen.AUTH
-
-        sendEffect(SplashEffects.NavigateToScreen(screen))
+        sendEffect(SplashEffects.NavigateToScreen(destination))
     }
 }

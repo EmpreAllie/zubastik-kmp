@@ -7,15 +7,23 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import coil3.compose.setSingletonImageLoaderFactory
+import com.features.auth.ui.AuthCodeScreen
+import com.features.auth.ui.AuthPhoneScreen
+import com.features.auth.ui.AuthWelcomeScreen
+import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
-import com.features.root.ui.components.newImageLoader
 import com.features.splash.ui.SplashScreen
 import com.features.ui.extension.BackHandler
+import com.root.presentation.RootViewModel
+import com.root.presentation.model.RootEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppNavHost(
     navHostController: NavHostController,
+    viewModel: RootViewModel = koinViewModel(),
     startDestination: Screen = Screen.SPLASH,
 ) {
     setSingletonImageLoaderFactory { context ->
@@ -24,42 +32,52 @@ fun AppNavHost(
 
     NavHost(
         navController = navHostController,
-        startDestination = startDestination.name,
+        startDestination = startDestination.route,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
-        Screen.entries.forEach { screen ->
-            composable(screen.name) {
-                when (screen) {
-                    Screen.SPLASH -> SplashScreen()
-                    Screen.AUTH -> {
-                        //AuthNavHost()
-                        BackHandler {}
-                        Text("AuthScreen")
+
+        composable(Screen.SPLASH.route) {
+            SplashScreen()
+        }
+
+
+        Graph.entries.forEach { graph ->
+            navigation(
+                route = graph.route,
+                startDestination = graph.screens.first().route
+            ) {
+                graph.screens.forEach { screen ->
+                    composable(screen.route) {
+                        when (screen) {
+                            Screen.WELCOME -> {
+                                AuthWelcomeScreen()
+                                BackHandler {}
+                            }
+
+                            Screen.PHONE -> {
+                                AuthPhoneScreen()
+                                BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
+                            }
+
+                            Screen.CODE -> {
+                                AuthCodeScreen()
+                                BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
+                            }
+
+                            else -> {
+                                Text("${screen.route}Screen")
+                                BackHandler {}
+                            }
+                        }
                     }
-                    Screen.MAIN -> SplashScreen()//MainScreen()
                 }
             }
         }
-    }
-}
 
-fun NavHostController.handleBackNavigation() {
-    val previousRoute = previousBackStackEntry?.destination?.route
-    if (previousRoute != null) popBackStack()
-    else resetStackAndNavigateTo(Screen.MAIN.name)
-}
-
-fun NavHostController.resetStackAndNavigateTo(route: String) = navigate(route) {
-    popUpTo(0) {
-        inclusive = true
-    }
-}
-
-fun NavHostController.replaceScreen(oldRoute: String?, newRoute: String) = navigate(newRoute) {
-    oldRoute?.let {
-        popUpTo(it) {
-            inclusive = true
+        composable(Screen.MAIN.route) {
+            Text("MainScreen")
+            BackHandler {}
         }
     }
 }

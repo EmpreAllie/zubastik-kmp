@@ -49,6 +49,8 @@ kotlin {
             implementation(projects.shared.features.base)
             implementation(projects.shared.features.root)
             implementation(projects.shared.features.ui)
+            implementation(projects.shared.features.auth.ui)
+            implementation(projects.shared.features.main.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -97,5 +99,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared:features:auth:ui"))
+    implementation(project(":shared:features:auth:ui"))
     debugImplementation(compose.uiTooling)
 }

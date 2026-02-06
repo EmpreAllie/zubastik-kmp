@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "8.13.2"
 kotlin = "2.2.0"
 coil = "3.3.0"
 compose = "1.9.5"
@@ -24,7 +24,6 @@ composeNavigation = "2.9.0-beta02"
 compottie = "2.0.1"
 exo-player = "2.18.7"
 pullrefresh = "1.4.0-beta03"
-
 
 # kotlinx
 kotlinxSerializationVersion = "1.9.0"

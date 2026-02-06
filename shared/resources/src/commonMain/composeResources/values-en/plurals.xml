@@ -2,10 +2,15 @@
 <resources>
     <plurals name="hours_count">
         <item quantity="zero">0 часов</item>
-        <item quantity="one">%d час</item>
-        <item quantity="two">%d часа</item>
-        <item quantity="few">%d часа</item>
-        <item quantity="many">%d часов</item>
-        <item quantity="other">%d часов</item>
+        <item quantity="one">%1$d час</item>
+        <item quantity="two">%1$d часа</item>
+        <item quantity="few">%1$d часа</item>
+        <item quantity="many">%1$d часов</item>
+        <item quantity="other">%1$d часов</item>
+    </plurals>
+
+    <plurals name="resend_code_seconds">
+        <item quantity="one">Send code again in %1$d second</item>
+        <item quantity="other">Send code again in %1$d seconds</item>
     </plurals>
 </resources>

@@ -1,8 +1,10 @@
 package com.features.ui.button
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +28,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.features.ui.Res
-import com.features.ui.ic_back
+import com.features.ui.ic_back_arrow
+import com.features.ui.ic_down
 import com.features.ui.theme.MainTheme
 import com.features.ui.theme.invert
 import org.jetbrains.compose.resources.painterResource
@@ -38,25 +42,30 @@ fun MainButton(
     contentColor: Color = MainTheme.colors.white,
     textStyle: TextStyle = MainTheme.typography.main.buttonText,
     backgroundColor: Color = MainTheme.colors.secondary,
-    disabledColor: Color = MainTheme.colors.gray,
-    disabledContentColor: Color = contentColor.invert(),
+    disabledColor: Color = MainTheme.colors.disabled,
+    disabledContentColor: Color = MainTheme.colors.disabledContent,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
     leadingIcon: (@Composable () -> Unit)? = null,
-    traillingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(5.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(if (isEnabled) backgroundColor else disabledColor)
             .fillMaxWidth()
             .height(48.dp)
-            .clickable {
+            .clickable(
+                enabled = isEnabled && !isLoading,
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = LocalIndication.current
+            ) /* {
                 if (isEnabled && !isLoading) {
                     onClick()
                 }
-            },
+            }*/,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -79,7 +88,7 @@ fun MainButton(
                 textAlign = TextAlign.Center
             )
 
-            traillingIcon?.invoke()
+            trailingIcon?.invoke()
         }
     }
 }
@@ -127,7 +136,7 @@ internal fun MainButton_Preview() {
                             modifier = Modifier
                                 .padding(vertical = 4.dp, horizontal = 4.dp)
                                 .size(24.dp),
-                            painter = painterResource(Res.drawable.ic_back),
+                            painter = painterResource(Res.drawable.ic_back_arrow),
                             contentDescription = null,
                             alpha = 1.0f
                         )

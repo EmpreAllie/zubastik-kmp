@@ -27,6 +27,8 @@ data class Typography(private val font: FontFamily) {
         BonusTypography(font)
     val route: RouteTypography =
         RouteTypography(font)
+    val auth: AuthTypography =
+        AuthTypography(font)
 }
 
 @Immutable
@@ -235,9 +237,7 @@ data class RegistrationTypography(private val font: FontFamily) {
 
 
 @Immutable
-data class BonusTypography(
-    private val font: FontFamily,
-) {
+data class BonusTypography(private val font: FontFamily) {
     val title: TextStyle = TextStyle(
         fontSize = 28.sp,
         lineHeight = 24.sp,
@@ -337,6 +337,57 @@ data class RouteTypography(private val font: FontFamily) {
         lineHeight = 22.sp,
         fontFamily = font,
         fontWeight = FontWeight.W400,
+    )
+}
+
+@Immutable
+data class AuthTypography(private val font: FontFamily) {
+    val title: TextStyle = TextStyle(
+        fontSize = 36.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.SemiBold
+    )
+
+    val countryCode: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val secondary: TextStyle = TextStyle(
+        fontSize = 18.sp,
+        lineHeight = 34.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val phoneNumberOnCodeScreen: TextStyle = TextStyle(
+        fontSize = 24.sp,
+        lineHeight = 34.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.SemiBold
+    )
+
+    val sendCodeAgain: TextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val inputNumber: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val inputCode: TextStyle = TextStyle(
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Bold
     )
 }
 

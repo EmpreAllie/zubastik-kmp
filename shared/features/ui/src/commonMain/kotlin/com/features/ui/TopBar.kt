@@ -69,5 +69,5 @@ fun TopBar(
 
 @Composable
 fun IconButtonBackArrow(onClick: () -> Unit) {
-    // TODO: ImageButton
+    // туду: ImageButton
 }

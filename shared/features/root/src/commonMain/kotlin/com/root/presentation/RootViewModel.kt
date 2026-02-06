@@ -1,76 +1,117 @@
 package com.root.presentation
 
+import com.features.base.domain.enum.Destination
 import com.features.base.presentation.model.BaseViewModel
-import com.features.base.domain.enum.Screen
 import com.root.presentation.model.RootEffect
 import com.root.presentation.model.RootEvent
 import com.root.presentation.model.RootState
 
 class RootViewModel : BaseViewModel<RootState, RootEvent, RootEffect>(RootState()) {
-    private val openScreens: MutableList<Screen> = mutableListOf()
+
     override fun onEvent(event: RootEvent) {
         when (event) {
-            is RootEvent.OnSetScreen -> setScreen(
-                screen = event.screen,
-                arguments = event.arguments,
+
+            is RootEvent.OnSetScreen -> setDestination(
+                destination = event.destination,
                 isClearStack = event.isClearStack
             )
 
-            is RootEvent.OnReplaceScreen -> replaceScreen(
-                screen = event.screen,
-                arguments = event.arguments,
-            )
+            is RootEvent.OnReplaceScreen -> replaceScreen(event.destination)
 
             RootEvent.OnClickBack -> finishScreen()
+
         }
     }
 
 
-    private fun setScreen(
-        screen: Screen,
-        arguments: List<String> = emptyList(),
+
+
+    private fun setDestination(
+        destination: Destination,
         isClearStack: Boolean,
     ) {
-        val currentScreen = this.state.value.screen
+        /*
+        val currentDestination = state.value.destination
+        if (destination == currentDestination) return
 
-        if (screen == currentScreen) return
+        val effect =
+            if (isClearStack)
+                RootEffect.NavigateWithClearStack(destination)
+            else
+                RootEffect.Navigate(destination)
 
-        if (isClearStack) openScreens.clear()
+        updateState {
+            it.copy(destination = destination)
+        }
 
-        openScreens.add(screen)
-
-        updateState { it.copy(screen = screen, arguments = arguments) }
-
-        val effect = if (isClearStack) RootEffect.NavigateWithClearStack(screen.name)
-        else RootEffect.Navigate(screen.name)
-
-        sendEffect(effect)
-    }
-
-    private fun areThereOtherOpenScreens() = openScreens.size > 1
-    private fun finishScreen() {
-        updateState { it.copy(screen = null, isPopScreen = true) }
-        sendEffect(RootEffect.PopBackStack)
-    }
-    private fun replaceScreen(
-        screen: Screen,
-        arguments: List<String> = emptyList()
-    ) {
-        val currentScreen = this.state.value.screen
-
-        if (screen == currentScreen) return
-
-        if (openScreens.isNotEmpty()) openScreens.removeAt(openScreens.size-1)
-
-        openScreens.add(screen)
+        sendEffect(effect)*/
+        val currentStack = if (isClearStack) emptyList() else state.value.screenStack
+        val newStack = currentStack + destination
 
         updateState {
             it.copy(
-                screen = screen,
-                arguments = arguments,
+                destination = destination,
+                screenStack = newStack
             )
         }
 
-        sendEffect(RootEffect.ReplaceScreen(screen.name))
+        sendEffect(RootEffect.Navigate(destination))
+    }
+
+
+
+/*
+    private fun finishScreen() {
+        /*
+        //updateState { it.copy(destination = null) }
+        sendEffect(RootEffect.PopBackStack)
+        */
+
+        val currentStack = state.value.screenStack
+
+        if (currentStack.size <= 1) {
+            return
+        }
+
+        val newStack = currentStack.dropLast(1)
+        val newDestination = newStack.last()
+
+        updateState {
+            it.copy(
+                destination = newDestination,
+                screenStack = newStack
+            )
+        }
+
+        sendEffect(RootEffect.PopBackStack)
+    }
+*/
+private fun finishScreen() {
+    val currentStack = state.value.screenStack
+    if (currentStack.size <= 1) return
+
+    val newStack = currentStack.dropLast(1)
+    val newDestination = newStack.last()
+
+    updateState {
+        it.copy(
+            destination = newDestination,
+            screenStack = newStack
+        )
+    }
+
+    sendEffect(RootEffect.Navigate(newDestination))
+}
+
+
+    private fun replaceScreen(destination: Destination) {
+        val currentScreen = this.state.value.destination
+        if (destination == currentScreen) return
+
+        updateState {
+            it.copy(destination = destination)
+        }
+
+        sendEffect(RootEffect.ReplaceScreen(destination))
     }
 }

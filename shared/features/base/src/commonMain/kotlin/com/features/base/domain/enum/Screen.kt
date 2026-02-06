@@ -1,7 +1,23 @@
 package com.features.base.domain.enum
 
-enum class Screen {
+interface Destination {
+    val route: String
+}
+
+enum class Screen: Destination {
     SPLASH,
-    AUTH,
-    MAIN,
+    WELCOME,
+    PHONE,
+    CODE,
+    MAIN;
+
+    override val route: String
+        get() = name
+}
+
+enum class Graph(val screens: List<Screen>): Destination {
+    AUTH(listOf(Screen.WELCOME, Screen.PHONE, Screen.CODE));
+
+    override val route: String
+        get() = name
 }
