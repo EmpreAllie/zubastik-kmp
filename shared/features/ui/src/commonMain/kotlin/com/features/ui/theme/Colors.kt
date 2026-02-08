@@ -19,6 +19,7 @@ sealed class Colors {
     abstract val transparent: Color
     abstract val button: Color
     abstract val selectedButton: Color
+    abstract val containerBackground: Color
 
 
     data class Light(
@@ -38,6 +39,7 @@ sealed class Colors {
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
+        override val containerBackground: Color = Color(0xFFF2F7FF),
     ) : Colors()
 
     data class Dark(
@@ -57,6 +59,7 @@ sealed class Colors {
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
+        override val containerBackground: Color = Color(0xFFF2F7FF),
     ) : Colors()
 }
 

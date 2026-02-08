@@ -21,8 +21,8 @@ data class Typography(private val font: FontFamily) {
         ProfileTypography(font)
     val settings: SettingsTypography =
         SettingsTypography(font)
-    val registration: RegistrationTypography =
-        RegistrationTypography(font)
+    val onboarding: OnboardingTypography =
+        OnboardingTypography(font)
     val bonus: BonusTypography =
         BonusTypography(font)
     val route: RouteTypography =
@@ -211,20 +211,26 @@ data class SettingsTypography(private val font: FontFamily) {
 }
 
 @Immutable
-data class RegistrationTypography(private val font: FontFamily) {
-    val title: TextStyle = TextStyle(
-        fontSize = 24.sp,
+data class OnboardingTypography(private val font: FontFamily) {
+    val upperStateRow: TextStyle = TextStyle(
+        fontSize = 22.sp,
         lineHeight = 20.sp,
         fontFamily = font,
-        fontWeight = FontWeight.W600
+        fontWeight = FontWeight.Normal
     ).preciseLineHeight()
 
-    val name: TextStyle = TextStyle(
+    val chatContainerContent: TextStyle = TextStyle(
         fontSize = 20.sp,
-        lineHeight = 22.sp,
+        lineHeight = 25.sp,
         fontFamily = font,
-        fontWeight = FontWeight.W600,
-        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Normal
+    )
+
+    val buttonText: TextStyle = TextStyle(
+        fontSize = 24.sp,
+        lineHeight = 30.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
     )
 
     val description: TextStyle = TextStyle(

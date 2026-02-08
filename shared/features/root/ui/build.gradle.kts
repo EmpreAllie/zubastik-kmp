@@ -51,6 +51,7 @@ kotlin {
             implementation(projects.shared.features.ui)
             implementation(projects.shared.features.auth.ui)
             implementation(projects.shared.features.main.ui)
+            implementation(projects.shared.features.onboard.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

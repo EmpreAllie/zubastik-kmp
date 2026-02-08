@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.features.ui.ic_back_arrow
 import com.features.ui.ic_down
 import com.features.ui.theme.MainTheme
 import com.features.ui.theme.invert
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -39,8 +41,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun MainButton(
     modifier: Modifier = Modifier,
     text: String,
-    contentColor: Color = MainTheme.colors.white,
     textStyle: TextStyle = MainTheme.typography.main.buttonText,
+    shape: RoundedCornerShape = RoundedCornerShape(20.dp),
+    contentColor: Color = MainTheme.colors.white,
     backgroundColor: Color = MainTheme.colors.secondary,
     disabledColor: Color = MainTheme.colors.disabled,
     disabledContentColor: Color = MainTheme.colors.disabledContent,
@@ -50,9 +53,18 @@ fun MainButton(
     trailingIcon: (@Composable () -> Unit)? = null,
     onClick: () -> Unit,
 ) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(interactionSource, text) {
+        interactionSource.interactions.collectLatest { interaction ->
+            println("ZUB_DEBUG_BUTTON ($text): Interaction -> $interaction")
+        }
+    }
+
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(20.dp))
+            .clip(shape)
             .background(if (isEnabled) backgroundColor else disabledColor)
             .fillMaxWidth()
             .height(48.dp)
@@ -60,12 +72,9 @@ fun MainButton(
                 enabled = isEnabled && !isLoading,
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
+                //interactionSource = interactionSource,
                 indication = LocalIndication.current
-            ) /* {
-                if (isEnabled && !isLoading) {
-                    onClick()
-                }
-            }*/,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

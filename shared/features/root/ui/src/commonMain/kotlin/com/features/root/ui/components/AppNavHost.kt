@@ -14,6 +14,7 @@ import com.features.auth.ui.AuthPhoneScreen
 import com.features.auth.ui.AuthWelcomeScreen
 import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
+import com.features.onboard.ui.OnboardingScreen
 import com.features.splash.ui.SplashScreen
 import com.features.ui.extension.BackHandler
 import com.root.presentation.RootViewModel
@@ -24,7 +25,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AppNavHost(
     navHostController: NavHostController,
     viewModel: RootViewModel = koinViewModel(),
-    startDestination: Screen = Screen.SPLASH,
+    //startDestination: Screen = Screen.SPLASH,
+    startDestination: Screen = Screen.ONBOARDING
 ) {
     setSingletonImageLoaderFactory { context ->
         newImageLoader(context = context, debug = true)
@@ -73,6 +75,11 @@ fun AppNavHost(
                     }
                 }
             }
+        }
+
+        composable(Screen.ONBOARDING.route) {
+            OnboardingScreen()
+            BackHandler {}
         }
 
         composable(Screen.MAIN.route) {

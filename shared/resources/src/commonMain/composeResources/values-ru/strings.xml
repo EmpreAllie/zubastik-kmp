@@ -12,6 +12,8 @@
 	<string name="resendCode">Повторно отправить код можно будет через %1$s секунд</string>
     <string name="sendCodeAgainTextButton">Отправить снова</string>
 	<string name="code">Код</string>
+    <string name="back">Назад</string>
+
     <string name="checkInternetConnection">Проверьте интернет-соединение</string>
     <string name="unableToSendCode">Не удалось отправить код</string>
 
@@ -20,4 +22,11 @@
     <string name="phoneError">Неверный номер телефона</string>
     <string name="codeError">Неверный код</string>
     <string name="otherError">Что-то пошло не так...</string>
+
+    <!-- Регистрация (онбординг) -->
+    <string name="welcome">Добро пожаловать</string>
+    <string name="onboardingInfo">Привет, я Зубастик. Готов помочь тебе с первой настройкой приложения! В этом приложении ты можешь отслеживать состояние своей полости рта, записываться к врачу, смотреть или читать полезные материалы, а также пообщаться со мной в отдельном чате! </string>
+    <string name="teethType">Тип зубов</string>
+    <string name="chatWithZub">Диалог с Зубастиком</string>
+    <string name="whatsYourName">Как тебя зовут?</string>
 </resources>

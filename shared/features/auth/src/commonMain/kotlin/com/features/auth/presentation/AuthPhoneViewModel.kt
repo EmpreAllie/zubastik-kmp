@@ -14,10 +14,6 @@ class AuthPhoneViewModel(
     private val repository: AuthRepository
 ) : BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
 
-    init {
-        println("ZUB_DEBUG: --- Создана AuthPhoneViewModel ---")
-    }
-
     // метод onEvent ловит события только с экрана ввода телефона
     override fun onEvent(event: AuthEvents) {
 
@@ -51,7 +47,8 @@ class AuthPhoneViewModel(
 
             is Result.Success -> {
                 updateState { it.copy(isLoading = false) }
-                repository.phone = state.value.phoneNumber.number
+
+                repository.setPhone(state.value.phoneNumber.number)
 
                 sendEffect(AuthEffects.NavigateToCodeInput)
             }

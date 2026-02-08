@@ -24,27 +24,10 @@ class RootViewModel : BaseViewModel<RootState, RootEvent, RootEffect>(RootState(
     }
 
 
-
-
     private fun setDestination(
         destination: Destination,
         isClearStack: Boolean,
     ) {
-        /*
-        val currentDestination = state.value.destination
-        if (destination == currentDestination) return
-
-        val effect =
-            if (isClearStack)
-                RootEffect.NavigateWithClearStack(destination)
-            else
-                RootEffect.Navigate(destination)
-
-        updateState {
-            it.copy(destination = destination)
-        }
-
-        sendEffect(effect)*/
         val currentStack = if (isClearStack) emptyList() else state.value.screenStack
         val newStack = currentStack + destination
 
@@ -59,19 +42,9 @@ class RootViewModel : BaseViewModel<RootState, RootEvent, RootEffect>(RootState(
     }
 
 
-
-/*
     private fun finishScreen() {
-        /*
-        //updateState { it.copy(destination = null) }
-        sendEffect(RootEffect.PopBackStack)
-        */
-
         val currentStack = state.value.screenStack
-
-        if (currentStack.size <= 1) {
-            return
-        }
+        if (currentStack.size <= 1) return
 
         val newStack = currentStack.dropLast(1)
         val newDestination = newStack.last()
@@ -83,25 +56,8 @@ class RootViewModel : BaseViewModel<RootState, RootEvent, RootEffect>(RootState(
             )
         }
 
-        sendEffect(RootEffect.PopBackStack)
+        sendEffect(RootEffect.Navigate(newDestination))
     }
-*/
-private fun finishScreen() {
-    val currentStack = state.value.screenStack
-    if (currentStack.size <= 1) return
-
-    val newStack = currentStack.dropLast(1)
-    val newDestination = newStack.last()
-
-    updateState {
-        it.copy(
-            destination = newDestination,
-            screenStack = newStack
-        )
-    }
-
-    sendEffect(RootEffect.Navigate(newDestination))
-}
 
 
     private fun replaceScreen(destination: Destination) {

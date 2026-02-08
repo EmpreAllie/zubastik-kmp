@@ -8,6 +8,8 @@
 	<string name="enterPhoneNumber">Enter your phone number</string>
 	<string name="enterNumber">Enter the number</string>
 	<string name="next">Next</string>
+    <string name="back">Back</string>
+
 	<string name="enterCode">Enter the code sent to number</string>
 	<string name="resendCode">Code can be sent again in %1$s seconds</string>
     <string name="sendCodeAgainTextButton">Send code again</string>
@@ -20,4 +22,11 @@
     <string name="phoneError">Wrong format of phone number</string>
     <string name="codeError">Wrong code</string>
     <string name="otherError">Something went wrong...</string>
+
+    <!-- Регистрация (онбординг) -->
+    <string name="welcome">Welcome</string>
+    <string name="onboardingInfo">Hi, I'm Zubastik. I'm ready to help you with the first setting of the application! In this application you can track your tooth profile, consult a doctor, read or watch useful health-related materials and also talk to me in a separate chat!</string>
+    <string name="chatWithZub">Chat with Zubastik</string>
+    <string name="teethType">Teeth profile</string>
+    <string name="whatsYourName">What is your name?</string>
 </resources>

@@ -65,9 +65,10 @@ fun InputTextField(
                 .border(
                     width = 1.5.dp,
                     color = when {
+                        borderColor != null -> borderColor
                         (isError || !errorText.isNullOrEmpty()) && text.length == maxLength -> MainTheme.colors.error
                         isFocused -> MainTheme.colors.secondary
-                        else -> borderColor ?: MainTheme.colors.disabledContent
+                        else -> MainTheme.colors.disabledContent
                     },
                     shape = RoundedCornerShape(12.dp)
                 )

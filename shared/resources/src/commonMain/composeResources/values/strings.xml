@@ -10,6 +10,7 @@
 	<string name="enterPhoneNumber">Введите номер телефона</string>
 	<string name="enterNumber">Введите номер</string>
 	<string name="next">Далее</string>
+    <string name="back">Назад</string>
 
 	<string name="enterCode">Введите код, отправленный на номер</string>
 
@@ -24,4 +25,12 @@
     <string name="phoneError">Неверный номер телефона</string>
     <string name="codeError">Неверный код</string>
     <string name="otherError">Что-то пошло не так...</string>
+
+    <!-- Регистрация (онбординг) -->
+    <string name="welcome">Добро пожаловать</string>
+    <string name="chatWithZub">Диалог с Зубастиком</string>
+    <string name="teethType">Тип зубов</string>
+    <string name="onboardingInfo">Привет, я Зубастик. Готов помочь тебе с первой настройкой приложения! В этом приложении ты можешь отслеживать состояние своей полости рта, записываться к врачу, смотреть или читать полезные материалы, а также пообщаться со мной в отдельном чате! </string>
+    <string name="whatsYourName">Как тебя зовут?</string>
+
 </resources>

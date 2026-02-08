@@ -35,7 +35,9 @@ fun AuthCodeScreen(
 
                     AuthEffects.NavigateBack -> rootViewModel.onEvent(RootEvent.OnClickBack)
 
-                    AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN))
+                    AuthEffects.NavigateToOnboarding -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.ONBOARDING, isClearStack = true))
+
+                    AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN, isClearStack = true))
 
                     else -> {}
 

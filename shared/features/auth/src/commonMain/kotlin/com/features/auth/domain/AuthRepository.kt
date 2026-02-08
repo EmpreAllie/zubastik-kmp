@@ -4,12 +4,17 @@ import com.features.base.domain.Result
 import com.features.base.domain.model.error.Error
 import kotlinx.coroutines.flow.Flow
 
-data class AuthData(val accessToken: String, val refreshToken: String)
+data class AuthData(
+    val accessToken: String,
+    val refreshToken: String,
+    val isNewUser: Boolean
+)
 
 interface AuthRepository {
 
     // номер телефона, который хранится в памяти, т.к. AuthRepositoryImpl - это синглтон
-    var phone: String?
+    fun setPhone(phone: String)
+    fun getPhone(): String?
 
     // возвращаем Result.Success(Unit), что означает "просто успех/неудача, без данных"
     suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error>

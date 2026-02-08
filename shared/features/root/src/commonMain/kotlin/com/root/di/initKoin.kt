@@ -6,6 +6,7 @@ import com.database.di.databaseModule
 import com.features.splash.di.splashModule
 import com.network.di.networkModule
 import com.features.auth.di.authModule
+import com.features.onboard.di.onboardingModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -19,7 +20,8 @@ fun startKoin(koinAppDeclaration: KoinAppDeclaration) {
             platformModule,
             splashModule,
             networkModule,
-            authModule
+            authModule,
+            onboardingModule
         )
     }
 }

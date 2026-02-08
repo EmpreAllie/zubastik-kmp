@@ -19,10 +19,9 @@ class AuthCodeViewModel(
 ) : BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
 
     init {
-        println("ZUB_DEBUG: --- Создана AuthCodeViewModel ---")
         collectTimerUpdates()
 
-        val savedPhone = repository.phone
+        val savedPhone = repository.getPhone()
 
         // сохраняем телефон из репозитория в State
         if(savedPhone != null) {
@@ -106,7 +105,15 @@ class AuthCodeViewModel(
                             error = null
                         )
                     }
-                    sendEffect(AuthEffects.NavigateToMain)
+
+                    val effect =
+                        if (result.data.isNewUser) {
+                            AuthEffects.NavigateToOnboarding
+                        }
+                        else {
+                            AuthEffects.NavigateToMain
+                        }
+                    sendEffect(effect)
                 }
 
                 is Result.ConnectionError -> updateState {

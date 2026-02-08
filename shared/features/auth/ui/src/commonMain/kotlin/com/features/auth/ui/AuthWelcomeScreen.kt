@@ -21,7 +21,6 @@ import com.root.presentation.model.RootEvent
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-
 @Composable
 fun AuthWelcomeScreen(
     viewModel: AuthWelcomeViewModel = koinViewModel(),
@@ -53,10 +52,6 @@ fun AuthWelcomeScreen(
                 }
             }
         }
-        //viewModel.clearEffects()
-
-
-
     }
 
     // наполнение (UI) экрана
