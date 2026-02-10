@@ -29,6 +29,8 @@ data class Typography(private val font: FontFamily) {
         RouteTypography(font)
     val auth: AuthTypography =
         AuthTypography(font)
+    val message: MessageTypography =
+        MessageTypography(font)
 }
 
 @Immutable
@@ -130,7 +132,6 @@ data class DialogTypography(private val font: FontFamily) {
     )
 }
 
-
 @Immutable
 data class DrawerContentTypography(private val font: FontFamily) {
     val name: TextStyle = TextStyle(
@@ -161,7 +162,6 @@ data class DrawerContentTypography(private val font: FontFamily) {
         fontWeight = FontWeight.W600,
     )
 }
-
 
 @Immutable
 data class ProfileTypography(private val font: FontFamily) {
@@ -233,14 +233,13 @@ data class OnboardingTypography(private val font: FontFamily) {
         fontWeight = FontWeight.Medium
     )
 
-    val description: TextStyle = TextStyle(
+    val alreadyFamiliar: TextStyle = TextStyle(
         fontSize = 16.sp,
-        lineHeight = 22.sp,
+        lineHeight = 20.sp,
         fontFamily = font,
-        fontWeight = FontWeight.W600,
+        fontWeight = FontWeight.Normal
     )
 }
-
 
 @Immutable
 data class BonusTypography(private val font: FontFamily) {
@@ -394,6 +393,30 @@ data class AuthTypography(private val font: FontFamily) {
         lineHeight = 28.sp,
         fontFamily = font,
         fontWeight = FontWeight.Bold
+    )
+}
+
+@Immutable
+data class MessageTypography(private val font: FontFamily) {
+    val author: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Bold
+    )
+
+    val text: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val time: TextStyle = TextStyle(
+        fontSize = 8.sp,
+        lineHeight = 10.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
     )
 }
 

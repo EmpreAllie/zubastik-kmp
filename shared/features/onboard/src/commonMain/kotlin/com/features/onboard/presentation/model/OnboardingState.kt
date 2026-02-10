@@ -2,6 +2,10 @@ package com.features.onboard.presentation.model
 
 import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseState
+import com.features.onboard.presentation.model.utils.Author
+import com.features.onboard.presentation.model.utils.ChatMessage
+import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.presentation.model.utils.OnboardingStep
 import org.jetbrains.compose.resources.StringResource
 
 data class OnboardingState(
@@ -13,25 +17,7 @@ data class OnboardingState(
     val userName: String = "",
     val userAge: Int? = null,
 
-    val chatMessages: List<ChatMessage> = emptyList()
+    val chatMessages: List<ChatMessage> = emptyList(),
+
+    val userTextInput: String = ""
 ) : BaseState(isLoading = isLoading, error = error)
-
-
-enum class OnboardingScreenState {
-    WELCOME,
-    CHAT,
-    TEETH
-}
-
-data class ChatMessage(
-    val id: Int,
-    val text: StringResource,
-    val author: Author
-)
-
-
-enum class Author {
-    ZUB,
-    USER
-}
-

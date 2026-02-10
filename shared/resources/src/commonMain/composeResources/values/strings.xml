@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="appName">Зубастик</string>
+    <string name="zubastik">Зубастик</string>
 
 	<string name="login">Войти</string>
 	<string name="loginWithYandexID">Войти с Яндекс ID</string>
@@ -30,7 +31,14 @@
     <string name="welcome">Добро пожаловать</string>
     <string name="chatWithZub">Диалог с Зубастиком</string>
     <string name="teethType">Тип зубов</string>
-    <string name="onboardingInfo">Привет, я Зубастик. Готов помочь тебе с первой настройкой приложения! В этом приложении ты можешь отслеживать состояние своей полости рта, записываться к врачу, смотреть или читать полезные материалы, а также пообщаться со мной в отдельном чате! </string>
+    <string name="onboardingInfo1_1">Привет, я </string>
+    <string name="onboardingInfo1_2">. Готов помочь тебе с первой настройкой приложения!</string>
+    <string name="onboardingInfo2">В этом приложении ты можешь отслеживать состояние своей полости рта, записываться к врачу, смотреть или читать полезные материалы, а также пообщаться со мной в отдельном чате!</string>
     <string name="whatsYourName">Как тебя зовут?</string>
+    <string name="begin">Начать</string>
+    <string name="alreadyFamiliar">Мы уже знакомы</string>
+    <string name="me">Я</string>
+    <string name="myNameIs">Меня зовут </string>
+    <string name="hintYourName">Ваше имя</string>
 
 </resources>

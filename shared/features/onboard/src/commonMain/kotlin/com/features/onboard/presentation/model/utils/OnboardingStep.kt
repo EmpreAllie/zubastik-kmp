@@ -1,4 +1,4 @@
-package com.features.onboard.presentation.model
+package com.features.onboard.presentation.model.utils
 
 enum class OnboardingStep {
     ASK_NAME,

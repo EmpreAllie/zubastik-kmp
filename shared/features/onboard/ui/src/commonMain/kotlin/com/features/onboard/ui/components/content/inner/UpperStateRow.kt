@@ -10,8 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.features.onboard.presentation.model.OnboardingScreenState
 import com.features.onboard.presentation.model.OnboardingState
+import com.features.onboard.presentation.model.utils.OnboardingScreenState
 import com.features.ui.Res
 import com.features.ui.chatWithZub
 import com.features.ui.teethType
@@ -26,7 +26,7 @@ fun UpperStateRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
+            .padding(top = 24.dp, bottom = 16.dp)
             .background(
                 color = MainTheme.colors.containerBackground,
                 shape = RoundedCornerShape(24.dp)

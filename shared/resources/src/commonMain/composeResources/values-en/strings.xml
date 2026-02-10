@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="appName">Dental Happiness Tracker</string>
+    <string name="zubastik">Zubastik</string>
+
 	<string name="login">Login</string>
 	<string name="loginWithYandexID">Login with Yandex ID</string>
 	<string name="or">or</string>
@@ -25,8 +27,16 @@
 
     <!-- Регистрация (онбординг) -->
     <string name="welcome">Welcome</string>
-    <string name="onboardingInfo">Hi, I'm Zubastik. I'm ready to help you with the first setting of the application! In this application you can track your tooth profile, consult a doctor, read or watch useful health-related materials and also talk to me in a separate chat!</string>
+    <string name="onboardingInfo1_1">Hi, I'm </string>
+    <string name="onboardingInfo1_2">. I'm ready to help you with the first setting of the application!</string>
+    <string name="onboardingInfo2">In this app you can track your teeth profile, consult a dentist, read or watch useful health-related materials. You can also talk to me in a separate chat!</string>
     <string name="chatWithZub">Chat with Zubastik</string>
     <string name="teethType">Teeth profile</string>
     <string name="whatsYourName">What is your name?</string>
+    <string name="begin">Begin</string>
+    <string name="alreadyFamiliar">We are already familiar</string>
+    <string name="me">Me</string>
+    <string name="myNameIs">My name is </string>
+    <string name="hintYourName">Your name</string>
+
 </resources>

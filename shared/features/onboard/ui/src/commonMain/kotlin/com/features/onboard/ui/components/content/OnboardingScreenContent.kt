@@ -14,14 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
-import com.features.onboard.presentation.model.OnboardingScreenState
 import com.features.onboard.presentation.model.OnboardingState
+import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.ui.components.content.inner.OnboardingChatContent
 import com.features.onboard.ui.components.content.inner.OnboardingWelcomeContent
 import com.features.onboard.ui.components.content.inner.UpperStateRow
 import com.features.ui.Res
+import com.features.ui.alreadyFamiliar
 import com.features.ui.back
+import com.features.ui.begin
 import com.features.ui.button.MainButton
 import com.features.ui.next
 import com.features.ui.theme.MainTheme
@@ -41,7 +46,7 @@ fun OnboardingScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .focusable()
-                .padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 64.dp)
         ) {
 
             // Верхняя плашка
@@ -50,57 +55,116 @@ fun OnboardingScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             // Контейнер для чата/всего остального
-            when (state.screenState) {
-                OnboardingScreenState.WELCOME -> {
-                    OnboardingWelcomeContent()
-                }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .shadow(
+                        elevation = 1.dp,
+                        shape = RoundedCornerShape(32.dp)
+                    )
+                    .clip(RoundedCornerShape(32.dp))
+                    .background(color = MainTheme.colors.containerBackground)
+                    .padding(vertical = 8.dp, horizontal = 24.dp)
+            ) {
+                when (state.screenState) {
+                    OnboardingScreenState.WELCOME -> {
+                        OnboardingWelcomeContent()
+                    }
 
-                OnboardingScreenState.CHAT -> {
-                    // ChatContent()
-                }
+                    OnboardingScreenState.CHAT -> {
+                        OnboardingChatContent(
+                            state = state,
+                            onEvent = onEvent
+                        )
+                    }
 
-                OnboardingScreenState.TEETH -> {
-                    // TeethContent()
+                    OnboardingScreenState.TEETH -> {
+                        // TeethContent()
+                    }
                 }
             }
 
-
-
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
 
             // Кнопки навигации
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                MainButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    text = stringResource(Res.string.back),
-                    textStyle = MainTheme.typography.onboarding.buttonText,
-                    shape = RoundedCornerShape(10.dp),
-                    contentColor = MainTheme.colors.secondary,
-                    backgroundColor = MainTheme.colors.containerBackground,
-                    onClick = {
-
+            when (state.screenState) {
+                OnboardingScreenState.WELCOME -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        // "Начать"
+                        MainButton(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = stringResource(Res.string.begin),
+                            textStyle = MainTheme.typography.onboarding.buttonText,
+                            shape = RoundedCornerShape(10.dp),
+                            contentColor = MainTheme.colors.secondary,
+                            backgroundColor = MainTheme.colors.containerBackground,
+                            onClick = {
+                                onEvent(OnboardingEvents.OnStartChatClicked)
+                            }
+                        )
+                        // "Мы уже знакомы"
+                        MainButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            text = stringResource(Res.string.alreadyFamiliar),
+                            textStyle = MainTheme.typography.onboarding.alreadyFamiliar,
+                            shape = RoundedCornerShape(10.dp),
+                            contentColor = MainTheme.colors.containerBackground,
+                            backgroundColor = MainTheme.colors.secondary,
+                            onClick = {
+                                onEvent(OnboardingEvents.OnAlreadyFamiliarClicked)
+                            }
+                        )
                     }
-                )
+                }
 
-                MainButton(
-                    modifier = Modifier
-                        .weight(1f),
-                    text = stringResource(Res.string.next),
-                    textStyle = MainTheme.typography.onboarding.buttonText,
-                    shape = RoundedCornerShape(10.dp),
-                    contentColor = MainTheme.colors.containerBackground,
-                    backgroundColor = MainTheme.colors.secondary,
-                    onClick = {
+                OnboardingScreenState.CHAT -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        // "Назад"
+                        MainButton(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(Res.string.back),
+                            textStyle = MainTheme.typography.onboarding.buttonText,
+                            shape = RoundedCornerShape(10.dp),
+                            contentColor = MainTheme.colors.secondary,
+                            backgroundColor = MainTheme.colors.containerBackground,
+                            onClick = {
+                            /* TODO: onEvent(OnboardingEvents.OnBackClicked) */
+                            }
+                        )
 
+                        // "Далее"
+                        MainButton(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(Res.string.next),
+                            textStyle = MainTheme.typography.onboarding.buttonText,
+                            shape = RoundedCornerShape(10.dp),
+                            contentColor = MainTheme.colors.containerBackground,
+                            backgroundColor = MainTheme.colors.secondary,
+                            onClick = {
+                            /* TODO: onEvent(OnboardingEvents.OnNextClicked) */
+                            }
+                        )
                     }
-                )
+                }
+
+                OnboardingScreenState.TEETH -> {
+
+                }
             }
         }
     }
