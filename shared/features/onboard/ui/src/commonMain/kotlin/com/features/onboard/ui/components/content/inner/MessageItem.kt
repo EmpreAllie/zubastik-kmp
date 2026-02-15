@@ -17,18 +17,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
+import com.features.onboard.presentation.model.OnboardingState
 import com.features.onboard.presentation.model.utils.Author
 import com.features.onboard.presentation.model.utils.ChatMessage
 import com.features.onboard.presentation.model.utils.OnboardingStep
 import com.features.ui.InlineMessageTextField
 import com.features.ui.Res
+import com.features.ui.hintYourAge
 import com.features.ui.hintYourName
+import com.features.ui.iAm
 import com.features.ui.me
 import com.features.ui.myNameIs
 import com.features.ui.theme.MainTheme
 import com.features.ui.user
+import com.features.ui.yearsOld
 import com.features.ui.zub
 import com.features.ui.zubastik
 import org.jetbrains.compose.resources.painterResource
@@ -37,8 +46,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun MessageItem(
     message: ChatMessage,
-    currentStep: OnboardingStep,
-    userTextInput: String,
+    state: OnboardingState,
     onEvent: (OnboardingEvents) -> Unit
 ) {
     Row(
@@ -52,6 +60,7 @@ fun MessageItem(
                 Arrangement.End
     ) {
 
+        // Иконка зубастика
         if (message.author == Author.ZUB) {
             Image(
                 modifier = Modifier
@@ -69,8 +78,14 @@ fun MessageItem(
                     color = MainTheme.colors.white,
                     shape = RoundedCornerShape(16.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalAlignment =
+                if (message.author == Author.ZUB)
+                    Alignment.Start
+                else
+                    Alignment.End
         ) {
+
 
             // Имя отправителя
             Text(
@@ -83,37 +98,84 @@ fun MessageItem(
                 style = MainTheme.typography.message.author
             )
 
+
+
             Spacer(modifier = Modifier.height(4.dp))
 
-            if (message.author == Author.USER && currentStep == OnboardingStep.ASK_NAME) {
+
+            // Содержимое сообщения
+            if (message.author == Author.USER && message.createdOnStep != null) {
                 InlineMessageTextField(
-                    text = userTextInput,
+                    text = when (message.createdOnStep) {
+                        OnboardingStep.ASK_NAME -> if (state.curStep == OnboardingStep.ASK_NAME) state.userTextInput else state.userName
+                        OnboardingStep.ASK_AGE -> if (state.curStep == OnboardingStep.ASK_AGE) state.userTextInput else (state.userAge?.toString() ?: "") // TODO: нужно передать state
+                        else -> ""
+                    },
+
                     onTextChange = { newText ->
                         onEvent(OnboardingEvents.OnTextInputChanged(newText))
                     },
-                    hint = stringResource(Res.string.hintYourName),
-                    prefix = stringResource(Res.string.myNameIs)
+
+                    hint = when (message.createdOnStep) {
+                        OnboardingStep.ASK_NAME -> stringResource(Res.string.hintYourName)
+
+                        OnboardingStep.ASK_AGE -> stringResource(Res.string.hintYourAge)
+
+                        else -> ""
+                    },
+
+                    prefix = when (message.createdOnStep) {
+                        OnboardingStep.ASK_NAME -> stringResource(Res.string.myNameIs)
+                        OnboardingStep.ASK_AGE -> stringResource(Res.string.iAm)
+                        else -> null
+                    },
+
+                    postfix = when (message.createdOnStep) {
+                        OnboardingStep.ASK_AGE -> stringResource(Res.string.yearsOld)
+                        else -> null
+                    },
+
+                    enabled = state.curStep == message.createdOnStep
                 )
             }
             else {
                 Text(
-                    text = message.textRes?.let { stringResource(it) } ?: message.simpleText ?: "",
+                    text = buildAnnotatedString {
+                        message.textRes?.let { res ->
+                            append(stringResource(res, *message.formatArgs.toTypedArray()))
+                        }
+                        message.simpleText?.let {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
+                                append(it)
+                            }
+                        }
+                    },
                     color = MainTheme.colors.secondary,
                     style = MainTheme.typography.message.text
                 )
             }
 
+
+
             Spacer(modifier = Modifier.height(4.dp))
 
+
+
+            // Время отправки
             Text(
-                modifier = Modifier
-                    .align(Alignment.End),
+                modifier =
+                    if (message.author == Author.ZUB)
+                        Modifier.align(Alignment.End)
+                    else
+                        Modifier.align(Alignment.Start),
                 text = message.timeStamp,
-                color = MainTheme.colors.secondary,
+                color = MainTheme.colors.black.copy(alpha = 0.4f),
                 style = MainTheme.typography.message.time
             )
         }
 
+
+        // Иконка юзера
         if (message.author == Author.USER) {
             Spacer(modifier = Modifier.width(8.dp))
             Image(

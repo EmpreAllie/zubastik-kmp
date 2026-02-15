@@ -23,6 +23,8 @@ data class Typography(private val font: FontFamily) {
         SettingsTypography(font)
     val onboarding: OnboardingTypography =
         OnboardingTypography(font)
+    val onboardingBrushingDialog: OnboardingBrushingDialogTypography =
+        OnboardingBrushingDialogTypography(font)
     val bonus: BonusTypography =
         BonusTypography(font)
     val route: RouteTypography =
@@ -31,6 +33,8 @@ data class Typography(private val font: FontFamily) {
         AuthTypography(font)
     val message: MessageTypography =
         MessageTypography(font)
+
+
 }
 
 @Immutable
@@ -236,6 +240,31 @@ data class OnboardingTypography(private val font: FontFamily) {
     val alreadyFamiliar: TextStyle = TextStyle(
         fontSize = 16.sp,
         lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+}
+
+@Immutable
+data class OnboardingBrushingDialogTypography(private val font: FontFamily) {
+    val brushingFrequency: TextStyle = TextStyle(
+        fontSize = 20.sp,
+        lineHeight = 25.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Bold
+    )
+
+    val brushingFrequencyHint: TextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val brushingFrequencyListItem: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 19.sp,
         fontFamily = font,
         fontWeight = FontWeight.Normal
     )

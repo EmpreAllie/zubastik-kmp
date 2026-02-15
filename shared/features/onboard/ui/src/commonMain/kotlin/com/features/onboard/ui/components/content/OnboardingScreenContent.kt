@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
 import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.ui.components.content.inner.OnboardingBrushingDialog
 import com.features.onboard.ui.components.content.inner.OnboardingChatContent
 import com.features.onboard.ui.components.content.inner.OnboardingWelcomeContent
 import com.features.onboard.ui.components.content.inner.UpperStateRow
@@ -143,7 +144,7 @@ fun OnboardingScreenContent(
                             contentColor = MainTheme.colors.secondary,
                             backgroundColor = MainTheme.colors.containerBackground,
                             onClick = {
-                            /* TODO: onEvent(OnboardingEvents.OnBackClicked) */
+                                onEvent(OnboardingEvents.OnBackClicked)
                             }
                         )
 
@@ -155,8 +156,9 @@ fun OnboardingScreenContent(
                             shape = RoundedCornerShape(10.dp),
                             contentColor = MainTheme.colors.containerBackground,
                             backgroundColor = MainTheme.colors.secondary,
+                            isEnabled = state.userTextInput.isNotEmpty(),
                             onClick = {
-                            /* TODO: onEvent(OnboardingEvents.OnNextClicked) */
+                                onEvent(OnboardingEvents.OnNextClicked)
                             }
                         )
                     }
@@ -166,6 +168,20 @@ fun OnboardingScreenContent(
 
                 }
             }
+        }
+
+
+        // Диалоговое окно с частотой чистки зубов
+        if (state.isBrushingDialogVisible) {
+            OnboardingBrushingDialog(
+                onConfirm = {
+
+                },
+
+                onDismiss = {
+                    onEvent(OnboardingEvents.OnBrushingDialogDismiss)
+                }
+            )
         }
     }
 }

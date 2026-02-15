@@ -25,8 +25,7 @@ fun OnboardingChatContent(
 
             MessageItem(
                 message = message,
-                currentStep = state.curStep,
-                userTextInput = state.userTextInput,
+                state = state,
                 onEvent = onEvent
             )
 

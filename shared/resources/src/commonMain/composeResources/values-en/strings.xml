@@ -38,5 +38,12 @@
     <string name="me">Me</string>
     <string name="myNameIs">My name is </string>
     <string name="hintYourName">Your name</string>
+    <string name="niceToMeetYou">Nice to meet you, %1$s! How old are you?</string>
+    <string name="iAm">I am </string>
+    <string name="yearsOld"> years old.</string>
+    <string name="hintYourAge">Your age</string>
+    <string name="askBrushing">Wow! How many times a day do you brush your teeth?</string>
+    <string name="brushingFrequency">Brushing frequency</string>
+    <string name="brushingFrequencyHint">period*</string>
 
 </resources>

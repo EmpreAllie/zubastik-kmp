@@ -40,5 +40,13 @@
     <string name="me">Я</string>
     <string name="myNameIs">Меня зовут </string>
     <string name="hintYourName">Ваше имя</string>
+    <string name="niceToMeetYou">Приятно познакомиться, %1$s! Сколько тебе лет?</string>
+    <string name="iAm">Мне </string>
+    <string name="yearsOld"> лет.</string>
+    <string name="hintYourAge">Ваш возраст</string>
+    <string name="askBrushing">Ого! А сколько раз в день ты чистишь зубы?</string>
+    <string name="brushingFrequency">Период чистки зубов</string>
+    <string name="brushingFrequencyHint">частота ухода*</string>
+
 
 </resources>

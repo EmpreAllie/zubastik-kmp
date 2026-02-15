@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.bundles.viewmodel)
             implementation(libs.koinCore)
             implementation(libs.compose.resource)
+            implementation(libs.kotlinxDateTime)
         }
 
         commonTest.dependencies {

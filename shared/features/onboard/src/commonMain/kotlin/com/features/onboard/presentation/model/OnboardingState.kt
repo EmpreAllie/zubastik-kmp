@@ -19,5 +19,7 @@ data class OnboardingState(
 
     val chatMessages: List<ChatMessage> = emptyList(),
 
-    val userTextInput: String = ""
+    val userTextInput: String = "",
+
+    val isBrushingDialogVisible: Boolean = false
 ) : BaseState(isLoading = isLoading, error = error)
