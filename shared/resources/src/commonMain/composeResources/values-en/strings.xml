@@ -45,5 +45,6 @@
     <string name="askBrushing">Wow! How many times a day do you brush your teeth?</string>
     <string name="brushingFrequency">Brushing frequency</string>
     <string name="brushingFrequencyHint">period*</string>
-
+    <string name="confirm">Confirm</string>
+    <string name="timesADay"> time(s) a day</string>
 </resources>

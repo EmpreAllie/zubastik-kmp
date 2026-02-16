@@ -47,6 +47,8 @@
     <string name="askBrushing">Ого! А сколько раз в день ты чистишь зубы?</string>
     <string name="brushingFrequency">Период чистки зубов</string>
     <string name="brushingFrequencyHint">частота ухода*</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="timesADay"> раз(а) в день</string>
 
 
 </resources>

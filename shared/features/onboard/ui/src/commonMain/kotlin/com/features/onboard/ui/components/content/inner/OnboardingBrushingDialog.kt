@@ -30,10 +30,13 @@ import androidx.compose.ui.window.Dialog
 import com.features.ui.Res
 import com.features.ui.brushingFrequency
 import com.features.ui.brushingFrequencyHint
+import com.features.ui.button.MainButton
+import com.features.ui.confirm
 import com.features.ui.ic_back_arrow
 import com.features.ui.ic_close_o
 import com.features.ui.ic_dropdown_list
 import com.features.ui.theme.MainTheme
+import com.features.ui.timesADay
 import kotlinx.serialization.builtins.ArraySerializer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -83,7 +86,7 @@ fun OnboardingBrushingDialog(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Выпадающий список с надписью "Период чистки"
+
             Column {
                 // Подпись "Частота ухода"
                 Text(
@@ -92,18 +95,21 @@ fun OnboardingBrushingDialog(
                     color = MainTheme.colors.secondary
                 )
 
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Выпадающий список с надписью "Период чистки"
                 Box {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, MainTheme.colors.black, RoundedCornerShape(80.dp))
+                            .border(1.dp, MainTheme.colors.black.copy(alpha = 0.35f), RoundedCornerShape(80.dp))
                             .clickable { expanded = true }
-                            .padding(vertical = 16.dp, horizontal = 12.dp),
+                            .padding(vertical = 8.dp, horizontal = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "$selectedValue раз в день",
+                            text = selectedValue.toString() + stringResource(Res.string.timesADay),
                             style = MainTheme.typography.onboardingBrushingDialog.brushingFrequencyListItem
                         )
                         Icon(
@@ -113,6 +119,7 @@ fun OnboardingBrushingDialog(
                         )
                     }
 
+                    // Выбор частоты из выпадающего списка
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
@@ -121,7 +128,7 @@ fun OnboardingBrushingDialog(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        text = "$item раз(а) в день",
+                                        text = item.toString() + stringResource(Res.string.timesADay),
                                         style = MainTheme.typography.onboardingBrushingDialog.brushingFrequencyListItem
                                     )
                                 },
@@ -133,6 +140,21 @@ fun OnboardingBrushingDialog(
                         }
                     }
                 }
+
+                // Поля с выбором времени
+                repeat(selectedValue) { index ->
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OnboardingTimeSelectField()
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Кнопка "Подтвердить"
+                MainButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(Res.string.confirm),
+                    onClick = { onConfirm(selectedValue) }
+                )
             }
 
 
