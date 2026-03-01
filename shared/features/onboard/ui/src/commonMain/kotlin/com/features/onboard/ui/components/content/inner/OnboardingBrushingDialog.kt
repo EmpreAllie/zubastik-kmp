@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.features.onboard.presentation.model.OnboardingEvents
+import com.features.onboard.presentation.model.OnboardingState
 import com.features.ui.Res
 import com.features.ui.brushingFrequency
 import com.features.ui.brushingFrequencyHint
@@ -43,8 +45,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OnboardingBrushingDialog(
+    state: OnboardingState,
+    onEvent: (OnboardingEvents) -> Unit,
     onDismiss: () -> Unit,
-    onConfirm: (Int) -> Unit
+    onConfirm: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val items = (0..5).toList()
@@ -135,6 +139,7 @@ fun OnboardingBrushingDialog(
                                 onClick = {
                                     selectedValue = item
                                     expanded = false
+                                    onEvent(OnboardingEvents.OnBrushingDialogCountChanged(item))
                                 }
                             )
                         }
@@ -142,10 +147,16 @@ fun OnboardingBrushingDialog(
                 }
 
                 // Поля с выбором времени
-                repeat(selectedValue) { index ->
+                state.brushingTimes.forEachIndexed { index, time ->
                     Spacer(modifier = Modifier.height(12.dp))
-                    OnboardingTimeSelectField()
+                    OnboardingTimeSelectField(
+                        time = time,
+                        onTimeChange = {
+                            //onEvent(OnboardingEvents.OnTimeChanged(index, newTime))
+                        }
+                    )
                 }
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -153,7 +164,9 @@ fun OnboardingBrushingDialog(
                 MainButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(Res.string.confirm),
-                    onClick = { onConfirm(selectedValue) }
+                    onClick = {
+                        onConfirm()
+                    }
                 )
             }
 

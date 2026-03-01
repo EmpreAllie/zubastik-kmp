@@ -20,6 +20,7 @@ sealed class Colors {
     abstract val button: Color
     abstract val selectedButton: Color
     abstract val containerBackground: Color
+    abstract val toothStroke: Color
 
 
     data class Light(
@@ -34,12 +35,13 @@ sealed class Colors {
         override val white: Color = Color(0xFFFFFFFF),
         override val black: Color = Color(0xFF000000),
         override val red: Color = Color(0xFFFF0000),
-        override val gray: Color = Color(0xFFF2F0F0),
+        override val gray: Color = Color(0xFF959697),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
         override val containerBackground: Color = Color(0xFFF2F7FF),
+        override val toothStroke: Color = Color(0xFFB1BDCC),
     ) : Colors()
 
     data class Dark(
@@ -54,12 +56,13 @@ sealed class Colors {
         override val white: Color = Color(0xFFFFFFFF),
         override val black: Color = Color(0xFF000000),
         override val red: Color = Color(0xFFFF0000),
-        override val gray: Color = Color(0xFFF2F0F0),
+        override val gray: Color = Color(0xFF959697),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
         override val containerBackground: Color = Color(0xFFF2F7FF),
+        override val toothStroke: Color = Color(0xFFB1BDCC),
     ) : Colors()
 }
 

@@ -20,7 +20,8 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun OnboardingTimeSelectField(
-
+    time: String,
+    onTimeChange: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -32,7 +33,7 @@ fun OnboardingTimeSelectField(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "9:00",
+            text = time,
             color = MainTheme.colors.secondary,
             style = MainTheme.typography.onboardingBrushingDialog.brushingFrequencyListItem
         )

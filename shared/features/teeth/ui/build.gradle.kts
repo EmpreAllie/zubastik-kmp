@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.features.onboard.ui"
+    namespace = "com.features.teeth.ui"
     compileSdk = 36
 
     flavorDimensions.add(0, "jni")
@@ -44,7 +44,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "onboard-ui"
+            baseName = "teeth-ui"
             isStatic = true
         }
     }
@@ -62,9 +62,6 @@ kotlin {
             implementation(projects.shared.features.base)
             implementation(projects.shared.features.root)
             implementation(projects.shared.features.ui)
-            implementation(projects.shared.features.auth)
-            implementation(projects.shared.features.onboard)
-            implementation(projects.shared.features.teeth.ui)
 
 
             implementation(compose.runtime)
@@ -78,6 +75,8 @@ kotlin {
             implementation(libs.bundles.coil)
             implementation(libs.kotlinSerialization)
             implementation(libs.composeNavigation)
+            implementation(libs.androidx.core)
+
         }
 
         commonTest.dependencies {

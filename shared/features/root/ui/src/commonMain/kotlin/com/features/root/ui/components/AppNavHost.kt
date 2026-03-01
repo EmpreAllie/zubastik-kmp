@@ -79,7 +79,7 @@ fun AppNavHost(
 
         composable(Screen.ONBOARDING.route) {
             OnboardingScreen()
-            BackHandler {}
+            //BackHandler {}
         }
 
         composable(Screen.MAIN.route) {

@@ -11,13 +11,16 @@ import com.features.onboard.presentation.model.utils.OnboardingScreenState
 import com.features.onboard.presentation.model.utils.OnboardingStep
 import com.features.ui.Res
 import com.features.ui.askBrushing
+import com.features.ui.iBrushMyTeeth
 import com.features.ui.myNameIs
 import com.features.ui.niceToMeetYou
+import com.features.ui.timesADay
 import com.features.ui.whatsYourName
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -48,6 +51,10 @@ class OnboardingViewModel(
             }
 
             OnboardingEvents.OnAlreadyFamiliarClicked -> {
+                sendEffect(OnboardingEffects.NavigateToMain)
+            }
+
+            OnboardingEvents.OnExitOnboardingClicked -> {
                 sendEffect(OnboardingEffects.NavigateToMain)
             }
 
@@ -102,11 +109,29 @@ class OnboardingViewModel(
                         }
                     }
 
-                    else -> {}
+                    OnboardingStep.COMPLETE -> {
+                        updateState {
+                            it.copy(
+                                screenState = OnboardingScreenState.TEETH
+                            )
+                        }
+                    }
+
                 }
             }
 
             OnboardingEvents.OnBackClicked -> {
+                println("ZUB_DEBUG: Back clicked. Current messages size: ${state.value.chatMessages.size}")
+                if (state.value.screenState == OnboardingScreenState.TEETH) {
+                    updateState {
+                        it.copy(
+                            screenState = OnboardingScreenState.CHAT,
+                            curStep = OnboardingStep.COMPLETE
+                        )
+                    }
+                    return@onEvent
+                }
+
                 when (state.value.curStep) {
                     OnboardingStep.ASK_NAME -> {
                         updateState {
@@ -137,7 +162,15 @@ class OnboardingViewModel(
                         }
                     }
 
-                    else -> {}
+                    OnboardingStep.COMPLETE -> {
+                        updateState {
+                            it.copy(
+                                curStep = OnboardingStep.ASK_BRUSHING,
+                                chatMessages = state.value.chatMessages.dropLast(1),
+                                isBrushingDialogVisible = true
+                            )
+                        }
+                    }
                 }
             }
 
@@ -157,6 +190,54 @@ class OnboardingViewModel(
                 }
             }
 
+            is OnboardingEvents.OnBrushingDialogCountChanged -> {
+                updateState {
+                    it.copy(
+                        brushingTimes = generateNewBrushingTimesList(event.count)
+                    )
+                }
+            }
+
+            is OnboardingEvents.OnBrushingDialogConfirm -> {
+                viewModelScope.launch {
+                    updateState {
+                        it.copy(
+                            isBrushingDialogVisible = false
+                        )
+                    }
+
+                    delay(500)
+
+                    val finalUserMessage = ChatMessage(
+                        id = state.value.chatMessages.last().id + 1,
+                        textRes = Res.string.iBrushMyTeeth,
+                        formatArgs = listOf(event.count, Res.string.timesADay),
+                        author = Author.USER,
+                        timeStamp = getCurrentTimeStamp()
+                    )
+
+                    updateState {
+                        it.copy(
+                            chatMessages = state.value.chatMessages + finalUserMessage,
+                            curStep = OnboardingStep.COMPLETE
+                        )
+                    }
+                }
+
+                //saveBrushingSettings(event.count, event.times)
+            }
+
+        }
+    }
+
+    private fun generateNewBrushingTimesList(count: Int): List<String> {
+        return when (count) {
+            1 -> listOf("9:00")
+            2 -> listOf("9:00", "21:00")
+            3 -> listOf("9:00", "14:00", "21:00")
+            4 -> listOf("9:00", "12:00", "16:00", "21:00")
+            5 -> listOf("9:00", "11:00", "14:00", "17:00", "21:00")
+            else -> emptyList()
         }
     }
 
@@ -209,7 +290,6 @@ class OnboardingViewModel(
                 chatMessages = it.chatMessages + userMessage
             )
         }
-
     }
 
     private fun showNextMessage() {

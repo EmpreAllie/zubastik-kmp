@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -20,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
 import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.presentation.model.utils.OnboardingStep
 import com.features.onboard.ui.components.content.inner.OnboardingBrushingDialog
 import com.features.onboard.ui.components.content.inner.OnboardingChatContent
+import com.features.onboard.ui.components.content.inner.OnboardingTeethContent
 import com.features.onboard.ui.components.content.inner.OnboardingWelcomeContent
 import com.features.onboard.ui.components.content.inner.UpperStateRow
 import com.features.ui.Res
@@ -29,6 +35,7 @@ import com.features.ui.alreadyFamiliar
 import com.features.ui.back
 import com.features.ui.begin
 import com.features.ui.button.MainButton
+import com.features.ui.finish
 import com.features.ui.next
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
@@ -38,6 +45,13 @@ fun OnboardingScreenContent(
     state: OnboardingState,
     onEvent: (OnboardingEvents) -> Unit
 ) {
+    val lazyListState = rememberLazyListState()
+    LaunchedEffect(state.chatMessages.size) {
+        if (state.chatMessages.isNotEmpty()) {
+            lazyListState.animateScrollToItem(index = 0/*state.chatMessages.last().id*/)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -53,20 +67,36 @@ fun OnboardingScreenContent(
             // Верхняя плашка
             UpperStateRow(state = state)
 
-            Spacer(modifier = Modifier.height(24.dp))
+            val dp = when (state.screenState) {
+                OnboardingScreenState.WELCOME -> 24.dp
+                OnboardingScreenState.CHAT -> 24.dp
+                OnboardingScreenState.TEETH -> 8.dp
+            }
+            Spacer(modifier = Modifier.height(dp))
+
+            val boxBaseModifier = Modifier
+                .fillMaxWidth()
+                .shadow(
+                    elevation = 1.dp,
+                    shape = RoundedCornerShape(32.dp)
+                )
+                .clip(RoundedCornerShape(32.dp))
+                .background(color = MainTheme.colors.containerBackground)
+                .padding(vertical = 8.dp, horizontal = 24.dp)
+
+            val finalBoxModifier = when (state.screenState) {
+                OnboardingScreenState.WELCOME, OnboardingScreenState.CHAT -> {
+                    boxBaseModifier.weight(1f)
+                }
+
+                else -> {
+                    boxBaseModifier
+                }
+            }
 
             // Контейнер для чата/всего остального
             Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .shadow(
-                        elevation = 1.dp,
-                        shape = RoundedCornerShape(32.dp)
-                    )
-                    .clip(RoundedCornerShape(32.dp))
-                    .background(color = MainTheme.colors.containerBackground)
-                    .padding(vertical = 8.dp, horizontal = 24.dp)
+                modifier = finalBoxModifier
             ) {
                 when (state.screenState) {
                     OnboardingScreenState.WELCOME -> {
@@ -76,18 +106,18 @@ fun OnboardingScreenContent(
                     OnboardingScreenState.CHAT -> {
                         OnboardingChatContent(
                             state = state,
-                            onEvent = onEvent
+                            onEvent = onEvent,
+                            lazyListState = lazyListState
                         )
                     }
 
                     OnboardingScreenState.TEETH -> {
-                        // TeethContent()
+                        OnboardingTeethContent(onEvent = onEvent)
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(48.dp))
-
 
             // Кнопки навигации
             when (state.screenState) {
@@ -151,7 +181,10 @@ fun OnboardingScreenContent(
                         // "Далее"
                         MainButton(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(Res.string.next),
+                            text = if (state.curStep == OnboardingStep.COMPLETE)
+                                stringResource(Res.string.finish)
+                            else
+                                stringResource(Res.string.next),
                             textStyle = MainTheme.typography.onboarding.buttonText,
                             shape = RoundedCornerShape(10.dp),
                             contentColor = MainTheme.colors.containerBackground,
@@ -174,8 +207,13 @@ fun OnboardingScreenContent(
         // Диалоговое окно с частотой чистки зубов
         if (state.isBrushingDialogVisible) {
             OnboardingBrushingDialog(
+                state = state,
+                onEvent = onEvent,
                 onConfirm = {
-
+                    onEvent(OnboardingEvents.OnBrushingDialogConfirm(
+                        count = state.brushingTimes.size,
+                        times = state.brushingTimes
+                    ))
                 },
 
                 onDismiss = {

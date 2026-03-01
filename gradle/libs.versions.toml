@@ -24,6 +24,7 @@ composeNavigation = "2.9.0-beta02"
 compottie = "2.0.1"
 exo-player = "2.18.7"
 pullrefresh = "1.4.0-beta03"
+compose-constraintlayout = "1.1.1"
 
 # kotlinx
 kotlinxSerializationVersion = "1.9.0"
@@ -88,6 +89,7 @@ composeNavigation = { module = "org.jetbrains.androidx.navigation:navigation-com
 compose-blur = { module = "dev.chrisbanes.haze:haze", version.ref = "composeBlur" }
 compose-blur-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "composeBlur" }
 compose-resource = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-resource" }
+constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraintlayout" }
 
 # lifecycle
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle-viewmodel" }

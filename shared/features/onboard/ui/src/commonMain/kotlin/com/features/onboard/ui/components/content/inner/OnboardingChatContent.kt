@@ -2,6 +2,7 @@ package com.features.onboard.ui.components.content.inner
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.features.onboard.presentation.model.OnboardingState
@@ -11,12 +12,14 @@ import com.features.onboard.presentation.model.OnboardingEvents
 @Composable
 fun OnboardingChatContent(
     state: OnboardingState,
-    onEvent: (OnboardingEvents) -> Unit
+    onEvent: (OnboardingEvents) -> Unit,
+    lazyListState: LazyListState
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
-        reverseLayout = true
+        reverseLayout = true,
+        state = lazyListState
     ) {
         items(
             items = state.chatMessages.reversed(),

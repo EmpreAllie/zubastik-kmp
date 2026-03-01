@@ -40,6 +40,7 @@ import com.features.ui.user
 import com.features.ui.yearsOld
 import com.features.ui.zub
 import com.features.ui.zubastik
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -141,9 +142,25 @@ fun MessageItem(
             else {
                 Text(
                     text = buildAnnotatedString {
+                        /*
                         message.textRes?.let { res ->
                             append(stringResource(res, *message.formatArgs.toTypedArray()))
                         }
+                         */
+
+                        message.textRes?.let { res ->
+                            val finalArgs = message.formatArgs.map { arg ->
+                                if (arg is StringResource) {
+                                    stringResource(arg)
+                                }
+                                else {
+                                    arg
+                                }
+                            }.toTypedArray()
+
+                            append(stringResource(res, *finalArgs))
+                        }
+
                         message.simpleText?.let {
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
                                 append(it)

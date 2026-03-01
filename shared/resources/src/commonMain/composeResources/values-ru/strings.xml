@@ -47,6 +47,12 @@
     <string name="brushingFrequency">Период чистки зубов</string>
     <string name="brushingFrequencyHint">частота ухода*</string>
     <string name="confirm">Подтвердить</string>
+    <string name="iBrushMyTeeth">Я чищу зубы %1$s %2$s</string>
     <string name="timesADay"> раз(а) в день</string>
+    <string name="finish">Завершить</string>
+    <string name="teethProfileText1">Теперь самая сложная часть. Необходимо соотнести зубу его поколение (молочный, коренной или отсутствует).</string>
+    <string name="teethProfileText2">Не бойся, этот шаг можно пропустить и заполнить позже.</string>
+    <string name="nextStar">Далее*</string>
+    <string name="consent">* Нажимая "Далее", вы соглашаетесь с условиями обработки персональных данных согласно 152-ФЗ.</string>
 
 </resources>

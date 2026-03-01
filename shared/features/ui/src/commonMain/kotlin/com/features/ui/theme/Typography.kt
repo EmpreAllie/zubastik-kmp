@@ -244,6 +244,13 @@ data class OnboardingTypography(private val font: FontFamily) {
         fontWeight = FontWeight.Normal
     )
 
+    val consent: TextStyle = TextStyle(
+        fontSize = 8.sp,
+        lineHeight = 10.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
 }
 
 @Immutable

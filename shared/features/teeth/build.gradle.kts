@@ -15,7 +15,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "onboard"
+            baseName = "teeth"
             isStatic = true
         }
     }
@@ -27,13 +27,10 @@ kotlin {
             implementation(projects.shared.network)
             implementation(projects.shared.resources)
             implementation(projects.shared.features.base)
-            implementation(projects.shared.features.teeth)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)
             implementation(libs.koinCore)
-            implementation(libs.compose.resource)
-            implementation(libs.kotlinxDateTime)
         }
 
         commonTest.dependencies {
@@ -43,7 +40,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.features.onboard"
+    namespace = "com.features.teeth"
     compileSdk = 36
     defaultConfig {
         minSdk = 26

@@ -7,7 +7,10 @@ import androidx.compose.runtime.getValue
 import com.features.base.domain.enum.Screen
 import com.features.onboard.presentation.OnboardingViewModel
 import com.features.onboard.presentation.model.OnboardingEffects
+import com.features.onboard.presentation.model.OnboardingEvents
+import com.features.onboard.presentation.model.utils.OnboardingScreenState
 import com.features.onboard.ui.components.content.OnboardingScreenContent
+import com.features.ui.extension.BackHandler
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEvent
 import org.koin.compose.viewmodel.koinViewModel
@@ -18,6 +21,12 @@ fun OnboardingScreen(
     rootViewModel: RootViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    val isNotFirstScreen = state.screenState != OnboardingScreenState.WELCOME
+    BackHandler(enabled = isNotFirstScreen) {
+        viewModel.onEvent(OnboardingEvents.OnBackClicked)
+    }
+
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->

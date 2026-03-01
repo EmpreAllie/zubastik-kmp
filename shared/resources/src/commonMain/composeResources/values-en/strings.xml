@@ -46,5 +46,11 @@
     <string name="brushingFrequency">Brushing frequency</string>
     <string name="brushingFrequencyHint">period*</string>
     <string name="confirm">Confirm</string>
+    <string name="iBrushMyTeeth">I brush my teeth %1$s %2$s</string>
     <string name="timesADay"> time(s) a day</string>
+    <string name="finish">Finish</string>
+    <string name="teethProfileText1">Now's the hardest part. You have to match each tooth with its stage (milk, permanent or missing).</string>
+    <string name="teethProfileText2">Don't worry, this step can be skipped and filled later.</string>
+    <string name="nextStar">Next*</string>
+    <string name="consent">* By clicking "Next" you give consent to the processing of personal data according to Federal Law No. 152 of Russian Federation.</string>
 </resources>
