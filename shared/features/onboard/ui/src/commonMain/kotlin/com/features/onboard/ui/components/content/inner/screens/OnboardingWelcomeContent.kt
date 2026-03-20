@@ -1,4 +1,4 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import com.features.ui.Res
-import com.features.ui.onboardingInfo1
 import com.features.ui.onboardingInfo1_1
 import com.features.ui.onboardingInfo1_2
 import com.features.ui.onboardingInfo2

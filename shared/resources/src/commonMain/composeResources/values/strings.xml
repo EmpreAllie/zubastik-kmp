@@ -51,9 +51,26 @@
     <string name="iBrushMyTeeth">Я чищу зубы %1$s %2$s</string>
     <string name="timesADay"> раз(а) в день</string>
     <string name="finish">Завершить</string>
-    <string name="teethProfileText1">Теперь самая сложная часть. Необходимо соотнести зубу его поколение (молочный, коренной или отсутствует).</string>
+    <string name="teethProfileText1">Теперь самая сложная часть. Необходимо соотнести каждому зубу его состояние (здоровый, есть проблемы или отсутствует).</string>
     <string name="teethProfileText2">Не бойся, этот шаг можно пропустить и заполнить позже.</string>
     <string name="nextStar">Далее*</string>
     <string name="consent">* Нажимая "Далее", вы соглашаетесь с условиями обработки персональных данных согласно 152-ФЗ.</string>
+
+    <!-- Панель с зубами -->
+    <string name="nothingIsSelected">Ничего не выбрано</string>
+    <string name="tooth">Зуб %1$s</string>
+    <string name="incisor">резец</string>
+    <string name="canine">клык</string>
+    <string name="premolar">премоляр</string>
+    <string name="molar">моляр</string>
+    <string name="wisdomTooth">зуб мудрости</string>
+    <string name="healthy">Здоровый</string>
+    <string name="problematic">Есть проблемы</string>
+    <string name="missing">Отсутствует</string>
+    <string name="edit">Редактировать</string>
+    <string name="status">Состояние</string>
+    <string name="notes">Заметки</string>
+    <string name="notesHint">Введите состояние зуба...</string>
+    <string name="save">Сохранить</string>
 
 </resources>

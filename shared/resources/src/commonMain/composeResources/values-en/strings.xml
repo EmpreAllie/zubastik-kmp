@@ -49,8 +49,26 @@
     <string name="iBrushMyTeeth">I brush my teeth %1$s %2$s</string>
     <string name="timesADay"> time(s) a day</string>
     <string name="finish">Finish</string>
-    <string name="teethProfileText1">Now's the hardest part. You have to match each tooth with its stage (milk, permanent or missing).</string>
+    <string name="teethProfileText1">Now's the hardest part. You have to match each tooth with its condition (healthy, problematic or missing).</string>
     <string name="teethProfileText2">Don't worry, this step can be skipped and filled later.</string>
     <string name="nextStar">Next*</string>
     <string name="consent">* By clicking "Next" you give consent to the processing of personal data according to Federal Law No. 152 of Russian Federation.</string>
+
+    <!-- Панель с зубами -->
+    <string name="nothingIsSelected">Nothing is selected</string>
+    <string name="tooth">Tooth %1$s</string>
+    <string name="incisor">incisor</string>
+    <string name="canine">canine</string>
+    <string name="premolar">premolar</string>
+    <string name="molar">molar</string>
+    <string name="wisdomTooth">wisdom tooth</string>
+    <string name="healthy">Healthy</string>
+    <string name="problematic">Problematic</string>
+    <string name="missing">Missing</string>
+    <string name="edit">Edit</string>
+    <string name="status">Status</string>
+    <string name="notes">Notes</string>
+    <string name="notesHint">Enter tooth's health status...</string>
+    <string name="save">Save</string>
+
 </resources>

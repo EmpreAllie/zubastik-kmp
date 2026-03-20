@@ -1,4 +1,4 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.dialogs
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

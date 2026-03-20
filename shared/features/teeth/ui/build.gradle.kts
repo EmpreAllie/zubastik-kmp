@@ -62,6 +62,7 @@ kotlin {
             implementation(projects.shared.features.base)
             implementation(projects.shared.features.root)
             implementation(projects.shared.features.ui)
+            implementation(projects.shared.features.teeth)
 
 
             implementation(compose.runtime)

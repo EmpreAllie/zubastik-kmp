@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -23,12 +21,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
-import com.features.onboard.presentation.model.utils.OnboardingScreenState
-import com.features.onboard.presentation.model.utils.OnboardingStep
-import com.features.onboard.ui.components.content.inner.OnboardingBrushingDialog
-import com.features.onboard.ui.components.content.inner.OnboardingChatContent
-import com.features.onboard.ui.components.content.inner.OnboardingTeethContent
-import com.features.onboard.ui.components.content.inner.OnboardingWelcomeContent
+import com.features.onboard.presentation.model.state.OnboardingScreenState
+import com.features.onboard.presentation.model.state.OnboardingStep
+import com.features.onboard.ui.components.content.inner.dialogs.OnboardingBrushingDialog
+import com.features.onboard.ui.components.content.inner.screens.chat.OnboardingChatContent
+import com.features.onboard.ui.components.content.inner.screens.OnboardingTeethContent
+import com.features.onboard.ui.components.content.inner.screens.OnboardingWelcomeContent
 import com.features.onboard.ui.components.content.inner.UpperStateRow
 import com.features.ui.Res
 import com.features.ui.alreadyFamiliar
@@ -67,13 +65,9 @@ fun OnboardingScreenContent(
             // Верхняя плашка
             UpperStateRow(state = state)
 
-            val dp = when (state.screenState) {
-                OnboardingScreenState.WELCOME -> 24.dp
-                OnboardingScreenState.CHAT -> 24.dp
-                OnboardingScreenState.TEETH -> 8.dp
-            }
-            Spacer(modifier = Modifier.height(dp))
+            Spacer(modifier = Modifier.height(state.screenState.upperSpaceHeight))
 
+/*
             val boxBaseModifier = Modifier
                 .fillMaxWidth()
                 .shadow(
@@ -92,11 +86,18 @@ fun OnboardingScreenContent(
                 else -> {
                     boxBaseModifier
                 }
-            }
+            }*/
 
             // Контейнер для чата/всего остального
             Box(
-                modifier = finalBoxModifier
+                modifier = Modifier
+                    .onboardingContainer()
+                    .then(
+                        if (state.screenState == OnboardingScreenState.WELCOME || state.screenState == OnboardingScreenState.CHAT)
+                                Modifier.weight(1f)
+                        else
+                                Modifier
+                    )
             ) {
                 when (state.screenState) {
                     OnboardingScreenState.WELCOME -> {
@@ -223,3 +224,19 @@ fun OnboardingScreenContent(
         }
     }
 }
+
+
+private val OnboardingScreenState.upperSpaceHeight
+    get() = when (this) {
+        OnboardingScreenState.WELCOME -> 24.dp
+        OnboardingScreenState.CHAT -> 24.dp
+        OnboardingScreenState.TEETH -> 8.dp
+    }
+
+@Composable
+private fun Modifier.onboardingContainer(): Modifier = this
+        .fillMaxWidth()
+        .shadow(elevation = 1.dp, shape = RoundedCornerShape(32.dp))
+        .clip(RoundedCornerShape(32.dp))
+        .background(MainTheme.colors.containerBackground)
+        .padding(vertical = 8.dp, horizontal = 24.dp)

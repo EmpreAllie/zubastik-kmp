@@ -1,4 +1,4 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.screens.chat
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,9 +24,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
-import com.features.onboard.presentation.model.utils.Author
-import com.features.onboard.presentation.model.utils.ChatMessage
-import com.features.onboard.presentation.model.utils.OnboardingStep
+import com.features.onboard.presentation.model.chat.Author
+import com.features.onboard.presentation.model.chat.ChatMessage
+import com.features.onboard.presentation.model.state.OnboardingStep
 import com.features.ui.InlineMessageTextField
 import com.features.ui.Res
 import com.features.ui.hintYourAge

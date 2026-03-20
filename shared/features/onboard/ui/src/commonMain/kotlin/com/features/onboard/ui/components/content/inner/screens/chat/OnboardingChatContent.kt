@@ -1,4 +1,4 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.screens.chat
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn

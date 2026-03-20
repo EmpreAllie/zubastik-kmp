@@ -34,6 +34,8 @@ data class Typography(private val font: FontFamily) {
     val message: MessageTypography =
         MessageTypography(font)
 
+    val teeth: TeethTypography =
+        TeethTypography(font)
 
 }
 
@@ -454,6 +456,66 @@ data class MessageTypography(private val font: FontFamily) {
         fontFamily = font,
         fontWeight = FontWeight.Normal
     )
+}
+
+@Immutable
+data class TeethTypography(private val font: FontFamily) {
+    val toothNumber: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Medium
+    )
+
+    val toothDescription: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal,
+    )
+
+    val buttonText: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.SemiBold
+    )
+
+    val dialogHeader: TextStyle = TextStyle(
+        fontSize = 20.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.SemiBold
+    )
+
+    val dialogSubheader: TextStyle = TextStyle(
+        fontSize = 18.sp,
+        lineHeight = 20.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val dialogSmallHeader: TextStyle = TextStyle(
+        fontSize = 13.sp,
+        lineHeight = 16.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val radioListItem: TextStyle = TextStyle(
+        fontSize = 13.sp,
+        lineHeight = 16.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
+    val inputTextField: TextStyle = TextStyle(
+        fontSize = 15.sp,
+        lineHeight = 18.sp,
+        fontFamily = font,
+        fontWeight = FontWeight.Normal
+    )
+
 }
 
 expect fun TextStyle.preciseLineHeight(): TextStyle

@@ -17,7 +17,7 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.features.auth.domain.model.VerificationStatus
-import com.features.ui.InputTextField
+import com.features.ui.textInput.InputTextField
 import com.features.ui.theme.MainTheme
 
 @OptIn(ExperimentalComposeUiApi::class)

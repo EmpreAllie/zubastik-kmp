@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingState
-import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.ui.Res
 import com.features.ui.chatWithZub
 import com.features.ui.teethType

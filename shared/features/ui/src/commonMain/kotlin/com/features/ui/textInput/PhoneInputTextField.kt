@@ -1,4 +1,4 @@
-package com.features.ui
+package com.features.ui.textInput
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

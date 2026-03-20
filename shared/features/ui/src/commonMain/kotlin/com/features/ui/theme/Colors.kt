@@ -15,12 +15,18 @@ sealed class Colors {
     abstract val black: Color
     abstract val red: Color
     abstract val gray: Color
+    abstract val darkGray: Color
+    abstract val lightGray: Color
     abstract val green: Color
     abstract val transparent: Color
     abstract val button: Color
     abstract val selectedButton: Color
     abstract val containerBackground: Color
     abstract val toothStroke: Color
+    abstract val toothSelected: Color
+    abstract val toothProblematic: Color
+    abstract val toothMissing: Color
+
 
 
     data class Light(
@@ -36,12 +42,17 @@ sealed class Colors {
         override val black: Color = Color(0xFF000000),
         override val red: Color = Color(0xFFFF0000),
         override val gray: Color = Color(0xFF959697),
+        override val darkGray: Color = Color(0xFF474747),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
         override val containerBackground: Color = Color(0xFFF2F7FF),
         override val toothStroke: Color = Color(0xFFB1BDCC),
+        override val toothSelected: Color = Color(0xFFCFE3FF),
+        override val toothProblematic: Color = Color(0xFFFFF697),
+        override val toothMissing: Color = Color(0xFF787878),
+        override val lightGray: Color = Color(0xFF959697)
     ) : Colors()
 
     data class Dark(
@@ -57,12 +68,17 @@ sealed class Colors {
         override val black: Color = Color(0xFF000000),
         override val red: Color = Color(0xFFFF0000),
         override val gray: Color = Color(0xFF959697),
+        override val darkGray: Color = Color(0xFF474747),
         override val green: Color = Color(0xFF76BC1D),
         override val transparent: Color = Color(0x00000000),
         override val button: Color = Color(0xFFCFE3FF),
         override val selectedButton: Color = Color(0xFF94C1FF),
         override val containerBackground: Color = Color(0xFFF2F7FF),
         override val toothStroke: Color = Color(0xFFB1BDCC),
+        override val toothSelected: Color = Color(0xFFCFE3FF),
+        override val toothProblematic: Color = Color(0xFFFFF697),
+        override val toothMissing: Color = Color(0xFF787878),
+        override val lightGray: Color = Color(0xFF959697)
     ) : Colors()
 }
 

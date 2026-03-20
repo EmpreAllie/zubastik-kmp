@@ -1,7 +1,6 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,15 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.OnboardingEvents
+import com.features.teeth.ui.InteractiveTeethMap
 import com.features.teeth.ui.TeethMapPanel
 import com.features.ui.Res
 import com.features.ui.button.MainButton
 import com.features.ui.consent
-import com.features.ui.next
 import com.features.ui.nextStar
 import com.features.ui.teethProfileText1
 import com.features.ui.teethProfileText2
@@ -57,15 +55,7 @@ fun OnboardingTeethContent(
             textAlign = TextAlign.Left
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(MainTheme.colors.white)
-                .padding(16.dp)
-        ) {
-            TeethMapPanel()
-        }
+        InteractiveTeethMap()
 
         MainButton(
             modifier = Modifier.padding(top = 24.dp),

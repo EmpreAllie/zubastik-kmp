@@ -1,4 +1,4 @@
-package com.features.onboard.ui.components.content.inner
+package com.features.onboard.ui.components.content.inner.dialogs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,9 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.core.domain.constants.Constants
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
 import com.features.ui.Res
@@ -34,12 +34,10 @@ import com.features.ui.brushingFrequency
 import com.features.ui.brushingFrequencyHint
 import com.features.ui.button.MainButton
 import com.features.ui.confirm
-import com.features.ui.ic_back_arrow
 import com.features.ui.ic_close_o
 import com.features.ui.ic_dropdown_list
 import com.features.ui.theme.MainTheme
 import com.features.ui.timesADay
-import kotlinx.serialization.builtins.ArraySerializer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -51,15 +49,17 @@ fun OnboardingBrushingDialog(
     onConfirm: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val items = (0..5).toList()
-    var selectedValue by remember { mutableStateOf(items[1]) }
+    var selectedValue by remember { mutableStateOf(1) }
 
     Dialog(
         onDismissRequest = { onDismiss() }
     ) {
         Column (
             modifier = Modifier
-                .background(color = MainTheme.colors.containerBackground, shape = RoundedCornerShape(size = 20.dp))
+                .background(
+                    color = MainTheme.colors.containerBackground,
+                    shape = RoundedCornerShape(size = 20.dp)
+                )
                 .padding(16.dp)
         ) {
 
@@ -128,18 +128,18 @@ fun OnboardingBrushingDialog(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
-                        items.forEach { item ->
+                        repeat(Constants.Business.MAX_BRUSHING_FREQUENCY) { index ->
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        text = item.toString() + stringResource(Res.string.timesADay),
+                                        text = index.toString() + stringResource(Res.string.timesADay),
                                         style = MainTheme.typography.onboardingBrushingDialog.brushingFrequencyListItem
                                     )
                                 },
                                 onClick = {
-                                    selectedValue = item
+                                    selectedValue = index
                                     expanded = false
-                                    onEvent(OnboardingEvents.OnBrushingDialogCountChanged(item))
+                                    onEvent(OnboardingEvents.OnBrushingDialogCountChanged(index))
                                 }
                             )
                         }

@@ -64,6 +64,7 @@ kotlin {
             implementation(projects.shared.features.ui)
             implementation(projects.shared.features.auth)
             implementation(projects.shared.features.onboard)
+            implementation(projects.shared.features.teeth)
             implementation(projects.shared.features.teeth.ui)
 
 

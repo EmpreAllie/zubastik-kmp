@@ -8,7 +8,7 @@ import com.features.base.domain.enum.Screen
 import com.features.onboard.presentation.OnboardingViewModel
 import com.features.onboard.presentation.model.OnboardingEffects
 import com.features.onboard.presentation.model.OnboardingEvents
-import com.features.onboard.presentation.model.utils.OnboardingScreenState
+import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.onboard.ui.components.content.OnboardingScreenContent
 import com.features.ui.extension.BackHandler
 import com.root.presentation.RootViewModel

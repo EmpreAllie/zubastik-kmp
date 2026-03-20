@@ -1,14 +1,14 @@
 package com.features.onboard.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.core.data.utils.DateTimeManager
 import com.features.base.presentation.model.BaseViewModel
 import com.features.onboard.presentation.model.OnboardingEffects
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
-import com.features.onboard.presentation.model.utils.Author
-import com.features.onboard.presentation.model.utils.ChatMessage
-import com.features.onboard.presentation.model.utils.OnboardingScreenState
-import com.features.onboard.presentation.model.utils.OnboardingStep
+import com.features.onboard.presentation.model.chat.ChatMessage
+import com.features.onboard.presentation.model.state.OnboardingScreenState
+import com.features.onboard.presentation.model.state.OnboardingStep
 import com.features.ui.Res
 import com.features.ui.askBrushing
 import com.features.ui.iBrushMyTeeth
@@ -18,11 +18,6 @@ import com.features.ui.timesADay
 import com.features.ui.whatsYourName
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.stringResource
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class OnboardingViewModel(
 
@@ -32,147 +27,15 @@ class OnboardingViewModel(
         when (event) {
 
             // Отображение двух первых сообщений - от Зубастика и от пользователя
-            OnboardingEvents.OnStartChatClicked -> {
+            OnboardingEvents.OnStartChatClicked -> processClick()
 
-                viewModelScope.launch {
-                    updateState {
-                        it.copy(
-                            screenState = OnboardingScreenState.CHAT
-                        )
-                    }
+            OnboardingEvents.OnAlreadyFamiliarClicked -> sendEffect(OnboardingEffects.NavigateToMain)
 
-                    showNextMessage()
+            OnboardingEvents.OnExitOnboardingClicked -> sendEffect(OnboardingEffects.NavigateToMain)
 
-                    delay(1000)
+            OnboardingEvents.OnNextClicked -> processNext()
 
-                    showFirstUserReply()
-                }
-
-            }
-
-            OnboardingEvents.OnAlreadyFamiliarClicked -> {
-                sendEffect(OnboardingEffects.NavigateToMain)
-            }
-
-            OnboardingEvents.OnExitOnboardingClicked -> {
-                sendEffect(OnboardingEffects.NavigateToMain)
-            }
-
-            OnboardingEvents.OnNextClicked -> {
-                when (state.value.curStep) {
-                    OnboardingStep.ASK_NAME -> {
-
-                        viewModelScope.launch {
-                            val enteredName = state.value.userTextInput
-
-                            updateState {
-                                it.copy(
-                                    userName = enteredName,
-                                    curStep = OnboardingStep.ASK_AGE,
-                                    userTextInput = ""
-                                )
-                            }
-
-                            delay(1000)
-
-                            showNextMessage()
-
-                            delay(1000)
-
-                            showSecondUserReply()
-                        }
-                    }
-
-                    OnboardingStep.ASK_AGE -> {
-                        viewModelScope.launch {
-                            val enteredAge = state.value.userTextInput.toIntOrNull()
-
-                            updateState {
-                                it.copy(
-                                    userAge = enteredAge,
-                                    curStep = OnboardingStep.ASK_BRUSHING
-                                )
-                            }
-
-
-                            delay(1000)
-
-                            showNextMessage()
-                        }
-                    }
-
-                    OnboardingStep.ASK_BRUSHING -> {
-                        updateState {
-                            it.copy(
-                                isBrushingDialogVisible = true
-                            )
-                        }
-                    }
-
-                    OnboardingStep.COMPLETE -> {
-                        updateState {
-                            it.copy(
-                                screenState = OnboardingScreenState.TEETH
-                            )
-                        }
-                    }
-
-                }
-            }
-
-            OnboardingEvents.OnBackClicked -> {
-                println("ZUB_DEBUG: Back clicked. Current messages size: ${state.value.chatMessages.size}")
-                if (state.value.screenState == OnboardingScreenState.TEETH) {
-                    updateState {
-                        it.copy(
-                            screenState = OnboardingScreenState.CHAT,
-                            curStep = OnboardingStep.COMPLETE
-                        )
-                    }
-                    return@onEvent
-                }
-
-                when (state.value.curStep) {
-                    OnboardingStep.ASK_NAME -> {
-                        updateState {
-                            it.copy(
-                                screenState = OnboardingScreenState.WELCOME,
-                                userTextInput = ""
-                            )
-                        }
-                    }
-
-                    OnboardingStep.ASK_AGE -> {
-                        updateState {
-                            it.copy(
-                                curStep = OnboardingStep.ASK_NAME,
-                                chatMessages = state.value.chatMessages.dropLast(2),
-                                userTextInput = ""
-                            )
-                        }
-                    }
-
-                    OnboardingStep.ASK_BRUSHING -> {
-                        updateState {
-                            it.copy(
-                                curStep = OnboardingStep.ASK_AGE,
-                                chatMessages = state.value.chatMessages.dropLast(1),
-                                userTextInput = ""
-                            )
-                        }
-                    }
-
-                    OnboardingStep.COMPLETE -> {
-                        updateState {
-                            it.copy(
-                                curStep = OnboardingStep.ASK_BRUSHING,
-                                chatMessages = state.value.chatMessages.dropLast(1),
-                                isBrushingDialogVisible = true
-                            )
-                        }
-                    }
-                }
-            }
+            OnboardingEvents.OnBackClicked -> processBack()
 
             is OnboardingEvents.OnTextInputChanged -> {
                 updateState {
@@ -198,36 +61,168 @@ class OnboardingViewModel(
                 }
             }
 
-            is OnboardingEvents.OnBrushingDialogConfirm -> {
+            is OnboardingEvents.OnBrushingDialogConfirm -> processBrushingDialog(event.count, event.times)
+
+        }
+    }
+
+    private fun processClick() {
+        viewModelScope.launch {
+            updateState {
+                it.copy(
+                    screenState = OnboardingScreenState.CHAT
+                )
+            }
+
+            showNextMessage()
+
+            delay(1000)
+
+            showUserReply(step = OnboardingStep.ASK_NAME)
+        }
+    }
+
+    private fun processNext() {
+        when (state.value.curStep) {
+            OnboardingStep.ASK_NAME -> {
+
                 viewModelScope.launch {
-                    updateState {
-                        it.copy(
-                            isBrushingDialogVisible = false
-                        )
-                    }
-
-                    delay(500)
-
-                    val finalUserMessage = ChatMessage(
-                        id = state.value.chatMessages.last().id + 1,
-                        textRes = Res.string.iBrushMyTeeth,
-                        formatArgs = listOf(event.count, Res.string.timesADay),
-                        author = Author.USER,
-                        timeStamp = getCurrentTimeStamp()
-                    )
+                    val enteredName = state.value.userTextInput
 
                     updateState {
                         it.copy(
-                            chatMessages = state.value.chatMessages + finalUserMessage,
-                            curStep = OnboardingStep.COMPLETE
+                            userName = enteredName,
+                            curStep = OnboardingStep.ASK_AGE,
+                            userTextInput = ""
                         )
                     }
+
+                    delay(1000)
+
+                    showNextMessage()
+
+                    delay(1000)
+
+                    showUserReply(step = OnboardingStep.ASK_AGE)
                 }
+            }
 
-                //saveBrushingSettings(event.count, event.times)
+            OnboardingStep.ASK_AGE -> {
+                viewModelScope.launch {
+                    val enteredAge = state.value.userTextInput.toIntOrNull()
+
+                    updateState {
+                        it.copy(
+                            userAge = enteredAge,
+                            curStep = OnboardingStep.ASK_BRUSHING
+                        )
+                    }
+
+
+                    delay(1000)
+
+                    showNextMessage()
+                }
+            }
+
+            OnboardingStep.ASK_BRUSHING -> {
+                updateState {
+                    it.copy(
+                        isBrushingDialogVisible = true
+                    )
+                }
+            }
+
+            OnboardingStep.COMPLETE -> {
+                updateState {
+                    it.copy(
+                        screenState = OnboardingScreenState.TEETH
+                    )
+                }
             }
 
         }
+    }
+
+    private fun processBack() {
+        if (state.value.screenState == OnboardingScreenState.TEETH) {
+            updateState {
+                it.copy(
+                    screenState = OnboardingScreenState.CHAT,
+                    curStep = OnboardingStep.COMPLETE
+                )
+            }
+            return
+        }
+
+        when (state.value.curStep) {
+            OnboardingStep.ASK_NAME -> {
+                updateState {
+                    it.copy(
+                        screenState = OnboardingScreenState.WELCOME,
+                        userTextInput = ""
+                    )
+                }
+            }
+
+            OnboardingStep.ASK_AGE -> {
+                updateState {
+                    it.copy(
+                        curStep = OnboardingStep.ASK_NAME,
+                        chatMessages = state.value.chatMessages.dropLast(2),
+                        userTextInput = ""
+                    )
+                }
+            }
+
+            OnboardingStep.ASK_BRUSHING -> {
+                updateState {
+                    it.copy(
+                        curStep = OnboardingStep.ASK_AGE,
+                        chatMessages = state.value.chatMessages.dropLast(1),
+                        userTextInput = ""
+                    )
+                }
+            }
+
+            OnboardingStep.COMPLETE -> {
+                updateState {
+                    it.copy(
+                        curStep = OnboardingStep.ASK_BRUSHING,
+                        chatMessages = state.value.chatMessages.dropLast(1),
+                        isBrushingDialogVisible = true
+                    )
+                }
+            }
+        }
+    }
+
+    private fun processBrushingDialog(count: Int, times: List<String>) {
+        viewModelScope.launch {
+            updateState {
+                it.copy(
+                    isBrushingDialogVisible = false
+                )
+            }
+
+            delay(500)
+
+            val finalUserMessage = ChatMessage.user(
+                id = state.value.chatMessages.last().id + 1,
+                textRes = Res.string.iBrushMyTeeth,
+                formatArgs = listOf(count, Res.string.timesADay),
+                timeStamp = DateTimeManager.getCurrentTimeStamp() //getCurrentTimeStamp()
+            )
+
+            updateState {
+                it.copy(
+                    chatMessages = state.value.chatMessages + finalUserMessage,
+                    curStep = OnboardingStep.COMPLETE
+                )
+            }
+        }
+
+        //saveBrushingSettings(count, times)
     }
 
     private fun generateNewBrushingTimesList(count: Int): List<String> {
@@ -241,48 +236,12 @@ class OnboardingViewModel(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
-    private fun getCurrentTimeStamp(): String {
-        val now = Clock.System.now()
-        val localTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
-
-        val hours = localTime.hour.toString().padStart(2, '0')
-        val minutes = localTime.minute.toString().padStart(2, '0')
-
-        return "$hours:$minutes"
-    }
-
-
-    private fun showFirstUserReply() {
-        when (state.value.curStep) {
-            OnboardingStep.ASK_NAME -> {
-                val userMessage = ChatMessage(
-                    id = state.value.chatMessages.last().id + 1,
-                    textRes = Res.string.myNameIs,
-                    author = Author.USER,
-                    timeStamp = getCurrentTimeStamp(),
-                    createdOnStep = OnboardingStep.ASK_NAME
-                )
-
-                updateState {
-                    it.copy(
-                        chatMessages = it.chatMessages + userMessage
-                    )
-                }
-            }
-
-            else -> {}
-        }
-    }
-
-    private fun showSecondUserReply() {
-
-        val userMessage = ChatMessage(
+    private fun showUserReply(step: OnboardingStep) {
+        val userMessage = ChatMessage.user(
             id = state.value.chatMessages.last().id + 1,
             textRes = Res.string.myNameIs,
-            author = Author.USER,
-            timeStamp = getCurrentTimeStamp(),
-            createdOnStep = OnboardingStep.ASK_AGE
+            timeStamp = DateTimeManager.getCurrentTimeStamp(),
+            step = step
         )
 
         updateState {
@@ -292,15 +251,15 @@ class OnboardingViewModel(
         }
     }
 
+
     private fun showNextMessage() {
         when (state.value.curStep) {
             OnboardingStep.ASK_NAME -> {
 
-                val firstMessage = ChatMessage(
+                val firstMessage = ChatMessage.zub(
                     id = 1,
                     textRes = Res.string.whatsYourName,
-                    author = Author.ZUB,
-                    timeStamp = getCurrentTimeStamp()
+                    timeStamp = DateTimeManager.getCurrentTimeStamp()
                 )
 
                 updateState {
@@ -312,12 +271,11 @@ class OnboardingViewModel(
 
             OnboardingStep.ASK_AGE -> {
                 // Первое сообщение на шаге "Спросить возраст" - сообщение Зубастика "Найс ту мит ю. Сколько тебе лет?"
-                val niceToMeetYouMessage = ChatMessage(
+                val niceToMeetYouMessage = ChatMessage.zub(
                     id = state.value.chatMessages.last().id + 1,
                     textRes = Res.string.niceToMeetYou,
                     formatArgs = listOf(state.value.userName),
-                    author = Author.ZUB,
-                    timeStamp = getCurrentTimeStamp()
+                    timeStamp = DateTimeManager.getCurrentTimeStamp()
                 )
 
                 updateState {
@@ -330,11 +288,10 @@ class OnboardingViewModel(
             OnboardingStep.ASK_BRUSHING -> {
 
                 viewModelScope.launch{
-                    val askBrushingMessage = ChatMessage(
+                    val askBrushingMessage = ChatMessage.zub(
                         id = state.value.chatMessages.last().id + 1,
                         textRes = Res.string.askBrushing,
-                        author = Author.ZUB,
-                        timeStamp = getCurrentTimeStamp()
+                        timeStamp = DateTimeManager.getCurrentTimeStamp()
                     )
 
                     updateState {
