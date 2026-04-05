@@ -27,16 +27,18 @@ fun SplashScreen(
         viewModel.clearEffects()
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SplashEffects.NavigateToScreen -> rootViewModel.onEvent(
-                    RootEvent.OnSetScreen(destination = effect.screen, isClearStack = true)
-                )
+                is SplashEffects.NavigateToScreen -> {
+                    rootViewModel.onEvent(
+                        RootEvent.OnSetScreen(destination = effect.screen, isClearStack = true),
+                    )
+                }
             }
         }
     }
 
     SplashScreenContent(
         state = state,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
     )
 
     state.error?.let { error ->
@@ -45,7 +47,7 @@ fun SplashScreen(
             error = error,
             onClose = {
                 viewModel.onEvent(SplashEvents.OnCloseDialog)
-            }
+            },
         )
     }
 }

@@ -1,12 +1,12 @@
-package com.features.main.ui.com.features.main.ui.model
+package com.features.main.ui.model
 
-import com.features.ui.ic_calendar
-import org.jetbrains.compose.resources.DrawableResource
 import com.features.ui.Res
+import com.features.ui.ic_calendar_check
 import com.features.ui.ic_lectures
 import com.features.ui.ic_neural_network
 import com.features.ui.ic_telemedicine
 import com.features.ui.ic_tooth
+import org.jetbrains.compose.resources.DrawableResource
 
 sealed class BottomNavItem(
     val route: String,
@@ -14,7 +14,7 @@ sealed class BottomNavItem(
 ) {
     data object Calendar: BottomNavItem(
         route = "calendar",
-        icon = Res.drawable.ic_calendar
+        icon = Res.drawable.ic_calendar_check
     )
 
     data object Teeth: BottomNavItem(
@@ -36,5 +36,15 @@ sealed class BottomNavItem(
         route = "neural_network",
         icon = Res.drawable.ic_neural_network
     )
+
+    companion object {
+        val items get() = listOf(
+            Calendar,
+            Teeth,
+            Telemedicine,
+            NeuralNetwork,
+            Lectures
+        )
+    }
 
 }

@@ -43,7 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OnboardingBrushingDialog(
-    state: OnboardingState,
+    brushingTimes: List<String>,
     onEvent: (OnboardingEvents) -> Unit,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
@@ -147,7 +147,7 @@ fun OnboardingBrushingDialog(
                 }
 
                 // Поля с выбором времени
-                state.brushingTimes.forEachIndexed { index, time ->
+                brushingTimes.forEachIndexed { index, time ->
                     Spacer(modifier = Modifier.height(12.dp))
                     OnboardingTimeSelectField(
                         time = time,

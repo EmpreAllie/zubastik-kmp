@@ -22,8 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.features.onboard.presentation.model.OnboardingEvents
-import com.features.onboard.presentation.model.OnboardingState
 import com.features.onboard.presentation.model.chat.Author
 import com.features.onboard.presentation.model.chat.ChatMessage
 import com.features.onboard.presentation.model.state.OnboardingStep
@@ -46,25 +44,28 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun MessageItem(
     message: ChatMessage,
-    state: OnboardingState,
-    onEvent: (OnboardingEvents) -> Unit
+    curStep: OnboardingStep,
+    userTextInput: String,
+    userName: String,
+    userAge: Int?,
+    onTextChanged: (String) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
         horizontalArrangement =
-            if (message.author == Author.ZUB)
+            if (message.author == Author.ZUB) {
                 Arrangement.Start
-            else
+            } else {
                 Arrangement.End
+            },
     ) {
-
         // Иконка зубастика
         if (message.author == Author.ZUB) {
             Image(
-                modifier = Modifier
-                    .size(40.dp),
+                modifier = Modifier.size(40.dp),
                 painter = painterResource(Res.drawable.zub),
                 contentDescription = "Zubastik in the chat",
             )
@@ -72,131 +73,140 @@ fun MessageItem(
         }
 
         Column(
-            modifier = Modifier
-                .weight(1f, fill = false)
-                .background(
-                    color = MainTheme.colors.white,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier =
+                Modifier
+                    .weight(1f, fill = false)
+                    .background(
+                        color = MainTheme.colors.white,
+                        shape = RoundedCornerShape(16.dp),
+                    ).padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalAlignment =
-                if (message.author == Author.ZUB)
+                if (message.author == Author.ZUB) {
                     Alignment.Start
-                else
+                } else {
                     Alignment.End
+                },
         ) {
-
-
             // Имя отправителя
             Text(
                 text =
-                    if (message.author == Author.ZUB)
+                    if (message.author == Author.ZUB) {
                         stringResource(Res.string.zubastik)
-                    else
-                        stringResource(Res.string.me),
+                    } else {
+                        stringResource(Res.string.me)
+                    },
                 color = MainTheme.colors.secondary,
-                style = MainTheme.typography.message.author
+                style = MainTheme.typography.message.author,
             )
 
-
-
             Spacer(modifier = Modifier.height(4.dp))
-
 
             // Содержимое сообщения
             if (message.author == Author.USER && message.createdOnStep != null) {
                 InlineMessageTextField(
-                    text = when (message.createdOnStep) {
-                        OnboardingStep.ASK_NAME -> if (state.curStep == OnboardingStep.ASK_NAME) state.userTextInput else state.userName
-                        OnboardingStep.ASK_AGE -> if (state.curStep == OnboardingStep.ASK_AGE) state.userTextInput else (state.userAge?.toString() ?: "") // TODO: нужно передать state
-                        else -> ""
-                    },
-
-                    onTextChange = { newText ->
-                        onEvent(OnboardingEvents.OnTextInputChanged(newText))
-                    },
-
-                    hint = when (message.createdOnStep) {
-                        OnboardingStep.ASK_NAME -> stringResource(Res.string.hintYourName)
-
-                        OnboardingStep.ASK_AGE -> stringResource(Res.string.hintYourAge)
-
-                        else -> ""
-                    },
-
-                    prefix = when (message.createdOnStep) {
-                        OnboardingStep.ASK_NAME -> stringResource(Res.string.myNameIs)
-                        OnboardingStep.ASK_AGE -> stringResource(Res.string.iAm)
-                        else -> null
-                    },
-
-                    postfix = when (message.createdOnStep) {
-                        OnboardingStep.ASK_AGE -> stringResource(Res.string.yearsOld)
-                        else -> null
-                    },
-
-                    enabled = state.curStep == message.createdOnStep
-                )
-            }
-            else {
-                Text(
-                    text = buildAnnotatedString {
-                        /*
-                        message.textRes?.let { res ->
-                            append(stringResource(res, *message.formatArgs.toTypedArray()))
-                        }
-                         */
-
-                        message.textRes?.let { res ->
-                            val finalArgs = message.formatArgs.map { arg ->
-                                if (arg is StringResource) {
-                                    stringResource(arg)
+                    text =
+                        when (message.createdOnStep) {
+                            OnboardingStep.ASK_NAME -> {
+                                if (curStep == OnboardingStep.ASK_NAME) {
+                                    userTextInput
+                                } else {
+                                    userName
                                 }
-                                else {
-                                    arg
-                                }
-                            }.toTypedArray()
-
-                            append(stringResource(res, *finalArgs))
-                        }
-
-                        message.simpleText?.let {
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
-                                append(it)
                             }
-                        }
-                    },
+
+                            OnboardingStep.ASK_AGE -> {
+                                if (curStep == OnboardingStep.ASK_AGE) {
+                                    userTextInput
+                                } else {
+                                    (userAge?.toString() ?: "")
+                                }
+                            }
+
+                            else -> {
+                                ""
+                            }
+                        },
+                    onTextChange = onTextChanged,
+                    hint =
+                        when (message.createdOnStep) {
+                            OnboardingStep.ASK_NAME -> stringResource(Res.string.hintYourName)
+                            OnboardingStep.ASK_AGE -> stringResource(Res.string.hintYourAge)
+                            else -> ""
+                        },
+                    prefix =
+                        when (message.createdOnStep) {
+                            OnboardingStep.ASK_NAME -> stringResource(Res.string.myNameIs)
+                            OnboardingStep.ASK_AGE -> stringResource(Res.string.iAm)
+                            else -> null
+                        },
+                    postfix =
+                        when (message.createdOnStep) {
+                            OnboardingStep.ASK_AGE -> stringResource(Res.string.yearsOld)
+                            else -> null
+                        },
+                    enabled = curStep == message.createdOnStep,
+                )
+            } else {
+                Text(
+                    text =
+                        buildAnnotatedString {
+                            message.textRes?.let { res ->
+                                val finalArgs =
+                                    message.formatArgs
+                                        .map { arg ->
+                                            if (arg is StringResource) {
+                                                stringResource(arg)
+                                            } else {
+                                                arg
+                                            }
+                                        }.toTypedArray()
+
+                                append(
+                                    stringResource(
+                                        resource = res,
+                                        formatArgs = finalArgs,
+                                    ),
+                                )
+                            }
+
+                            message.simpleText?.let {
+                                withStyle(
+                                    style =
+                                        SpanStyle(
+                                            fontWeight = FontWeight.Bold,
+                                            textDecoration = TextDecoration.Underline,
+                                        ),
+                                ) {
+                                    append(it)
+                                }
+                            }
+                        },
                     color = MainTheme.colors.secondary,
-                    style = MainTheme.typography.message.text
+                    style = MainTheme.typography.message.text,
                 )
             }
-
-
 
             Spacer(modifier = Modifier.height(4.dp))
-
-
 
             // Время отправки
             Text(
                 modifier =
-                    if (message.author == Author.ZUB)
+                    if (message.author == Author.ZUB) {
                         Modifier.align(Alignment.End)
-                    else
-                        Modifier.align(Alignment.Start),
+                    } else {
+                        Modifier.align(Alignment.Start)
+                    },
                 text = message.timeStamp,
                 color = MainTheme.colors.black.copy(alpha = 0.4f),
-                style = MainTheme.typography.message.time
+                style = MainTheme.typography.message.time,
             )
         }
-
 
         // Иконка юзера
         if (message.author == Author.USER) {
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                modifier = Modifier
-                    .size(40.dp),
+                modifier = Modifier.size(40.dp),
                 painter = painterResource(Res.drawable.user),
                 contentDescription = "User in the chat",
             )

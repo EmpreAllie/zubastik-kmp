@@ -14,7 +14,4 @@ data class TeethState(
 ) : BaseState(
     isLoading = isLoading,
     error = error
-) {
-    val selectedTooth: Tooth?
-        get() = teeth.find{ it.id == selectedToothId }
-}
+)

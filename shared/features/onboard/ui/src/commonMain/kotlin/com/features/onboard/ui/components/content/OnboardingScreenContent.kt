@@ -67,26 +67,6 @@ fun OnboardingScreenContent(
 
             Spacer(modifier = Modifier.height(state.screenState.upperSpaceHeight))
 
-/*
-            val boxBaseModifier = Modifier
-                .fillMaxWidth()
-                .shadow(
-                    elevation = 1.dp,
-                    shape = RoundedCornerShape(32.dp)
-                )
-                .clip(RoundedCornerShape(32.dp))
-                .background(color = MainTheme.colors.containerBackground)
-                .padding(vertical = 8.dp, horizontal = 24.dp)
-
-            val finalBoxModifier = when (state.screenState) {
-                OnboardingScreenState.WELCOME, OnboardingScreenState.CHAT -> {
-                    boxBaseModifier.weight(1f)
-                }
-
-                else -> {
-                    boxBaseModifier
-                }
-            }*/
 
             // Контейнер для чата/всего остального
             Box(
@@ -208,7 +188,7 @@ fun OnboardingScreenContent(
         // Диалоговое окно с частотой чистки зубов
         if (state.isBrushingDialogVisible) {
             OnboardingBrushingDialog(
-                state = state,
+                brushingTimes = state.brushingTimes,
                 onEvent = onEvent,
                 onConfirm = {
                     onEvent(OnboardingEvents.OnBrushingDialogConfirm(

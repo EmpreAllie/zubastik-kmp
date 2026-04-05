@@ -26,8 +26,15 @@ sealed class Colors {
     abstract val toothSelected: Color
     abstract val toothProblematic: Color
     abstract val toothMissing: Color
-
-
+    abstract val bottomNavBarBackground: Color
+    abstract val eventBlue: Color
+    abstract val eventRed: Color
+    abstract val eventLightBlue: Color
+    abstract val eventOrange: Color
+    abstract val eventTiffany: Color
+    abstract val weekDaysGray: Color
+    abstract val eventTimeGray: Color
+    abstract val timeSelectorBoxGray: Color
 
     data class Light(
         override val primary: Color = Color(0xFFD0E4FF), // голубой для фона
@@ -52,7 +59,16 @@ sealed class Colors {
         override val toothSelected: Color = Color(0xFFCFE3FF),
         override val toothProblematic: Color = Color(0xFFFFF697),
         override val toothMissing: Color = Color(0xFF787878),
-        override val lightGray: Color = Color(0xFF959697)
+        override val lightGray: Color = Color(0xFF959697),
+        override val bottomNavBarBackground: Color = Color(0xFFEDF4FF),
+        override val eventBlue: Color = Color(0xFF0265DC),
+        override val eventRed: Color = Color(0xFFFF025D),
+        override val eventLightBlue: Color = Color(0xFF689BFE),
+        override val eventOrange: Color = Color(0xFFFF9A02),
+        override val eventTiffany: Color = Color(0xFF07D7D7),
+        override val weekDaysGray: Color = Color(0xFF292929),
+        override val eventTimeGray: Color = Color(0xFF666666),
+        override val timeSelectorBoxGray: Color = Color(0xFFE3E3E3),
     ) : Colors()
 
     data class Dark(
@@ -78,11 +94,21 @@ sealed class Colors {
         override val toothSelected: Color = Color(0xFFCFE3FF),
         override val toothProblematic: Color = Color(0xFFFFF697),
         override val toothMissing: Color = Color(0xFF787878),
-        override val lightGray: Color = Color(0xFF959697)
+        override val lightGray: Color = Color(0xFF959697),
+        override val bottomNavBarBackground: Color = Color(0xFFEDF4FF),
+        override val eventBlue: Color = Color(0xFF0265DC),
+        override val eventRed: Color = Color(0xFFFF025D),
+        override val eventLightBlue: Color = Color(0xFF689BFE),
+        override val eventOrange: Color = Color(0xFFFF9A02),
+        override val eventTiffany: Color = Color(0xFF07D7D7),
+        override val weekDaysGray: Color = Color(0xFF292929),
+        override val eventTimeGray: Color = Color(0xFF666666),
+        override val timeSelectorBoxGray: Color = Color(0xFFE3E3E3),
     ) : Colors()
 }
 
 fun Color.invert() = Color(1f - red, 1f - green, 1f - blue, alpha)
+
 fun String.toColorInt(): Int {
     val hex = this.removePrefix("#")
     return when (hex.length) {

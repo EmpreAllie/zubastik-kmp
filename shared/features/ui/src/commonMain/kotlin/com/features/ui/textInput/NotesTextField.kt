@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -28,40 +29,43 @@ fun NotesTextField(
     hintText: String,
     maxLength: Int = 150,
     textStyle: TextStyle = MainTheme.typography.teeth.inputTextField,
-    minHeight: Dp = 80.dp
+    minHeight: Dp = 80.dp,
+    textAndFocusedBorderColor: Color,
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
     BasicTextField(
         value = text,
         onValueChange = {
-            if (it.length <= maxLength)
+            if (it.length <= maxLength) {
                 onTextChange(it)
+            }
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = minHeight)
-            .onFocusChanged { isFocused = it.isFocused }
-            .border(
-                width = 1.dp,
-                color = if (isFocused) MainTheme.colors.secondary else MainTheme.colors.lightGray,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(12.dp),
-        textStyle = textStyle.copy(
-            color = if (isFocused) MainTheme.colors.secondary else MainTheme.colors.lightGray
-        ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = minHeight)
+                .onFocusChanged { isFocused = it.isFocused }
+                .border(
+                    width = 1.dp,
+                    color = if (isFocused) textAndFocusedBorderColor else MainTheme.colors.lightGray,
+                    shape = RoundedCornerShape(10.dp),
+                ).padding(12.dp),
+        textStyle =
+            textStyle.copy(
+                color = if (isFocused) textAndFocusedBorderColor else MainTheme.colors.lightGray,
+            ),
         decorationBox = { innerTextField ->
             Box {
                 if (text.isEmpty()) {
                     Text(
                         text = hintText,
                         style = textStyle,
-                        color = MainTheme.colors.lightGray
+                        color = MainTheme.colors.lightGray,
                     )
                 }
                 innerTextField()
             }
-        }
+        },
     )
 }

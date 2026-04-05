@@ -33,6 +33,7 @@ kotlin {
             implementation(projects.shared.features.auth)
             implementation(projects.shared.features.onboard)
             implementation(projects.shared.features.teeth)
+            implementation(projects.shared.features.calendar)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)
@@ -63,6 +64,4 @@ android {
             matchingFallbacks.add("prod")
         }
     }
-
-
 }

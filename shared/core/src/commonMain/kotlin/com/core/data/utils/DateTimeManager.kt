@@ -5,10 +5,9 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-object DateTimeManager {
-
+class DateTimeManager {
     @OptIn(ExperimentalTime::class)
-    public fun getCurrentTimeStamp(): String {
+    fun getCurrentTimeStamp(): String {
         val now = Clock.System.now()
         val localTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
 
@@ -17,5 +16,4 @@ object DateTimeManager {
 
         return "$hours:$minutes"
     }
-
 }

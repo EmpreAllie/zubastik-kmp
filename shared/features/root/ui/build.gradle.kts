@@ -5,15 +5,16 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
 }
 
-val features = listOf(
-    projects.shared.core,
-    projects.shared.entity,
-    projects.shared.features.base,
-    projects.shared.features.ui,
-    projects.shared.features.root,
-    projects.shared.features.splash,
-    projects.shared.features.splash.ui,
-)
+val features =
+    listOf(
+        projects.shared.core,
+        projects.shared.entity,
+        projects.shared.features.base,
+        projects.shared.features.ui,
+        projects.shared.features.root,
+        projects.shared.features.splash,
+        projects.shared.features.splash.ui,
+    )
 
 kotlin {
     androidTarget()
@@ -24,7 +25,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "root-ui"
@@ -52,6 +53,8 @@ kotlin {
             implementation(projects.shared.features.auth.ui)
             implementation(projects.shared.features.main.ui)
             implementation(projects.shared.features.onboard.ui)
+            implementation(projects.shared.features.teeth.ui)
+            implementation(projects.shared.features.calendar.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

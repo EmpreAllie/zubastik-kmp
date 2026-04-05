@@ -24,10 +24,9 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        maven { url = uri("https://jitpack.io")}
+        maven { url = uri("https://jitpack.io") }
     }
 }
-
 
 rootProject.name = "Zubastik"
 include(":androidApp")
@@ -53,5 +52,6 @@ include(":shared:features:teeth")
 include(":shared:features:teeth:ui")
 include(":shared:features:main")
 include(":shared:features:main:ui")
+include(":shared:features:calendar")
+include(":shared:features:calendar:ui")
 include(":iosExport")
-

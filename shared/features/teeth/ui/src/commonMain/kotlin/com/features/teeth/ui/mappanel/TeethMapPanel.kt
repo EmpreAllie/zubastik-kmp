@@ -1,12 +1,12 @@
-package com.features.teeth.ui
+package com.features.teeth.ui.mappanel
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Matrix
@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import com.features.teeth.domain.model.Tooth
 import com.features.teeth.domain.model.ToothStatus
@@ -34,7 +33,7 @@ import kotlin.collections.mutableMapOf
 fun TeethMapPanel(
     teeth: List<Tooth>,
     selectedToothId: Int?,
-    onToothClick: (Int?) -> Unit
+    onToothClick: (Int?) -> Unit,
 ) {
     val incisor1Path: Path = rememberIncisor1Path()
     val incisor2Path: Path = rememberIncisor2Path()
@@ -55,23 +54,25 @@ fun TeethMapPanel(
     val defaultColor = MainTheme.colors.white
 
     Canvas(
-        modifier = Modifier
-            .fillMaxSize()
-            .aspectRatio(0.75f)
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = { offset ->
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .aspectRatio(0.75f)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { offset ->
 
-                        val clickedToothEntry = teethDrawPaths.entries.find { entry ->
-                            val contains = entry.value.contains(offset)
-                            contains
-                        }
+                            val clickedToothEntry =
+                                teethDrawPaths.entries.find { entry ->
+                                    val contains = entry.value.contains(offset)
+                                    contains
+                                }
 
-                        val clickedToothId = clickedToothEntry?.key
-                        onToothClick(clickedToothId)
-                    }
-                )
-            }
+                            val clickedToothId = clickedToothEntry?.key
+                            onToothClick(clickedToothId)
+                        },
+                    )
+                },
     ) {
         teethDrawPaths.clear()
 
@@ -92,15 +93,13 @@ fun TeethMapPanel(
         val molar1Height = molar1Path.getBounds().height
         val molar2Height = molar2Path.getBounds().height
 
-
-
-
         fun DrawScope.drawQuarter(quarterId: Int) {
-
-
-
-            fun DrawScope.drawAndSaveSingleTooth(id: Int, path: Path, x: Float, y: Float) {
-
+            fun DrawScope.drawAndSaveSingleTooth(
+                id: Int,
+                path: Path,
+                x: Float,
+                y: Float,
+            ) {
                 val m = Matrix()
 
                 m.translate(centerX, centerY)
@@ -109,41 +108,47 @@ fun TeethMapPanel(
 
                 val q = id / 10
                 m.translate(centerX, centerY)
-                when(q) {
+                when (q) {
                     1 -> {}
-                    2 -> m.scale(-1f, 1f)
-                    3 -> m.scale(-1f, -1f)
-                    4 -> m.scale(1f, -1f)
+
+                    2 -> {
+                        m.scale(-1f, 1f)
+                    }
+
+                    3 -> {
+                        m.scale(-1f, -1f)
+                    }
+
+                    4 -> {
+                        m.scale(1f, -1f)
+                    }
                 }
                 m.translate(-centerX, -centerY)
 
-
                 m.translate(globalOffsetX + x, globalOffsetY + y) // перемещаем на координаты зуба
 
-
-                val finalPath = Path().apply {
-                    addPath(path)
-                    transform(m)
-                }
-
+                val finalPath =
+                    Path().apply {
+                        addPath(path)
+                        transform(m)
+                    }
 
                 // сохраняем ID зуба связанным с его Path
                 teethDrawPaths[id] = finalPath
                 val toothData = teeth.find { it.id == id }
 
                 val isSelected = id == selectedToothId
-                val fillColor = when {
-                    isSelected -> selectedColor
-                    toothData?.status == ToothStatus.PROBLEMATIC -> problematicColor
-                    toothData?.status == ToothStatus.MISSING -> missingColor
-                    else -> defaultColor
-                }
+                val fillColor =
+                    when {
+                        isSelected -> selectedColor
+                        toothData?.status == ToothStatus.PROBLEMATIC -> problematicColor
+                        toothData?.status == ToothStatus.MISSING -> missingColor
+                        else -> defaultColor
+                    }
 
                 drawPath(path = path, color = fillColor) // fill
                 drawPath(path = path, style = Stroke(width = 1f), color = strokeColor) // stroke
             }
-
-
 
             // incisor 1
             val x1 = 0f
@@ -171,7 +176,7 @@ fun TeethMapPanel(
             val y4 = (incisor1Height + incisor2Height / 3.1f)
             translate(
                 left = x4,
-                top = y4
+                top = y4,
             ) {
                 drawAndSaveSingleTooth(id = quarterId + 4, path = premolar1Path, x = x4, y = y4)
             }
@@ -181,7 +186,7 @@ fun TeethMapPanel(
             val y5 = incisor1Height + premolar1Height * 1.45f
             translate(
                 left = x5,
-                top = y5
+                top = y5,
             ) {
                 drawAndSaveSingleTooth(id = quarterId + 5, path = premolar2Path, x = x5, y = y5)
             }
@@ -191,7 +196,7 @@ fun TeethMapPanel(
             val y6 = incisor1Height + premolar1Height + premolar2Height * 1.25f
             translate(
                 left = x6,
-                top = y6
+                top = y6,
             ) {
                 drawAndSaveSingleTooth(id = quarterId + 6, path = molar1Path, x = x6, y = y6)
             }
@@ -201,7 +206,7 @@ fun TeethMapPanel(
             val y7 = incisor1Height + premolar1Height + premolar2Height + molar1Height * 1.175f
             translate(
                 left = x7,
-                top = y7
+                top = y7,
             ) {
                 drawAndSaveSingleTooth(id = quarterId + 7, path = molar2Path, x = x7, y = y7)
             }
@@ -211,17 +216,13 @@ fun TeethMapPanel(
             val y8 = incisor1Height + premolar1Height + premolar2Height + molar1Height * 1.15f + molar2Height
             translate(
                 left = x8,
-                top = y8
+                top = y8,
             ) {
                 drawAndSaveSingleTooth(id = quarterId + 8, path = wisdomPath, x = x8, y = y8)
             }
-
         }
 
-
-
         scale(scale = scaleFactor) {
-
             // top left
             translate(left = globalOffsetX, top = globalOffsetY)
             {
@@ -248,7 +249,6 @@ fun TeethMapPanel(
                     drawQuarter(quarterId = 30)
                 }
             }
-
         }
 
         /*
@@ -262,10 +262,8 @@ fun TeethMapPanel(
                 style = Stroke(width = 1f)
             )
         }*/
-
     }
 }
-
 
 fun Path.contains(offset: Offset): Boolean {
     val bounds = this.getBounds()
