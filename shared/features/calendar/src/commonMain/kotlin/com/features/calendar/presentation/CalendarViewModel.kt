@@ -1,6 +1,7 @@
 package com.features.calendar.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.core.data.utils.DateTimeManager
 import com.features.base.presentation.model.BaseViewModel
 import com.features.calendar.data.CalendarRepositoryImpl
 import com.features.calendar.domain.CalendarRepository
@@ -10,7 +11,12 @@ import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.presentation.model.CalendarEffects
 import com.features.calendar.presentation.model.CalendarEvents
 import com.features.calendar.presentation.model.CalendarState
+import com.features.calendar.presentation.model.DefaultTimePickerConfig
 import com.features.calendar.presentation.model.MonthChange
+import com.features.calendar.presentation.model.andMinute
+import com.features.calendar.presentation.model.format
+import com.features.calendar.presentation.model.hour
+import com.features.calendar.presentation.model.minute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -30,12 +36,10 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 class CalendarViewModel(
     private val repository: CalendarRepository,
+    dateTimeManager: DateTimeManager,
 ) : BaseViewModel<CalendarState, CalendarEvents, CalendarEffects>(
         CalendarState(
-            selectedMonthDate =
-                Clock.System.todayIn(TimeZone.currentSystemDefault()).run {
-                    LocalDate(year, month, 1)
-                },
+            selectedMonthDate = dateTimeManager.getCurrentLocalDate(),
         ),
     ) {
     init {
@@ -81,8 +85,9 @@ class CalendarViewModel(
                     it.copy(
                         isDialogVisible = false,
                         isInAddEventMode = false,
-                        selectedHour = 12,
-                        selectedMinute = 0,
+                        selectedTime =
+                            DefaultTimePickerConfig.CALENDAR_DEFAULT.hour andMinute
+                                DefaultTimePickerConfig.CALENDAR_DEFAULT.minute,
                     )
                 }
             }
@@ -92,43 +97,11 @@ class CalendarViewModel(
             }
 
             CalendarEvents.OnSaveEvent -> {
-                val date = state.value.selectedDateForEdit ?: return
-
-                val formattedTime =
-                    "${state.value.selectedHour.toString().padStart(2, '0')}:" +
-                        state.value.selectedMinute
-                            .toString()
-                            .padStart(2, '0')
-
-                val newEvent =
-                    CalendarEvent(
-                        time = formattedTime,
-                        description = state.value.eventDescription,
-                        status = state.value.newEventStatus,
-                    )
-
-                repository.saveEvent(
-                    date = date,
-                    newEvent = newEvent,
-                )
-
-                updateState {
-                    it.copy(
-                        isInAddEventMode = false,
-                        newEventStatus = CalendarEventStatus.VISITED_DOCTOR,
-                        eventDescription = "",
-                        selectedHour = 12,
-                        selectedMinute = 0,
-                    )
-                }
+                processSaveEvent()
             }
 
             is CalendarEvents.OnDeleteEvent -> {
-                val date = state.value.selectedDateForEdit ?: return
-                repository.deleteEvent(
-                    date = date,
-                    event = event.event,
-                )
+                processDeleteEvent(event.event)
             }
 
             is CalendarEvents.OnTextChanged -> {
@@ -140,11 +113,11 @@ class CalendarViewModel(
             }
 
             is CalendarEvents.OnEventHourChanged -> {
-                updateState { it.copy(selectedHour = event.hour) }
+                updateState { it.copy(selectedTime = event.hour andMinute it.selectedTime.minute) }
             }
 
             is CalendarEvents.OnEventMinuteChanged -> {
-                updateState { it.copy(selectedMinute = event.minute) }
+                updateState { it.copy(selectedTime = it.selectedTime.hour andMinute event.minute) }
             }
         }
     }
@@ -157,14 +130,54 @@ class CalendarViewModel(
                 MonthChange.NEXT -> currentDate.plus(1, DateTimeUnit.MONTH)
             }
 
-        updateState { it.copy(selectedMonthDate = nextDateForMonthChange) }
-
         val updatedDays =
             repository.getMonthDays(
                 date = nextDateForMonthChange,
                 allEvents = repository.allEvents.value,
             )
 
-        updateState { it.copy(days = updatedDays) }
+        updateState {
+            it.copy(
+                selectedMonthDate = nextDateForMonthChange,
+                days = updatedDays,
+            )
+        }
+    }
+
+    private fun processSaveEvent() {
+        val date = state.value.selectedDateForEdit ?: return
+
+        val formattedTime = state.value.selectedTime.format()
+
+        val newEvent =
+            CalendarEvent(
+                time = formattedTime,
+                description = state.value.eventDescription,
+                status = state.value.newEventStatus,
+            )
+
+        repository.saveEvent(
+            date = date,
+            newEvent = newEvent,
+        )
+
+        updateState {
+            it.copy(
+                isInAddEventMode = false,
+                newEventStatus = CalendarEventStatus.VISITED_DOCTOR,
+                eventDescription = "",
+                selectedTime =
+                    DefaultTimePickerConfig.CALENDAR_DEFAULT.hour andMinute
+                        DefaultTimePickerConfig.CALENDAR_DEFAULT.minute,
+            )
+        }
+    }
+
+    private fun processDeleteEvent(event: CalendarEvent) {
+        val date = state.value.selectedDateForEdit ?: return
+        repository.deleteEvent(
+            date = date,
+            event = event,
+        )
     }
 }

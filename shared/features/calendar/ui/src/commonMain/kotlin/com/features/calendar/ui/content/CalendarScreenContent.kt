@@ -77,24 +77,18 @@ fun CalendarScreenContent(
             CalendarBottomLegend()
         }
 
-        if (state.isDialogVisible) {
+        //val selectedDate = state.selectedDateForEdit
+        if (state.isDialogVisible && state.selectedDateForEdit != null) {
             CalendarDialog(
-                state = state,
-                onEvent = onEvent,
                 /*
-                date = state.selectedDateForEdit,
-                events = state.allEvents[state.selectedDateForEdit] ?: emptyList(),
+                selectedDate = selectedDate,
+                events = state.allEvents[selectedDate] ?: emptyList(),
                 isInAddEventMode = state.isInAddEventMode,
                 eventDescription = state.eventDescription,
                 newEventStatus = state.newEventStatus,
-                selectedHour = state.selectedHour,
-                onTextChange = { newText -> onEvent(CalendarEvents.OnTextChanged(newText)) },
-                onStatusSelected = { newStatus -> onEvent(CalendarEvents.OnStatusSelected(newStatus)) },
-                onDismiss = { onEvent(CalendarEvents.OnDismissDialog) },
-                onAddEvent = { onEvent(CalendarEvents.OnAddEventClick) },
-                onSaveEvent = { onEvent(CalendarEvents.OnSaveEvent) },
-                onDeleteEvent = { event -> onEvent(CalendarEvents.OnDeleteEvent(event)) },
-                onTimeChanged = { hour}*/
+                selectedTime = state.selectedTime,*/
+                state = state,
+                onEvent = onEvent,
             )
         }
     }

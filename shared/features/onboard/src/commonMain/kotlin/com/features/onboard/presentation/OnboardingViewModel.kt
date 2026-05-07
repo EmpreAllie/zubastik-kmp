@@ -119,7 +119,7 @@ class OnboardingViewModel(
     }
 
     private fun processAgeStep() {
-        val enteredAge = state.value.userTextInput.toIntOrNull()
+        val enteredAge = state.value.userTextInput.toUIntOrNull()
         updateState {
             it.copy(
                 userAge = enteredAge,
@@ -131,7 +131,7 @@ class OnboardingViewModel(
 
     private fun executeSequence(step: OnboardingStep, count: Int = 0) {
         viewModelScope.launch {
-            repository.getSequence(step).collect { action ->
+            repository.sequence(step).collect { action ->
                 when(action) {
                     OnboardingAction.ShowNextZubMessage -> showNextZubMessage()
                     is OnboardingAction.ShowUserReply -> showNextUserMessage(action.step)

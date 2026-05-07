@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.features.calendar.presentation.model.CalendarEvents
 import com.features.calendar.ui.utils.toFullStringResource
+import com.features.calendar.ui.utils.toGenitiveFormat
 import com.features.calendar.ui.utils.toGenitiveStringResource
 import com.features.ui.Res
 import com.features.ui.ic_cross
@@ -36,7 +37,7 @@ fun CalendarDialogHeader(
     ) {
         Column {
             Text(
-                text = "${date.day} ${stringResource(date.month.toGenitiveStringResource())} ${date.year}",
+                text = date.toGenitiveFormat(),
                 style = MainTheme.typography.calendarDialog.selectedDay,
                 color = MainTheme.colors.black,
             )

@@ -47,7 +47,7 @@ fun MessageItem(
     curStep: OnboardingStep,
     userTextInput: String,
     userName: String,
-    userAge: Int?,
+    userAge: UInt?,
     onTextChanged: (String) -> Unit,
 ) {
     Row(

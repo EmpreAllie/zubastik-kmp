@@ -1,5 +1,6 @@
 package com.features.onboard.ui
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,6 +23,13 @@ fun OnboardingScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val lazyListState = rememberLazyListState()
+    LaunchedEffect(state.chatMessages.size) {
+        if (state.chatMessages.isNotEmpty()) {
+            lazyListState.animateScrollToItem(index = 0)
+        }
+    }
+
     val isNotFirstScreen = state.screenState != OnboardingScreenState.WELCOME
     BackHandler(enabled = isNotFirstScreen) {
         viewModel.onEvent(OnboardingEvents.OnBackClicked)
@@ -43,6 +51,7 @@ fun OnboardingScreen(
 
     OnboardingScreenContent(
         state = state,
+        lazyListState = lazyListState,
         onEvent = viewModel::onEvent
     )
 }

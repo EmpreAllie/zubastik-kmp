@@ -6,8 +6,8 @@ import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.ui.theme.MainTheme
 
 @Composable
-fun getEventColor(status: CalendarEventStatus): Color =
-    when (status) {
+fun CalendarEventStatus.getEventColor(): Color =
+    when (this) {
         CalendarEventStatus.VISITED_DOCTOR -> MainTheme.colors.eventBlue
         CalendarEventStatus.CONDITION_CHANGE_PROBLEM -> MainTheme.colors.eventOrange
         CalendarEventStatus.CONDITION_CHANGE_SOLUTION -> MainTheme.colors.eventLightBlue

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class OnboardingRepositoryImpl: OnboardingRepository {
-    override fun getSequence(step: OnboardingStep): Flow<OnboardingAction> = flow {
+    override fun sequence(step: OnboardingStep): Flow<OnboardingAction> = flow {
         when(step) {
             OnboardingStep.ASK_NAME -> {
                 emit(OnboardingAction.ShowNextZubMessage)

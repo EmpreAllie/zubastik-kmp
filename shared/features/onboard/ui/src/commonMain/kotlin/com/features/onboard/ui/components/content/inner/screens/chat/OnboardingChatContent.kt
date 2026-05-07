@@ -27,8 +27,6 @@ fun OnboardingChatContent(
 
             MessageItem(
                 message = message,
-                // state = state,
-                // onEvent = onEvent
                 onTextChanged = { newText ->
                     onEvent(OnboardingEvents.OnTextInputChanged(newText))
                 },

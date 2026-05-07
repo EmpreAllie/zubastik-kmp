@@ -125,7 +125,7 @@ fun EventItem(
                         Modifier
                             .size(24.dp)
                             .clip(RoundedCornerShape(10.dp))
-                            .background(getEventColor(event.status)),
+                            .background(event.status.getEventColor()),
                 )
             }
         }

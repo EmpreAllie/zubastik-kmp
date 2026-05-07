@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.features.calendar.domain.model.CalendarLegendData
 import com.features.ui.Res
 import com.features.ui.completedVisitToDoctor
 import com.features.ui.plannedVisit
@@ -28,6 +29,9 @@ import com.features.ui.theme.MainTheme
 import com.features.ui.toothBrushChange
 import org.jetbrains.compose.resources.stringResource
 
+// Легенда внизу экрана с событиями для календаря
+// (цветные квадратики, тире и описание)
+// "[ ] - Запись ко врачу"
 @Composable
 fun CalendarBottomLegend() {
     Column {
@@ -45,38 +49,38 @@ fun CalendarBottomLegend() {
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Column(
+            LegendColumn(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                LegendItem(
-                    text = stringResource(Res.string.completedVisitToDoctor),
-                    color = MainTheme.colors.eventBlue,
-                )
-
-                LegendItem(
-                    text = stringResource(Res.string.teethConditionMark),
-                    color = MainTheme.colors.eventLightBlue,
-                    isSplit = true,
-                )
-            }
+                items =
+                    listOf(
+                        CalendarLegendData(
+                            color = MainTheme.colors.eventBlue,
+                            text = stringResource(Res.string.completedVisitToDoctor),
+                        ),
+                        CalendarLegendData(
+                            color = MainTheme.colors.eventLightBlue,
+                            text = stringResource(Res.string.teethConditionMark),
+                            isSplit = true,
+                        ),
+                    ),
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Column(
+            LegendColumn(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                LegendItem(
-                    text = stringResource(Res.string.toothBrushChange),
-                    color = MainTheme.colors.eventTiffany,
-                )
-
-                LegendItem(
-                    text = stringResource(Res.string.plannedVisit),
-                    color = MainTheme.colors.eventRed,
-                )
-            }
+                items =
+                    listOf(
+                        CalendarLegendData(
+                            color = MainTheme.colors.eventTiffany,
+                            text = stringResource(Res.string.toothBrushChange),
+                        ),
+                        CalendarLegendData(
+                            color = MainTheme.colors.eventRed,
+                            text = stringResource(Res.string.plannedVisit),
+                        ),
+                    ),
+            )
         }
     }
 }
@@ -136,5 +140,24 @@ private fun LegendItem(
             style = MainTheme.typography.calendar.legendItem,
             color = MainTheme.colors.secondary,
         )
+    }
+}
+
+@Composable
+private fun LegendColumn(
+    modifier: Modifier,
+    items: List<CalendarLegendData>,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items.forEach { item ->
+            LegendItem(
+                text = item.text,
+                color = item.color,
+                isSplit = item.isSplit,
+            )
+        }
     }
 }

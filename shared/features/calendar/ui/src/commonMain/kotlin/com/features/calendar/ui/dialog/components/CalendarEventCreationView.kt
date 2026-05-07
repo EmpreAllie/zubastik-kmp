@@ -23,6 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.presentation.model.CalendarEvents
+import com.features.calendar.presentation.model.Time
+import com.features.calendar.presentation.model.hour
+import com.features.calendar.presentation.model.minute
 import com.features.calendar.ui.utils.getEventColor
 import com.features.calendar.ui.utils.toStringResource
 import com.features.ui.Res
@@ -40,8 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 fun CalendarEventCreationView(
     eventDescription: String,
     newEventStatus: CalendarEventStatus,
-    selectedHour: Int,
-    selectedMinute: Int,
+    selectedTime: Time,
     onEvent: (CalendarEvents) -> Unit,
 ) {
     // "Новое событие"
@@ -124,7 +126,7 @@ fun CalendarEventCreationView(
         WheelTimePicker(
             modifier = Modifier.width(60.dp),
             items = (0..23).map { it.toString().padStart(2, '0') },
-            initialIndex = selectedHour,
+            initialIndex = selectedTime.hour,
             onItemSelected = { newHour ->
                 onEvent(CalendarEvents.OnEventHourChanged(hour = newHour))
             },
@@ -140,7 +142,7 @@ fun CalendarEventCreationView(
         WheelTimePicker(
             modifier = Modifier.width(60.dp),
             items = (0..59).map { it.toString().padStart(2, '0') },
-            initialIndex = selectedMinute,
+            initialIndex = selectedTime.minute,
             onItemSelected = { newMinute ->
                 onEvent(CalendarEvents.OnEventMinuteChanged(minute = newMinute))
             },
@@ -159,28 +161,11 @@ fun StatusColoredBox(
             Modifier
                 .size(35.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(getEventColor(status))
+                .background(status.getEventColor())
                 .border(
                     width = if (isSelected) 2.dp else 0.dp,
                     color = if (isSelected) MainTheme.colors.black else Color.Transparent,
                     shape = RoundedCornerShape(10.dp),
                 ).clickable { onClick(status) },
     )
-}
-
-@Composable
-private fun TimeBox(text: String) {
-    Box(
-        modifier =
-            Modifier
-                .clip(RoundedCornerShape(5.dp))
-                .background(MainTheme.colors.timeSelectorBoxGray)
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-    ) {
-        Text(
-            text = text,
-            style = MainTheme.typography.calendarDialog.timeBoxContent,
-            color = MainTheme.colors.black,
-        )
-    }
 }

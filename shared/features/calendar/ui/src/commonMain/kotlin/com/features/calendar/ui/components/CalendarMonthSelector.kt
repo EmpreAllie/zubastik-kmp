@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.features.calendar.ui.utils.toFormat
 import com.features.calendar.ui.utils.toStringResource
 import com.features.ui.Res
 import com.features.ui.april
@@ -52,7 +53,7 @@ fun CalendarMonthSelector(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = stringResource(selectedMonthDate.month.toStringResource()) + " " + selectedMonthDate.year.toString(),
+            text = selectedMonthDate.toFormat(),
             style = MainTheme.typography.calendar.monthTitle,
             color = MainTheme.colors.black,
             textAlign = TextAlign.Center,

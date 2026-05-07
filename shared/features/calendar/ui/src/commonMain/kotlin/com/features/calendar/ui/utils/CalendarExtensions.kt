@@ -40,8 +40,10 @@ import com.features.ui.toothBrushChange
 import com.features.ui.tuesdayFull
 import com.features.ui.wednesdayFull
 import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 fun Month.toStringResource(): StringResource =
     when (this) {
@@ -95,3 +97,9 @@ fun CalendarEventStatus.toStringResource(): StringResource =
         CalendarEventStatus.BRUSH_CHANGE -> Res.string.toothBrushChange
         CalendarEventStatus.PLANNED_VISIT -> Res.string.plannedVisit
     }
+
+@Composable
+fun LocalDate.toFormat(): String = stringResource(month.toStringResource()) + " " + year.toString()
+
+@Composable
+fun LocalDate.toGenitiveFormat(): String = "$day ${stringResource(month.toGenitiveStringResource())} $year"

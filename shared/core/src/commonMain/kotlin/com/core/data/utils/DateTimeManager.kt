@@ -1,7 +1,9 @@
 package com.core.data.utils
 
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -16,4 +18,12 @@ class DateTimeManager {
 
         return "$hours:$minutes"
     }
+
+    @OptIn(ExperimentalTime::class)
+    fun getCurrentLocalDate(): LocalDate =
+        Clock.System.todayIn(currentTimeZone).run {
+            LocalDate(year, month, 1)
+        }
+
+    val currentTimeZone = TimeZone.currentSystemDefault()
 }

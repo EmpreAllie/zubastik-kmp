@@ -26,6 +26,7 @@ import com.features.calendar.domain.model.CalendarEvent
 import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.presentation.model.CalendarEvents
 import com.features.calendar.presentation.model.CalendarState
+import com.features.calendar.presentation.model.Time
 import com.features.calendar.ui.dialog.components.CalendarDialogHeader
 import com.features.calendar.ui.dialog.components.CalendarEventCreationView
 import com.features.calendar.ui.dialog.components.CalendarEventsList
@@ -48,7 +49,7 @@ fun CalendarDialog(
     state: CalendarState,
     onEvent: (CalendarEvents) -> Unit,
 ) {
-    val selectedDate = state.selectedDateForEdit ?: return
+    val selectedDate = state.selectedDateForEdit!!
     val events = state.allEvents[state.selectedDateForEdit] ?: emptyList()
 
     Dialog(
@@ -100,8 +101,7 @@ fun CalendarDialog(
                 CalendarEventCreationView(
                     eventDescription = state.eventDescription,
                     newEventStatus = state.newEventStatus,
-                    selectedHour = state.selectedHour,
-                    selectedMinute = state.selectedMinute,
+                    selectedTime = state.selectedTime,
                     onEvent = onEvent,
                 )
 

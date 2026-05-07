@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.features.calendar.domain.model.CalendarDay
 import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.ui.utils.getEventColor
+import com.features.ui.extension.conditional
 import com.features.ui.theme.MainTheme
 import kotlinx.datetime.LocalDate
 
@@ -62,9 +63,7 @@ fun DayItem(
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MainTheme.colors.transparent)
-                .then(
-                    if (date != null) Modifier.clickable { onClick(date) } else Modifier,
-                ),
+                .conditional(date != null) { clickable { onClick(date!!) } },
         contentAlignment = Alignment.Center,
     ) {
         if (day.statuses.isNotEmpty()) {
@@ -77,7 +76,7 @@ fun DayItem(
                             Modifier
                                 .weight(1f)
                                 .fillMaxWidth()
-                                .background(getEventColor(status)),
+                                .background(status.getEventColor()),
                     )
                 }
             }
