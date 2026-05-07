@@ -18,7 +18,15 @@ class AuthRepositoryImpl(
     userApi: UserApi
 ) : AuthRepository {
 
-    override var phone: String? = null
+    private var phone: String? = null
+
+    override fun setPhone(phone: String) {
+        this.phone = phone
+    }
+
+    override fun getPhone(): String? {
+        return this.phone
+    }
 
     override suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error> {
 
@@ -28,9 +36,8 @@ class AuthRepositoryImpl(
                 // TODO обращение к серверу
 
                 Result.Success(Unit)
-
-
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Result.Failure(Error.CONNECTION)
             }
         }
@@ -47,7 +54,8 @@ class AuthRepositoryImpl(
             if (code == "1234") {
                 val mockData = AuthData(
                     accessToken = "mock-access-token",
-                    refreshToken = "mock-refresh-token"
+                    refreshToken = "mock-refresh-token",
+                    isNewUser = true
                 )
                 emit(Result.Success(mockData))
             }

@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 
-abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE) : ViewModel() {
+abstract class BaseViewModel<STATE, EVENT, EFFECT>(
+    initialState: STATE,
+) : ViewModel() {
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<STATE> = _state
 
@@ -18,6 +20,7 @@ abstract class BaseViewModel<STATE, EVENT, EFFECT>(initialState: STATE) : ViewMo
     abstract fun onEvent(event: EVENT)
 
     protected fun updateState(reducer: (STATE) -> STATE) = _state.update { reducer(it) }
+
     protected fun sendEffect(effect: EFFECT) {
         _effect.tryEmit(effect)
     }

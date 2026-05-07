@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="appName">Зубастик</string>
+    <string name="zubastik">Zubastik</string>
+
 	<string name="login">Войти</string>
 	<string name="loginWithYandexID">Войти с Яндекс ID</string>
 	<string name="or">или</string>
@@ -12,6 +14,8 @@
 	<string name="resendCode">Повторно отправить код можно будет через %1$s секунд</string>
     <string name="sendCodeAgainTextButton">Отправить снова</string>
 	<string name="code">Код</string>
+    <string name="back">Назад</string>
+
     <string name="checkInternetConnection">Проверьте интернет-соединение</string>
     <string name="unableToSendCode">Не удалось отправить код</string>
 
@@ -20,4 +24,108 @@
     <string name="phoneError">Неверный номер телефона</string>
     <string name="codeError">Неверный код</string>
     <string name="otherError">Что-то пошло не так...</string>
+
+    <!-- Регистрация (онбординг) -->
+    <string name="welcome">Добро пожаловать</string>
+    <string name="onboardingInfo1">Привет, я Зубастик. Готов помочь тебе с первой настройкой приложения!</string>
+    <string name="onboardingInfo1_1">Привет, я </string>
+    <string name="onboardingInfo1_2">. Готов помочь тебе с первой настройкой приложения!</string>
+    <string name="onboardingInfo2">В этом приложении ты можешь отслеживать состояние своей полости рта, записываться к врачу, смотреть или читать полезные материалы, а также пообщаться со мной в отдельном чате!</string>
+    <string name="teethType">Тип зубов</string>
+    <string name="chatWithZub">Диалог с Зубастиком</string>
+    <string name="whatsYourName">Как тебя зовут?</string>
+    <string name="begin">Начать</string>
+    <string name="alreadyFamiliar">Мы уже знакомы</string>
+    <string name="me">Я</string>
+    <string name="myNameIs">Меня зовут </string>
+    <string name="hintYourName">Ваше имя</string>
+    <string name="niceToMeetYou">Приятно познакомиться, %1$s! Сколько тебе лет?</string>
+    <string name="iAm">Мне </string>
+    <string name="yearsOld"> лет.</string>
+    <string name="hintYourAge">Ваш возраст</string>
+    <string name="askBrushing">Ого! А сколько раз в день ты чистишь зубы?</string>
+    <string name="brushingFrequency">Период чистки зубов</string>
+    <string name="brushingFrequencyHint">частота ухода*</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="iBrushMyTeeth">Я чищу зубы %1$s %2$s</string>
+    <string name="timesADay"> раз(а) в день</string>
+    <string name="finish">Завершить</string>
+    <string name="teethProfileText1">Теперь самая сложная часть. Необходимо соотнести зубу его состояние (здоровый, есть проблемы или отсутствует).</string>
+    <string name="teethProfileText2">Не бойся, этот шаг можно пропустить и заполнить позже.</string>
+    <string name="nextStar">Далее*</string>
+    <string name="consent">* Нажимая "Далее", вы соглашаетесь с условиями обработки персональных данных согласно 152-ФЗ.</string>
+
+    <!-- Панель с зубами -->
+    <string name="nothingIsSelected">Ничего не выбрано</string>
+    <string name="tooth">Зуб %1$s</string>
+    <string name="incisor">резец</string>
+    <string name="canine">клык</string>
+    <string name="premolar">премоляр</string>
+    <string name="molar">моляр</string>
+    <string name="wisdomTooth">зуб мудрости</string>
+    <string name="healthy">Здоровый</string>
+    <string name="problematic">Есть проблемы</string>
+    <string name="missing">Отсутствует</string>
+    <string name="edit">Редактировать</string>
+    <string name="status">Состояние</string>
+    <string name="notes">Заметки</string>
+    <string name="notesHint">Введите состояние зуба...</string>
+    <string name="save">Сохранить</string>
+    <string name="teethCondition">Состояние зубов</string>
+
+    <!-- Календарь -->
+    <string name="calendar">Календарь</string>
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+    <string name="januaryGenitive">января</string>
+    <string name="februaryGenitive">февраля</string>
+    <string name="marchGenitive">марта</string>
+    <string name="aprilGenitive">апреля</string>
+    <string name="mayGenitive">мая</string>
+    <string name="juneGenitive">июня</string>
+    <string name="julyGenitive">июля</string>
+    <string name="augustGenitive">августа</string>
+    <string name="septemberGenitive">сентября</string>
+    <string name="octoberGenitive">октября</string>
+    <string name="novemberGenitive">ноября</string>
+    <string name="decemberGenitive">декабря</string>
+    <string name="completedVisitToDoctor">Посещение врача</string>
+    <string name="toothBrushChange">Смена зубной щётки</string>
+    <string name="teethConditionMark">Отметка о состоянии зубов</string>
+    <string name="teethConditionMarkProblem">Отметка о состоянии зубов (проблема)</string>
+    <string name="teethConditionMarkSolution">Отметка о состоянии зубов (решение)</string>
+    <string name="plannedVisit">Запись ко врачу</string>
+    <string name="mondayShort">Пн</string>
+    <string name="tuesdayShort">Вт</string>
+    <string name="wednesdayShort">Ср</string>
+    <string name="thursdayShort">Чт</string>
+    <string name="fridayShort">Пт</string>
+    <string name="saturdayShort">Сб</string>
+    <string name="sundayShort">Вс</string>
+    <string name="mondayFull">Понедельник</string>
+    <string name="tuesdayFull">Вторник</string>
+    <string name="wednesdayFull">Среда</string>
+    <string name="thursdayFull">Четверг</string>
+    <string name="fridayFull">Пятница</string>
+    <string name="saturdayFull">Суббота</string>
+    <string name="sundayFull">Воскресенье</string>
+    <string name="events">События</string>
+    <string name="newEvent">Новое событие</string>
+    <string name="noEventsYet">Пока нет событий</string>
+    <string name="add">Добавить</string>
+    <string name="timeOfEvent">Время события</string>
+    <string name="typeOfEvent">Тип события</string>
+    <string name="enterDescription">Введите описание...</string>
+    <string name="noDescription">Без описания</string>
+
 </resources>

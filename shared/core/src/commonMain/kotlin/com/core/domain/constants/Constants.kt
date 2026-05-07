@@ -19,4 +19,8 @@ object Constants {
     object RequestCode {
     }
 
+    object Business {
+        const val MAX_BRUSHING_FREQUENCY = 5
+    }
+
 }

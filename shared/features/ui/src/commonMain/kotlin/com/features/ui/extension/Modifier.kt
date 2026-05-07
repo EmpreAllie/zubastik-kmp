@@ -16,8 +16,9 @@ import androidx.compose.ui.unit.Dp
 fun Modifier.conditional(
     condition: Boolean,
     modifier: Modifier.() -> Modifier
-): Modifier = if (condition) then(modifier(Modifier))
+): Modifier = if (condition) then (modifier(Modifier))
 else this
+
 
 fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
     this.clickable(
@@ -26,6 +27,7 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         onClick()
     }
 }
+
 
 fun Modifier.dashedBorder(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
     factory = {

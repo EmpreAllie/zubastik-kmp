@@ -8,5 +8,6 @@ interface AuthEffects {
     data object NavigateToCodeInput: AuthEffects
 
     data object NavigateToMain: AuthEffects
+    data object NavigateToOnboarding: AuthEffects
     data class NavigateToLogin(val type: LoginType): AuthEffects
 }

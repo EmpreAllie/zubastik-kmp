@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.entity.model.PhoneNumber
-import com.features.ui.DisabledTextField
-import com.features.ui.InputTextField
+import com.features.ui.textInput.DisabledTextField
+import com.features.ui.textInput.InputTextField
 import com.features.ui.Res
 import com.features.ui.enterNumber
 import com.features.ui.ic_down

@@ -108,3 +108,6 @@ sheets-localizations-generator/
 R.generated.swift
 
 .kotlin
+
+# Claude Code
+CLAUDE.md

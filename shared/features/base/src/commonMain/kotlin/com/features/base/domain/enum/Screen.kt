@@ -9,6 +9,7 @@ enum class Screen: Destination {
     WELCOME,
     PHONE,
     CODE,
+    ONBOARDING,
     MAIN;
 
     override val route: String
