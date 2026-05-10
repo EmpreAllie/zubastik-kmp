@@ -41,7 +41,7 @@ class AuthPhoneViewModel(
 
     private fun sendPhoneNumberToServer() = viewModelScope.launch {
         updateState { it.copy(isLoading = true) }
-        val formattedPhone = state.value.phoneNumber.format()
+        val formattedPhone = state.value.phoneNumber.toE164()
 
         when (val result = repository.sendPhoneNumberToServer(formattedPhone)) {
 
@@ -49,6 +49,7 @@ class AuthPhoneViewModel(
                 updateState { it.copy(isLoading = false) }
 
                 repository.setPhone(state.value.phoneNumber.number)
+                // repository.setPhone(state.value.phoneNumber.toE164())
 
                 sendEffect(AuthEffects.NavigateToCodeInput)
             }

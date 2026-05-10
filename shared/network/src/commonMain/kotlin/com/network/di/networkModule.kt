@@ -2,9 +2,9 @@ package com.network.di
 
 import com.core.data.infrastructure.KeyValueStorage
 import com.core.data.utils.NativeHost
-import com.network.api.apis.PetApi
-import com.network.api.apis.StoreApi
-import com.network.api.apis.UserApi
+import com.network.api.apis.AuthApi
+import com.network.api.apis.ProfileApi
+import com.network.api.models.TokenPair
 import com.network.data.exception.CustomExceptionParser
 import com.network.data.exception.CustomResponseException
 import com.network.data.exception.DeadTokenException
@@ -34,47 +34,34 @@ val networkModule: Module = module {
     val baseUrl: String by lazy { getKoin().get<NativeHost>().getUrl() }
 
     single<Json> { Json { ignoreUnknownKeys = true } }
-    single<HttpClientConfig<*>.() -> Unit> {
-        createHttpClientConfig(
-            authApi = get(),
-            json = get(),
-        )
-    }
 
-    single<UserApi> {
+    single<AuthApi> {
         val httpClient = HttpClient()
-
-        UserApi(
+        AuthApi(
             baseUrl = baseUrl,
             httpClientConfig = createHttpClientConfig(
                 authApi = null,
-                json = get(),
+                json = get()
             ),
             httpClientEngine = httpClient.engine
         )
     }
-    single<PetApi> {
-        val httpClient: HttpClient = get()
 
-        PetApi(
+    single<ProfileApi> {
+        val httpClient = HttpClient()
+        ProfileApi(
             baseUrl = baseUrl,
-            httpClientConfig = get(),
-            httpClientEngine = httpClient.engine
-        )
-    }
-    single<StoreApi> {
-        val httpClient: HttpClient = get()
-
-        StoreApi(
-            baseUrl = baseUrl,
-            httpClientConfig = get(),
+            httpClientConfig = createHttpClientConfig(
+                authApi = get(),
+                json = get()
+            ),
             httpClientEngine = httpClient.engine
         )
     }
 }
 
 private fun createHttpClientConfig(
-    authApi: UserApi? = null,
+    authApi: AuthApi? = null,
     json: Json,
 ): HttpClientConfig<*>.() -> Unit = {
     val keyValueStorage: KeyValueStorage = getKoin().get()
@@ -104,31 +91,41 @@ private fun createHttpClientConfig(
         logger = Logger.DEFAULT
     }
 
-    if (authApi != null && keyValueStorage.isHaveTokens()) {
+    if (authApi != null && keyValueStorage.hasTokens()) {
         install(Auth) {
             bearer {
+
                 loadTokens {
                     val accessToken = keyValueStorage.accessToken
                     val refreshToken = keyValueStorage.refreshToken
 
                     BearerTokens(accessToken.orEmpty(), refreshToken.orEmpty())
                 }
+
                 refreshTokens {
                     try {
-                        /* val refreshToken = keyValueStorage.refreshToken
-                         val result =
-                             authApi.doRefresh(refresh = Refresh(refreshToken))
-                                 .decode<TokenResponse>().result
-                         keyValueStorage.accessToken = result?.accessToken
-                         keyValueStorage.refreshToken = result?.refreshToken
-                         result?.let {
-                             BearerTokens(it.accessToken!!, it.refreshToken!!)
-                         }*/
-                        BearerTokens("", "")
+                        val accessToken = keyValueStorage.accessToken.orEmpty()
+                        val refreshToken = keyValueStorage.refreshToken.orEmpty()
+
+                        val result =
+                            authApi.apiV1AuthRefreshTokenPost(
+                                TokenPair(
+                                    accessToken = accessToken,
+                                    refreshToken = refreshToken
+                                )
+                            ).body()
+
+                        keyValueStorage.accessToken = result.accessToken
+                        keyValueStorage.refreshToken = result.refreshToken
+
+                        BearerTokens(result.accessToken.orEmpty(), result.refreshToken.orEmpty())
                     } catch (e: CustomResponseException) {
                         if (e.isUnauthorized) {
                             keyValueStorage.clearTokens()
-                            throw DeadTokenException(message = e.message)
+                            throw DeadTokenException(
+                                message = e.message,
+                                cause = e
+                            )
                         }
                         throw e
                     } catch (e: Exception) {

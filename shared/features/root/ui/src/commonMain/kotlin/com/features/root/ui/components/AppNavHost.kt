@@ -30,7 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AppNavHost(
     navHostController: NavHostController,
     viewModel: RootViewModel = koinViewModel(),
-    startDestination: Screen = Screen.ONBOARDING,
+    startDestination: Screen = Screen.SPLASH,
 ) {
     setSingletonImageLoaderFactory { context ->
         newImageLoader(context = context, debug = true)

@@ -15,11 +15,9 @@ val authModule: Module = module {
 
     single { TimerRepository }
 
-    // ViewModel'и
     factoryOf(::AuthWelcomeViewModel)
     factoryOf(::AuthPhoneViewModel)
     factoryOf(::AuthCodeViewModel)
 
-    // репозитории
-    single { AuthRepositoryImpl(get()) } bind AuthRepository::class
+    single { AuthRepositoryImpl(get(), get()) } bind AuthRepository::class
 }

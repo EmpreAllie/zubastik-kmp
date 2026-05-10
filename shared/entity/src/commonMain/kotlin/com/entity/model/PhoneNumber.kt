@@ -20,6 +20,8 @@ data class PhoneNumber(
         return "$countryCode$formattedNumber"
     }
 
+    fun toE164(): String = "$countryCode$number"
+
     fun isCorrect(): Boolean {
         // Окей, эта функция отрабатывает правильно и возаращает TRUE только тогда, когда номер полностью введен и начинается с 9
         return number.length == 10 && number.startsWith("9")

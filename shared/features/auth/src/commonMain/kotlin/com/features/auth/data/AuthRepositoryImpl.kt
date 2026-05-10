@@ -1,12 +1,13 @@
 package com.features.auth.data
 
+import com.core.data.infrastructure.KeyValueStorage
 import com.features.auth.domain.AuthData
 import com.features.auth.domain.AuthRepository
-import kotlinx.coroutines.delay
-import com.features.base.domain.model.error.Error
 import com.features.base.domain.Result
-import com.features.base.domain.model.error.AuthErrorType
-import com.network.api.apis.UserApi
+import com.features.base.domain.model.error.Error
+import com.network.api.apis.AuthApi
+import com.network.api.models.ApiV1AuthSendCodePostRequest
+import com.network.api.models.VerifyCodeRequest
 import com.network.domain.model.isConnectionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class AuthRepositoryImpl(
-    userApi: UserApi
+    private val authApi: AuthApi,
+    private val keyValueStorage: KeyValueStorage
 ) : AuthRepository {
 
     private var phone: String? = null
@@ -32,8 +34,9 @@ class AuthRepositoryImpl(
 
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                delay(1000)
-                // TODO обращение к серверу
+
+                // обращение к серверу
+                 authApi.apiV1AuthSendCodePost(ApiV1AuthSendCodePostRequest(phone))
 
                 Result.Success(Unit)
             }
@@ -50,19 +53,24 @@ class AuthRepositoryImpl(
         emit(Result.Loading)
 
         try {
-            delay(1000)
-            if (code == "1234") {
-                val mockData = AuthData(
-                    accessToken = "mock-access-token",
-                    refreshToken = "mock-refresh-token",
-                    isNewUser = true
-                )
-                emit(Result.Success(mockData))
-            }
-            else {
-                emit(Error.AUTH(AuthErrorType.CODE).toResult())
-            }
 
+            val response = authApi.apiV1AuthVerifyCodePost(
+                VerifyCodeRequest(
+                    phone = phone,
+                    code = code
+                )
+            ).body()
+
+            val authData = AuthData(
+                accessToken = response.accessToken.orEmpty(),
+                refreshToken = response.refreshToken.orEmpty(),
+                isNewUser = response.isNewUser ?: false
+            )
+
+            keyValueStorage.accessToken = authData.accessToken
+            keyValueStorage.refreshToken = authData.refreshToken
+
+            emit(Result.Success(authData))
         }
         catch (e: Exception) {
             e.printStackTrace()

@@ -16,5 +16,5 @@ class KeyValueStorage(private val settings: Settings) {
         refreshToken = null
     }
 
-    fun isHaveTokens() = !(accessToken.isNullOrBlank() && refreshToken.isNullOrBlank())
+    fun hasTokens() = !(accessToken.isNullOrBlank() && refreshToken.isNullOrBlank())
 }

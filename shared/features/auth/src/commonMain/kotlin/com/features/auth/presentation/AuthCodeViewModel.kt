@@ -84,7 +84,7 @@ class AuthCodeViewModel(
     private fun verifyCode() = viewModelScope.launch {
         updateState { it.copy(isLoading = true) }
 
-        val phone = state.value.phoneNumber.format()
+        val phone = state.value.phoneNumber.toE164()
         val code = state.value.verificationCode
 
         repository.verifyCode(phone, code).collect { result ->
