@@ -38,7 +38,7 @@ class OnboardingViewModel(
 
             OnboardingEvents.OnAlreadyFamiliarClicked -> sendEffect(OnboardingEffects.NavigateToMain)
 
-            OnboardingEvents.OnExitOnboardingClicked -> sendEffect(OnboardingEffects.NavigateToMain)
+            OnboardingEvents.OnExitOnboardingClicked -> processExitOnboarding()
 
             OnboardingEvents.OnNextClicked -> processNext()
 
@@ -70,6 +70,17 @@ class OnboardingViewModel(
 
             is OnboardingEvents.OnBrushingDialogConfirm -> processBrushingDialog(event.count, event.times)
 
+        }
+    }
+
+    private fun processExitOnboarding() {
+        viewModelScope.launch {
+            repository.sendProfileInfoToServer(
+                name = state.value.userName,
+                age = state.value.userAge?.toInt() ?: 0,
+                timesBrushing = state.value.brushingTimes
+            )
+            sendEffect(OnboardingEffects.NavigateToMain)
         }
     }
 
@@ -174,7 +185,10 @@ class OnboardingViewModel(
         nextMessage?.let { msg ->
             updateState {
                 it.copy(
-                    chatMessages = if (state.value.curStep == OnboardingStep.ASK_NAME) listOf(msg) else it.chatMessages + msg
+                    chatMessages = if (state.value.curStep == OnboardingStep.ASK_NAME)
+                        listOf(msg)
+                    else
+                        it.chatMessages + msg
                 )
             }
         }

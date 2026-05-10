@@ -1,13 +1,24 @@
 package com.features.onboard.data
 
+import com.features.base.domain.Result
 import com.features.onboard.domain.OnboardingAction
 import com.features.onboard.domain.OnboardingRepository
 import com.features.onboard.presentation.model.state.OnboardingStep
+import com.network.api.apis.ProfileApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
+import com.features.base.domain.model.error.Error
+import com.network.api.models.UpdateProfileRequest
+import com.network.domain.model.isConnectionException
 
-class OnboardingRepositoryImpl: OnboardingRepository {
+class OnboardingRepositoryImpl(
+    private val profileApi: ProfileApi
+): OnboardingRepository {
+
     override fun sequence(step: OnboardingStep): Flow<OnboardingAction> = flow {
         when(step) {
             OnboardingStep.ASK_NAME -> {
@@ -36,4 +47,34 @@ class OnboardingRepositoryImpl: OnboardingRepository {
             }
         }
     }
+
+    override suspend fun sendProfileInfoToServer(
+        name: String,
+        age: Int,
+        timesBrushing: List<String>
+    ): Result<Unit, Error> {
+
+        return withContext(Dispatchers.IO) {
+            try {
+
+                profileApi.apiV1ProfilePatch(
+                    UpdateProfileRequest(
+                        name = name,
+                        age = age,
+                        timesBrush = timesBrushing
+                    )
+                )
+
+                Result.Success(Unit)
+            } catch (e: Exception) {
+                if (e.isConnectionException())
+                    Result.Failure(Error.CONNECTION)
+                else
+                    Result.Failure(Error.OTHER(e.message.orEmpty()))
+            }
+        }
+
+
+    }
+
 }
