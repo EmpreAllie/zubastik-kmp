@@ -2,6 +2,7 @@ package com.network.di
 
 import com.core.data.infrastructure.KeyValueStorage
 import com.core.data.utils.NativeHost
+import com.features.base.AuthEventBus
 import com.network.api.apis.AuthApi
 import com.network.api.apis.ProfileApi
 import com.network.api.models.TokenPair
@@ -122,6 +123,9 @@ private fun createHttpClientConfig(
                     } catch (e: CustomResponseException) {
                         if (e.isUnauthorized) {
                             keyValueStorage.clearTokens()
+
+                            AuthEventBus.sendLogout()
+
                             throw DeadTokenException(
                                 message = e.message,
                                 cause = e

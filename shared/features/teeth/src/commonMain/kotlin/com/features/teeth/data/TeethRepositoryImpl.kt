@@ -35,7 +35,7 @@ class TeethRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                println("ZUB_DEBUG: TeethRepo error: ${e.message}")
+
             }
         }
     }
@@ -70,7 +70,7 @@ class TeethRepositoryImpl(
                     )
                 )
             } catch (e: Exception) {
-                println("ZUB_DEBUG: TeethRepo update error: ${e.message}")
+
             }
         }
     }

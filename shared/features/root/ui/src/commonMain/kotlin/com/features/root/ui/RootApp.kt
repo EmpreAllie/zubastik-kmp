@@ -8,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.features.base.AuthEventBus
+import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
 import com.features.root.ui.components.AppNavHost
 import com.features.ui.extension.BackHandler
@@ -18,79 +20,6 @@ import com.root.presentation.model.RootEffect
 import com.root.presentation.model.RootEvent
 import org.koin.compose.viewmodel.koinViewModel
 
-/*
-// СТАРАЯ ВЕРСИЯ
-@Composable
-fun RootApp(
-    viewModel: RootViewModel = koinViewModel(),
-    navHostController: NavHostController = rememberNavController(),
-) {
-
-    LaunchedEffect(Unit) {
-        val basicNavOption = navOptions {
-            popUpTo(Screen.SPLASH.route) {
-                inclusive = false
-            }
-        }
-
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                RootEffect.PopBackStack -> {
-                    navHostController.popBackStack()
-                }//navHostController.handleBackNavigation(basicNavOption)
-
-                is RootEffect.NavigateWithClearStack ->{
-                    navHostController.resetStackAndNavigateTo(effect.destination.route, basicNavOption)
-                }
-
-                is RootEffect.Navigate ->  {
-                    //navHostController.navigate(effect.destination.route, basicNavOption)
-                    navHostController.navigate(effect.destination.route)
-                }
-
-                is RootEffect.ReplaceScreen -> {
-                    val curRoute = navHostController.currentBackStackEntry?.destination?.route
-                    navHostController.replaceScreen(
-                        oldRoute = curRoute,
-                        newRoute = effect.destination.route
-                    )
-                }
-            }
-        }
-    }
-
-    LockScreenOrientation()
-
-    MainTheme {
-        AppNavHost(navHostController = navHostController)
-    }
-}
-
-
-
-private fun NavHostController.handleBackNavigation(basicNavOptions: NavOptions) {
-    val previousRoute = previousBackStackEntry?.destination?.route
-    if (previousRoute != null) popBackStack()
-    else resetStackAndNavigateTo(Screen.MAIN.route, basicNavOptions)
-}
-
-
-
-private fun NavHostController.resetStackAndNavigateTo(route: String, basicNavOptions: NavOptions) {
-    navigate(route, basicNavOptions)
-}
-
-
-
-private fun NavHostController.replaceScreen(oldRoute: String?, newRoute: String) =
-    navigate(newRoute) {
-        oldRoute?.let {
-            popUpTo(it) {
-                inclusive = true
-            }
-        }
-    }
-*/
 
 @Composable
 fun RootApp(
@@ -115,8 +44,10 @@ fun RootApp(
 
     // дргуие эффекты
     LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-
+        AuthEventBus.logoutEvent.collect {
+            viewModel.onEvent(
+                RootEvent.OnSetScreen(destination = Graph.AUTH, isClearStack = true)
+            )
         }
     }
 
