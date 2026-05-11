@@ -37,7 +37,7 @@ fun LoginButtonContainer(
     ) {
         MainButton(
             text = stringResource(Res.string.login),
-            backgroundColor = MainTheme.colors.gray,
+            backgroundColor = MainTheme.colors.lightGray,
             contentColor = MainTheme.colors.black,
             isLoading = isLoading,
             onClick = { onClickLogin(LoginType.PHONE) }

@@ -24,12 +24,19 @@ import com.features.calendar.ui.utils.getEventColor
 import com.features.ui.extension.conditional
 import com.features.ui.theme.MainTheme
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun CalendarDateGrid(
     days: List<CalendarDay>,
     onDayClick: (LocalDate) -> Unit,
 ) {
+    val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
         modifier =
@@ -41,6 +48,7 @@ fun CalendarDateGrid(
     ) {
         items(days) {
             DayItem(
+                today = today,
                 day = it,
                 onClick = onDayClick,
             )
@@ -50,6 +58,7 @@ fun CalendarDateGrid(
 
 @Composable
 fun DayItem(
+    today: LocalDate,
     day: CalendarDay,
     onClick: (LocalDate) -> Unit,
 ) {
@@ -57,12 +66,18 @@ fun DayItem(
 
     val textColor = if (day.statuses.isNotEmpty()) MainTheme.colors.containerBackground else MainTheme.colors.black
 
+    val isToday = today == date
+    val cellBackground = when {
+        isToday -> MainTheme.colors.button
+        else -> MainTheme.colors.transparent
+    }
+
     Box(
         modifier =
             Modifier
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(10.dp))
-                .background(MainTheme.colors.transparent)
+                .background(cellBackground)
                 .conditional(date != null) { clickable { onClick(date!!) } },
         contentAlignment = Alignment.Center,
     ) {

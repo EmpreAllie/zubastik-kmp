@@ -4,21 +4,37 @@ import com.features.teeth.domain.TeethRepository
 import com.features.teeth.domain.model.Tooth
 import com.features.teeth.domain.model.ToothStatus
 import com.features.teeth.domain.model.ToothType
+import com.network.api.apis.ProfileApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.collections.emptyList
 
-class TeethRepositoryImpl: TeethRepository {
+class TeethRepositoryImpl(
+    private val profileApi: ProfileApi
+): TeethRepository {
     private val _teeth = MutableStateFlow(emptyList<Tooth>())
     override val teeth: StateFlow<List<Tooth>> = _teeth.asStateFlow()
 
     init {
-        CoroutineScope(Dispatchers.Default).launch {
-            _teeth.value = generateInitialTeeth()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val serverTeeth = profileApi.apiV1ProfileTeethGet().body()
+                _teeth.value = serverTeeth.map { serverTooth ->
+                    Tooth(
+                        id = serverIndexToToothId(serverTooth.toothIndex ?: 0),
+                        type = ToothType.fromPosition(serverTooth.toothIndex ?: 0),
+                        status = serverStateToToothStatus(serverTooth.toothState),
+                        note = serverTooth.toothNote
+                    )
+                }
+            } catch (e: Exception) {
+                println("ZUB_DEBUG: TeethRepo error: ${e.message}")
+            }
         }
     }
 
@@ -35,15 +51,15 @@ class TeethRepositoryImpl: TeethRepository {
         }
     }
 
-    private fun generateInitialTeeth() : List<Tooth>{
-        return listOf(11..18, 21..28, 31..38, 41..48)
-            .flatMap { range ->
-                range.map {
-                    Tooth(
-                        id = it,
-                        type = ToothType.fromPosition(it)
-                    )
-                }
-            }
+    private fun serverIndexToToothId(index: Int): Int {
+        val quarter = index / 8 + 1
+        val pos = index % 8 + 1
+        return quarter * 10 + pos
+    }
+
+    private fun serverStateToToothStatus(state: com.network.api.models.Tooth.ToothState?): ToothStatus = when(state) {
+        com.network.api.models.Tooth.ToothState.PROBLEMATIC -> ToothStatus.PROBLEMATIC
+        com.network.api.models.Tooth.ToothState.MISSING -> ToothStatus.MISSING
+        else -> ToothStatus.HEALTHY
     }
 }

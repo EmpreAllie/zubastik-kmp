@@ -92,16 +92,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessage"
-              example:
-                message: "invalid code"
 
   /api/v1/auth/refresh_token:
     post:
       tags: [Auth]
       summary: Refresh access token
-      description: |
-        Exchanges an expired (or still valid) access token + refresh token for a new token pair.
-        Both tokens must belong to the same user session.
       requestBody:
         required: true
         content:
@@ -151,8 +146,6 @@ paths:
     patch:
       tags: [Profile]
       summary: Update current user profile
-      description: |
-        All fields are optional. Only provided fields are updated.
       security:
         - bearerAuth: []
       requestBody:
@@ -176,12 +169,6 @@ paths:
                 $ref: "#/components/schemas/ErrorMessage"
         "401":
           description: Missing or invalid access token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessage"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -212,8 +199,6 @@ paths:
     patch:
       tags: [Profile]
       summary: Update teeth state
-      description: |
-        Requires exactly 32 tooth states.
       security:
         - bearerAuth: []
       requestBody:
@@ -230,7 +215,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessMessage"
         "400":
-          description: Validation error (array length is not 32, or invalid state value)
+          description: Validation error
           content:
             application/json:
               schema:
@@ -267,9 +252,6 @@ paths:
     put:
       tags: [Profile]
       summary: Update brush schedule
-      description: |
-        Replaces the entire brush schedule.
-        Times must be in "HH:MM" (24-hour) format.
       security:
         - bearerAuth: []
       requestBody:
@@ -286,7 +268,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessMessage"
         "400":
-          description: Validation error (invalid time format)
+          description: Validation error
           content:
             application/json:
               schema:
@@ -384,12 +366,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DirectMessage"
-        "401":
-          description: Missing or invalid access token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessage"
         "403":
           description: Caller is not a participant
           content:
@@ -463,7 +439,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Patient profile
@@ -496,7 +471,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Array of teeth
@@ -525,7 +499,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -557,7 +530,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Array of tooth notes
@@ -586,13 +558,11 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
         - name: note_id
           in: path
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -624,13 +594,11 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
         - name: note_id
           in: path
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Note deleted
@@ -657,7 +625,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -689,7 +656,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Array of recommendations
@@ -718,7 +684,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Conversation
@@ -839,11 +804,9 @@ components:
       properties:
         access_token:
           type: string
-          description: Short-lived JWT (15 min)
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
         refresh_token:
           type: string
-          description: Long-lived JWT (24 h)
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
     VerifyCodeRequest:
@@ -852,11 +815,9 @@ components:
       properties:
         phone:
           type: string
-          description: Phone number in E.164 format
           example: "+79991234567"
         code:
           type: string
-          description: 4-digit OTP received via SMS (or in container logs during dev)
           minLength: 4
           maxLength: 4
           example: "1234"
@@ -868,7 +829,6 @@ components:
           properties:
             is_new_user:
               type: boolean
-              description: True on the very first login for this phone number
               example: true
 
     UpdateProfileRequest:
@@ -913,7 +873,6 @@ components:
             $ref: "#/components/schemas/ToothUpdateItem"
           minItems: 32
           maxItems: 32
-          description: Exactly 32 tooth items, ordered by tooth index 0–31
 
     UpdateBrushScheduleRequest:
       type: object
@@ -923,8 +882,6 @@ components:
           type: array
           items:
             type: string
-            pattern: "^([01]\\d|2[0-3]):[0-5]\\d$"
-          description: Brushing schedule times in HH:MM (24-hour) format. Replaces existing schedule.
           example: ["08:00", "21:30"]
 
     ChatMessageRequest:
@@ -935,17 +892,14 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
-          example: "How often should I replace my toothbrush?"
 
     ChatMessage:
       type: object
       properties:
         ID:
           type: string
-          format: uuid
         UserUUID:
           type: string
-          format: uuid
         Role:
           type: string
           enum: [user, assistant]
@@ -969,13 +923,10 @@ components:
       properties:
         ID:
           type: string
-          format: uuid
         ConversationID:
           type: string
-          format: uuid
         SenderUUID:
           type: string
-          format: uuid
         Content:
           type: string
         CreatedAt:
@@ -987,13 +938,10 @@ components:
       properties:
         ID:
           type: string
-          format: uuid
         DoctorUUID:
           type: string
-          format: uuid
         PatientUUID:
           type: string
-          format: uuid
         CreatedAt:
           type: string
           format: date-time
@@ -1023,13 +971,10 @@ components:
       properties:
         ID:
           type: string
-          format: uuid
         DoctorUUID:
           type: string
-          format: uuid
         PatientUUID:
           type: string
-          format: uuid
         ToothIndex:
           type: integer
         Note:
@@ -1051,13 +996,10 @@ components:
       properties:
         ID:
           type: string
-          format: uuid
         DoctorUUID:
           type: string
-          format: uuid
         PatientUUID:
           type: string
-          format: uuid
         Text:
           type: string
         CreatedAt:
@@ -1069,7 +1011,6 @@ components:
       properties:
         UUID:
           type: string
-          format: uuid
           example: "550e8400-e29b-41d4-a716-446655440000"
         Phone:
           type: string
@@ -1105,7 +1046,6 @@ components:
       properties:
         UserUUID:
           type: string
-          format: uuid
           example: "550e8400-e29b-41d4-a716-446655440000"
         ToothIndex:
           type: integer
@@ -1130,12 +1070,11 @@ components:
       properties:
         UserUUID:
           type: string
-          format: uuid
           example: "550e8400-e29b-41d4-a716-446655440000"
         Time:
           type: string
           format: date-time
-          description: Brushing time as RFC3339 timestamp (only the time component is meaningful)
+          description: Brushing time as RFC3339 timestamp
           example: "2026-03-24T08:00:00Z"
 
     SuccessMessage:

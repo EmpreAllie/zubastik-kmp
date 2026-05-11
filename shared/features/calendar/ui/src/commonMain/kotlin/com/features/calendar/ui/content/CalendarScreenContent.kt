@@ -77,16 +77,8 @@ fun CalendarScreenContent(
             CalendarBottomLegend()
         }
 
-        //val selectedDate = state.selectedDateForEdit
         if (state.isDialogVisible && state.selectedDateForEdit != null) {
             CalendarDialog(
-                /*
-                selectedDate = selectedDate,
-                events = state.allEvents[selectedDate] ?: emptyList(),
-                isInAddEventMode = state.isInAddEventMode,
-                eventDescription = state.eventDescription,
-                newEventStatus = state.newEventStatus,
-                selectedTime = state.selectedTime,*/
                 state = state,
                 onEvent = onEvent,
             )
