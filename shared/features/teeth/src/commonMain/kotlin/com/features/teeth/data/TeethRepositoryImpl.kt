@@ -41,7 +41,7 @@ class TeethRepositoryImpl: TeethRepository {
                 range.map {
                     Tooth(
                         id = it,
-                        type = ToothType.fromPosition(it)/*getToothTypeByPosition(it)*/
+                        type = ToothType.fromPosition(it)
                     )
                 }
             }

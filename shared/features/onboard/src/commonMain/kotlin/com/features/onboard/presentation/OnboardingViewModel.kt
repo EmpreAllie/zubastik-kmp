@@ -11,6 +11,7 @@ import com.features.onboard.presentation.model.OnboardingState
 import com.features.onboard.presentation.model.chat.ChatMessage
 import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.onboard.presentation.model.state.OnboardingStep
+import com.features.teeth.domain.TeethRepository
 import com.features.ui.Res
 import com.features.ui.askBrushing
 import com.features.ui.iBrushMyTeeth
@@ -28,6 +29,7 @@ import kotlinx.coroutines.withContext
 class OnboardingViewModel(
     private val dateTimeManager: DateTimeManager,
     private val repository: OnboardingRepository,
+    private val teethRepository: TeethRepository,
 ) : BaseViewModel<OnboardingState, OnboardingEvents, OnboardingEffects>(OnboardingState()) {
 
     override fun onEvent(event: OnboardingEvents){
@@ -80,6 +82,11 @@ class OnboardingViewModel(
                 age = state.value.userAge?.toInt() ?: 0,
                 timesBrushing = state.value.brushingTimes
             )
+
+            repository.sendTeethInfoToServer(
+                teeth = teethRepository.teeth.value
+            )
+
             sendEffect(OnboardingEffects.NavigateToMain)
         }
     }

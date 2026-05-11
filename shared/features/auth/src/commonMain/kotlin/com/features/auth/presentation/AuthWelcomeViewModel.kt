@@ -11,10 +11,6 @@ import com.features.base.presentation.model.BaseViewModel
 class AuthWelcomeViewModel
     : BaseViewModel<AuthState, AuthEvents, AuthEffects>(AuthState()) {
 
-    init {
-        println("ZUB_DEBUG: --- Создана AuthWelcomeViewModel ---")
-    }
-
     override fun onEvent(event: AuthEvents) {
 
         when(event) {

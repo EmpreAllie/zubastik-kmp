@@ -21,6 +21,10 @@ tags:
     description: Phone OTP authentication and token management
   - name: Profile
     description: User profile and dental data (JWT required)
+  - name: Chat
+    description: AI-powered dental health assistant (JWT required)
+  - name: Doctor
+    description: Doctor endpoints (JWT required, role=doctor)
 
 paths:
   /api/v1/auth/send_code:
@@ -149,9 +153,6 @@ paths:
       summary: Update current user profile
       description: |
         All fields are optional. Only provided fields are updated.
-
-        - `teeth_state`: must be exactly **32** values if provided — one per tooth, index 0–31
-        - `times_brush`: 24-hour time strings in `"HH:MM"` format. Replaces the entire schedule.
       security:
         - bearerAuth: []
       requestBody:
@@ -160,53 +161,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateProfileRequest"
-            examples:
-              full:
-                summary: Full update
-                value:
-                  name: "John"
-                  age: 28
-                  gender: "Male"
-                  teeth_state:
-                    - "Healthy"
-                    - "Healthy"
-                    - "Unhealthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                    - "Healthy"
-                  times_brush:
-                    - "08:00"
-                    - "21:30"
-              age_only:
-                summary: Update age only
-                value:
-                  age: 25
       responses:
         "200":
           description: Profile updated
@@ -228,6 +182,645 @@ paths:
                 $ref: "#/components/schemas/ErrorMessage"
         "500":
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/profile/teeth:
+    get:
+      tags: [Profile]
+      summary: Get current user teeth
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Array of teeth
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tooth"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    patch:
+      tags: [Profile]
+      summary: Update teeth state
+      description: |
+        Requires exactly 32 tooth states.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTeethRequest"
+      responses:
+        "200":
+          description: Teeth updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+        "400":
+          description: Validation error (array length is not 32, or invalid state value)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/profile/brush-schedule:
+    get:
+      tags: [Profile]
+      summary: Get brush schedule
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Array of brush times
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BrushTime"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    put:
+      tags: [Profile]
+      summary: Update brush schedule
+      description: |
+        Replaces the entire brush schedule.
+        Times must be in "HH:MM" (24-hour) format.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBrushScheduleRequest"
+      responses:
+        "200":
+          description: Schedule updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+        "400":
+          description: Validation error (invalid time format)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/profile/conversations:
+    get:
+      tags: [Profile]
+      summary: List patient's conversations
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Array of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/profile/conversations/{conversation_id}/messages:
+    get:
+      tags: [Profile]
+      summary: Get messages in a conversation (patient side)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DirectMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "403":
+          description: Caller is not a participant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "404":
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    post:
+      tags: [Profile]
+      summary: Send message (patient side)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageRequest"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DirectMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "403":
+          description: Caller is not a participant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "404":
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/chat/message:
+    post:
+      tags: [Chat]
+      summary: Send a message to AI assistant
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageRequest"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/chat/history:
+    get:
+      tags: [Chat]
+      summary: Get conversation history with AI
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Chronologically ordered array of all messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}:
+    get:
+      tags: [Doctor]
+      summary: Get patient profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Patient profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "404":
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}/teeth:
+    get:
+      tags: [Doctor]
+      summary: Get patient teeth
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Array of teeth
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tooth"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}/teeth/notes:
+    post:
+      tags: [Doctor]
+      summary: Create tooth note
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateToothNoteRequest"
+      responses:
+        "201":
+          description: Note created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToothNote"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    get:
+      tags: [Doctor]
+      summary: Get tooth notes for patient
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Array of tooth notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ToothNote"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}/teeth/notes/{note_id}:
+    put:
+      tags: [Doctor]
+      summary: Update tooth note
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateNoteRequest"
+      responses:
+        "200":
+          description: Note updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+        "404":
+          description: Note not found or belongs to a different doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    delete:
+      tags: [Doctor]
+      summary: Delete tooth note
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Note deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+        "404":
+          description: Note not found or belongs to a different doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}/recommendations:
+    post:
+      tags: [Doctor]
+      summary: Create recommendation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRecommendationRequest"
+      responses:
+        "201":
+          description: Recommendation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recommendation"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    get:
+      tags: [Doctor]
+      summary: Get recommendations for patient
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Array of recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recommendation"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/patients/{patient_uuid}/conversations:
+    post:
+      tags: [Doctor]
+      summary: Get or create conversation with patient
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patient_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/conversations:
+    get:
+      tags: [Doctor]
+      summary: List doctor's conversations
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Array of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+        "403":
+          description: Caller is not a doctor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/doctor/conversations/{conversation_id}/messages:
+    get:
+      tags: [Doctor]
+      summary: Get messages in a conversation (doctor side)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DirectMessage"
+        "403":
+          description: Caller is not a participant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "404":
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    post:
+      tags: [Doctor]
+      summary: Send message (doctor side)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageRequest"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DirectMessage"
+        "403":
+          description: Caller is not a participant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "404":
+          description: Conversation not found
           content:
             application/json:
               schema:
@@ -266,7 +859,7 @@ components:
           description: 4-digit OTP received via SMS (or in container logs during dev)
           minLength: 4
           maxLength: 4
-          example: "4821"
+          example: "1234"
 
     VerifyCodeResponse:
       allOf:
@@ -298,23 +891,178 @@ components:
           enum: [Male, Female]
           nullable: true
           example: "Male"
-        teeth_state:
+
+    ToothUpdateItem:
+      type: object
+      required: [tooth_state]
+      properties:
+        tooth_state:
+          type: string
+          enum: [Healthy, Problematic, Missing]
+        tooth_note:
+          type: string
+          nullable: true
+
+    UpdateTeethRequest:
+      type: object
+      required: [teeth]
+      properties:
+        teeth:
           type: array
           items:
-            type: string
-            enum: [Healthy, Unhealthy]
+            $ref: "#/components/schemas/ToothUpdateItem"
           minItems: 32
           maxItems: 32
-          nullable: true
-          description: Exactly 32 tooth states, ordered by tooth index 0–31
+          description: Exactly 32 tooth items, ordered by tooth index 0–31
+
+    UpdateBrushScheduleRequest:
+      type: object
+      required: [times_brush]
+      properties:
         times_brush:
           type: array
           items:
             type: string
             pattern: "^([01]\\d|2[0-3]):[0-5]\\d$"
-          nullable: true
           description: Brushing schedule times in HH:MM (24-hour) format. Replaces existing schedule.
           example: ["08:00", "21:30"]
+
+    ChatMessageRequest:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          example: "How often should I replace my toothbrush?"
+
+    ChatMessage:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+        UserUUID:
+          type: string
+          format: uuid
+        Role:
+          type: string
+          enum: [user, assistant]
+        Content:
+          type: string
+        CreatedAt:
+          type: string
+          format: date-time
+
+    SendMessageRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 2000
+
+    DirectMessage:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+        ConversationID:
+          type: string
+          format: uuid
+        SenderUUID:
+          type: string
+          format: uuid
+        Content:
+          type: string
+        CreatedAt:
+          type: string
+          format: date-time
+
+    Conversation:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+        DoctorUUID:
+          type: string
+          format: uuid
+        PatientUUID:
+          type: string
+          format: uuid
+        CreatedAt:
+          type: string
+          format: date-time
+
+    CreateToothNoteRequest:
+      type: object
+      required: [tooth_index, note]
+      properties:
+        tooth_index:
+          type: integer
+          minimum: 0
+          maximum: 31
+        note:
+          type: string
+          minLength: 1
+
+    UpdateNoteRequest:
+      type: object
+      required: [note]
+      properties:
+        note:
+          type: string
+          minLength: 1
+
+    ToothNote:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+        DoctorUUID:
+          type: string
+          format: uuid
+        PatientUUID:
+          type: string
+          format: uuid
+        ToothIndex:
+          type: integer
+        Note:
+          type: string
+        CreatedAt:
+          type: string
+          format: date-time
+
+    CreateRecommendationRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          minLength: 1
+
+    Recommendation:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+        DoctorUUID:
+          type: string
+          format: uuid
+        PatientUUID:
+          type: string
+          format: uuid
+        Text:
+          type: string
+        CreatedAt:
+          type: string
+          format: date-time
 
     User:
       type: object
@@ -347,12 +1095,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Tooth"
-          description: Empty array until teeth_state is set via UpdateProfile
         BrushTimes:
           type: array
           items:
             $ref: "#/components/schemas/BrushTime"
-          description: Empty array until times_brush is set via UpdateProfile
 
     Tooth:
       type: object
@@ -373,8 +1119,11 @@ components:
           example: "Molar"
         ToothState:
           type: string
-          enum: [Healthy, Unhealthy]
+          enum: [Healthy, Problematic, Missing]
           example: "Healthy"
+        ToothNote:
+          type: string
+          nullable: true
 
     BrushTime:
       type: object

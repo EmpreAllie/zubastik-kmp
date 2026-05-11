@@ -56,11 +56,12 @@ fun MainButton(
 
     val interactionSource = remember { MutableInteractionSource() }
 
+/*
     LaunchedEffect(interactionSource, text) {
         interactionSource.interactions.collectLatest { interaction ->
-            println("ZUB_DEBUG_BUTTON ($text): Interaction -> $interaction")
+            //println("ZUB_DEBUG_BUTTON ($text): Interaction -> $interaction")
         }
-    }
+    }*/
 
     Row(
         modifier = modifier

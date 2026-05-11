@@ -33,7 +33,6 @@ class AuthRepositoryImpl(
     override suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error> {
 
         return withContext(Dispatchers.IO) {
-            //return@withContext try {
             try {
                 // обращение к серверу
                  authApi.apiV1AuthSendCodePost(ApiV1AuthSendCodePostRequest(phone))
@@ -70,7 +69,7 @@ class AuthRepositoryImpl(
             keyValueStorage.accessToken = authData.accessToken
             keyValueStorage.refreshToken = authData.refreshToken
             
-            // println("ZUB_DEBUG: access token: ${keyValueStorage.accessToken}")
+            println("ZUB_DEBUG: access token: ${keyValueStorage.accessToken}")
 
             emit(Result.Success(authData))
         }

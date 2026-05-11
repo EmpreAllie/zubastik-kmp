@@ -12,7 +12,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import com.features.base.domain.model.error.Error
+import com.features.teeth.domain.model.Tooth
+import com.features.teeth.domain.model.ToothStatus
+import com.network.api.models.ToothUpdateItem
+import com.network.api.models.UpdateBrushScheduleRequest
 import com.network.api.models.UpdateProfileRequest
+import com.network.api.models.UpdateTeethRequest
 import com.network.domain.model.isConnectionException
 
 class OnboardingRepositoryImpl(
@@ -60,7 +65,12 @@ class OnboardingRepositoryImpl(
                 profileApi.apiV1ProfilePatch(
                     UpdateProfileRequest(
                         name = name,
-                        age = age,
+                        age = age
+                    )
+                )
+
+                profileApi.apiV1ProfileBrushSchedulePut(
+                    UpdateBrushScheduleRequest(
                         timesBrush = timesBrushing
                     )
                 )
@@ -75,6 +85,35 @@ class OnboardingRepositoryImpl(
         }
 
 
+    }
+
+    override suspend fun sendTeethInfoToServer(teeth: List<Tooth>): Result<Unit, Error> {
+        return withContext(Dispatchers.IO) {
+            try {
+
+                profileApi.apiV1ProfileTeethPatch(
+                    UpdateTeethRequest(
+                        teeth = teeth.map { tooth ->
+                            ToothUpdateItem(
+                                toothState = when (tooth.status) {
+                                    ToothStatus.HEALTHY -> ToothUpdateItem.ToothState.HEALTHY
+                                    ToothStatus.PROBLEMATIC -> ToothUpdateItem.ToothState.PROBLEMATIC
+                                    ToothStatus.MISSING -> ToothUpdateItem.ToothState.MISSING
+                                },
+                                toothNote = tooth.note
+                            )
+                        }
+                    )
+                )
+
+                Result.Success(Unit)
+            } catch (e: Exception) {
+                if (e.isConnectionException())
+                    Result.Failure(Error.CONNECTION)
+                else
+                    Result.Failure(Error.OTHER(e.message.orEmpty()))
+            }
+        }
     }
 
 }
