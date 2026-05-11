@@ -5,6 +5,8 @@ import com.features.teeth.domain.model.Tooth
 import com.features.teeth.domain.model.ToothStatus
 import com.features.teeth.domain.model.ToothType
 import com.network.api.apis.ProfileApi
+import com.network.api.models.ToothUpdateItem
+import com.network.api.models.UpdateTeethRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -48,6 +50,28 @@ class TeethRepositoryImpl(
                 tooth.copy(status = newStatus, note = note)
             else
                 tooth
+        }
+
+        // обновление зуба на сервере через PATCH
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                profileApi.apiV1ProfileTeethPatch(
+                    UpdateTeethRequest(
+                        teeth = _teeth.value.map { tooth ->
+                            ToothUpdateItem(
+                                toothState = when(tooth.status) {
+                                    ToothStatus.HEALTHY -> ToothUpdateItem.ToothState.HEALTHY
+                                    ToothStatus.PROBLEMATIC -> ToothUpdateItem.ToothState.PROBLEMATIC
+                                    ToothStatus.MISSING -> ToothUpdateItem.ToothState.MISSING
+                                },
+                                toothNote = tooth.note
+                            )
+                        }
+                    )
+                )
+            } catch (e: Exception) {
+                println("ZUB_DEBUG: TeethRepo update error: ${e.message}")
+            }
         }
     }
 
