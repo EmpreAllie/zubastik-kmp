@@ -2,6 +2,8 @@ package com.features.onboard.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.core.data.utils.DateTimeManager
+import com.features.base.domain.Result
+import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseViewModel
 import com.features.onboard.domain.OnboardingAction
 import com.features.onboard.domain.OnboardingRepository
@@ -72,22 +74,67 @@ class OnboardingViewModel(
 
             is OnboardingEvents.OnBrushingDialogConfirm -> processBrushingDialog(event.count, event.times)
 
+            OnboardingEvents.OnCloseErrorDialog -> updateState { it.copy(error = null) }
+
         }
     }
 
+
     private fun processExitOnboarding() {
         viewModelScope.launch {
+            var hasError = false
+
             repository.sendProfileInfoToServer(
                 name = state.value.userName,
                 age = state.value.userAge?.toInt() ?: 0,
+            ).collect { result ->
+                handleResult(result) {hasError = true}
+            }
+            if (hasError) return@launch
+
+            repository.sendBrushingScheduleToServer(
                 timesBrushing = state.value.brushingTimes
-            )
+            ).collect { result ->
+                handleResult(result) {hasError = true}
+            }
+            if (hasError) return@launch
 
             repository.sendTeethInfoToServer(
                 teeth = teethRepository.teeth.value
-            )
+            ).collect { result ->
+                handleResult(result) {hasError = true}
+            }
+            if (hasError) return@launch
 
             sendEffect(OnboardingEffects.NavigateToMain)
+        }
+    }
+
+    private fun handleResult(
+        result: Result<Unit, Error>,
+        onError: () -> Unit
+    ) {
+
+        when(result) {
+            Result.Loading -> updateState { it.copy(isLoading = true) }
+            is Result.Success -> updateState { it.copy(isLoading = false) }
+
+            is Result.Failure -> {
+                updateState { it.copy(isLoading = false, error = result.error) }
+                onError()
+            }
+
+            Result.ConnectionError -> {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        error = Error.CONNECTION
+                    )
+                }
+                onError()
+            }
+
+            else -> {}
         }
     }
 

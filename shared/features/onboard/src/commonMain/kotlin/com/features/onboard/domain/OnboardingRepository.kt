@@ -9,13 +9,16 @@ import com.features.teeth.domain.model.Tooth
 interface OnboardingRepository {
     fun sequence(step: OnboardingStep) : Flow<OnboardingAction>
 
-    suspend fun sendProfileInfoToServer(
+    fun sendProfileInfoToServer(
         name: String,
         age: Int,
-        timesBrushing: List<String>
-    ): Result<Unit, Error>
+    ): Flow<Result<Unit, Error>>
 
-    suspend fun sendTeethInfoToServer(
+    fun sendBrushingScheduleToServer(
+        timesBrushing: List<String>
+    ): Flow<Result<Unit, Error>>
+
+    fun sendTeethInfoToServer(
         teeth: List<Tooth>
-    ): Result<Unit, Error>
+    ): Flow<Result<Unit, Error>>
 }

@@ -8,12 +8,23 @@ import com.features.teeth.presentation.model.TeethEvents
 import com.features.teeth.presentation.model.TeethState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import com.features.base.domain.Result
+import com.features.base.domain.model.error.Error
 
 class TeethViewModel(
     private val repository: TeethRepository
 ): BaseViewModel<TeethState, TeethEvents, TeethEffects>(TeethState()) {
 
     init {
+        updateState { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            repository.loadTeethFromServer().collect { result ->
+                handleResult(result) {}
+            }
+        }
+
         repository.teeth
             .onEach { newTeethList ->
                 onEvent(TeethEvents.OnTeethUpdated(newTeethList))
@@ -70,6 +81,36 @@ class TeethViewModel(
                 }
             }
 
+            TeethEvents.OnCloseErrorDialog -> updateState { it.copy(error = null) }
+
+        }
+    }
+
+    private fun handleResult(
+        result: Result<Unit, Error>,
+        onError: () -> Unit
+    ) {
+
+        when(result) {
+            Result.Loading -> updateState { it.copy(isLoading = true) }
+            is Result.Success -> updateState { it.copy(isLoading = false) }
+
+            is Result.Failure -> {
+                updateState { it.copy(isLoading = false, error = result.error) }
+                onError()
+            }
+
+            Result.ConnectionError -> {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        error = Error.CONNECTION
+                    )
+                }
+                onError()
+            }
+
+            else -> {}
         }
     }
 }

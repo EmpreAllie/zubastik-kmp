@@ -16,8 +16,8 @@ interface AuthRepository {
     fun setPhone(phone: String)
     fun getPhone(): String?
 
-    // возвращаем Result.Success(Unit), что означает "просто успех/неудача, без данных"
-    suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error>
+    // возвращаем Flow
+    fun sendPhoneNumberToServer(phone: String): Flow<Result<Unit, Error>>
 
 
     // возвращаем Flow из объектов Result.Loading, .Success, .Failure

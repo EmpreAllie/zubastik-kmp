@@ -19,4 +19,5 @@ interface OnboardingEvents {
 
     data object OnExitOnboardingClicked: OnboardingEvents
 
+    data object OnCloseErrorDialog: OnboardingEvents
 }

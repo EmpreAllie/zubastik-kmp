@@ -18,7 +18,9 @@ import com.network.api.models.ToothUpdateItem
 import com.network.api.models.UpdateBrushScheduleRequest
 import com.network.api.models.UpdateProfileRequest
 import com.network.api.models.UpdateTeethRequest
+import com.network.data.exception.CustomResponseException
 import com.network.domain.model.isConnectionException
+import kotlinx.coroutines.flow.flowOn
 
 class OnboardingRepositoryImpl(
     private val profileApi: ProfileApi
@@ -53,67 +55,91 @@ class OnboardingRepositoryImpl(
         }
     }
 
-    override suspend fun sendProfileInfoToServer(
+    override fun sendProfileInfoToServer(
         name: String,
         age: Int,
-        timesBrushing: List<String>
-    ): Result<Unit, Error> {
+    ): Flow<Result<Unit, Error>> = flow {
+        emit(Result.Loading)
 
-        return withContext(Dispatchers.IO) {
-            try {
-
-                profileApi.apiV1ProfilePatch(
-                    UpdateProfileRequest(
-                        name = name,
-                        age = age
-                    )
+        try {
+            profileApi.apiV1ProfilePatch(
+                UpdateProfileRequest(
+                    name = name,
+                    age = age
                 )
+            )
+            emit(Result.Success(Unit))
 
-                profileApi.apiV1ProfileBrushSchedulePut(
-                    UpdateBrushScheduleRequest(
-                        timesBrush = timesBrushing
-                    )
-                )
+        } catch (e: CustomResponseException) {
+            emit(Error.OTHER(e.message.orEmpty()).toResult())
 
-                Result.Success(Unit)
-            } catch (e: Exception) {
-                if (e.isConnectionException())
-                    Result.Failure(Error.CONNECTION)
-                else
-                    Result.Failure(Error.OTHER(e.message.orEmpty()))
-            }
+        } catch (e: Exception) {
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
+
+            // println("ZUB_DEBUG error: ${e.message}")
+
+            emit(result)
         }
+    }.flowOn(Dispatchers.IO)
 
+    override fun sendTeethInfoToServer(teeth: List<Tooth>)
+    : Flow<Result<Unit, Error>> = flow {
+        emit(Result.Loading)
+        try {
 
-    }
-
-    override suspend fun sendTeethInfoToServer(teeth: List<Tooth>): Result<Unit, Error> {
-        return withContext(Dispatchers.IO) {
-            try {
-
-                profileApi.apiV1ProfileTeethPatch(
-                    UpdateTeethRequest(
-                        teeth = teeth.map { tooth ->
-                            ToothUpdateItem(
-                                toothState = when (tooth.status) {
-                                    ToothStatus.HEALTHY -> ToothUpdateItem.ToothState.HEALTHY
-                                    ToothStatus.PROBLEMATIC -> ToothUpdateItem.ToothState.PROBLEMATIC
-                                    ToothStatus.MISSING -> ToothUpdateItem.ToothState.MISSING
-                                },
-                                toothNote = tooth.note
-                            )
-                        }
-                    )
+            profileApi.apiV1ProfileTeethPatch(
+                UpdateTeethRequest(
+                    teeth = teeth.map { tooth ->
+                        ToothUpdateItem(
+                            toothState = when (tooth.status) {
+                                ToothStatus.HEALTHY -> ToothUpdateItem.ToothState.HEALTHY
+                                ToothStatus.PROBLEMATIC -> ToothUpdateItem.ToothState.PROBLEMATIC
+                                ToothStatus.MISSING -> ToothUpdateItem.ToothState.MISSING },
+                            toothNote = tooth.note
+                        )
+                    }
                 )
+            )
+            emit(Result.Success(Unit))
 
-                Result.Success(Unit)
-            } catch (e: Exception) {
-                if (e.isConnectionException())
-                    Result.Failure(Error.CONNECTION)
-                else
-                    Result.Failure(Error.OTHER(e.message.orEmpty()))
-            }
+        } catch (e: CustomResponseException) {
+            emit(Error.OTHER(e.message.orEmpty()).toResult())
         }
-    }
+        catch (e: Exception) {
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
 
+            emit(result)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override fun sendBrushingScheduleToServer(timesBrushing: List<String>)
+    : Flow<Result<Unit, Error>> = flow<Result<Unit, Error>> {
+        emit(Result.Loading)
+
+        try {
+            profileApi.apiV1ProfileBrushSchedulePut(
+                UpdateBrushScheduleRequest(
+                    timesBrush = timesBrushing
+                )
+            )
+            emit(Result.Success(Unit))
+        } catch (e: CustomResponseException) {
+            emit(Error.OTHER(e.message.orEmpty()).toResult())
+        } catch (e: Exception) {
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
+
+            // println("ZUB_DEBUG error: ${e.message}")
+
+            emit(result)
+        }
+    }.flowOn(Dispatchers.IO)
 }

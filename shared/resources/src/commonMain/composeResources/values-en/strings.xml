@@ -26,6 +26,7 @@
     <string name="otherError">Something went wrong...</string>
 
     <!-- Регистрация (онбординг) -->
+    <string name="onboarding">Onboarding</string>
     <string name="welcome">Welcome</string>
     <string name="onboardingInfo1_1">Hi, I'm </string>
     <string name="onboardingInfo1_2">. I'm ready to help you with the first setting of the application!</string>
@@ -55,6 +56,7 @@
     <string name="consent">* By clicking "Next" you give consent to the processing of personal data according to Federal Law No. 152 of Russian Federation.</string>
 
     <!-- Панель с зубами -->
+    <string name="teethPanel">Teeth Panel</string>
     <string name="nothingIsSelected">Nothing is selected</string>
     <string name="tooth">Tooth %1$s</string>
     <string name="incisor">incisor</string>

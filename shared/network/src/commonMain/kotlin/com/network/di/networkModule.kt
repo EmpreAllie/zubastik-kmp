@@ -2,8 +2,10 @@ package com.network.di
 
 import com.core.data.infrastructure.KeyValueStorage
 import com.core.data.utils.NativeHost
+import com.features.base.AppEvent
 import com.features.base.AuthEventBus
 import com.network.api.apis.AuthApi
+import com.network.api.apis.CalendarApi
 import com.network.api.apis.ProfileApi
 import com.network.api.models.TokenPair
 import com.network.data.exception.CustomExceptionParser
@@ -51,6 +53,18 @@ val networkModule: Module = module {
     single<ProfileApi> {
         val httpClient = HttpClient()
         ProfileApi(
+            baseUrl = baseUrl,
+            httpClientConfig = createHttpClientConfig(
+                authApi = get(),
+                json = get()
+            ),
+            httpClientEngine = httpClient.engine
+        )
+    }
+
+    single<CalendarApi> {
+        val httpClient = HttpClient()
+        CalendarApi(
             baseUrl = baseUrl,
             httpClientConfig = createHttpClientConfig(
                 authApi = get(),
@@ -124,7 +138,7 @@ private fun createHttpClientConfig(
                         if (e.isUnauthorized) {
                             keyValueStorage.clearTokens()
 
-                            AuthEventBus.sendLogout()
+                            AuthEventBus.send(AppEvent.Logout)
 
                             throw DeadTokenException(
                                 message = e.message,

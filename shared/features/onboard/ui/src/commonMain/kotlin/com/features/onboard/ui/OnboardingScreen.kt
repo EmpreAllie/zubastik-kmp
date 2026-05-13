@@ -11,9 +11,14 @@ import com.features.onboard.presentation.model.OnboardingEffects
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.onboard.ui.components.content.OnboardingScreenContent
+import com.features.ui.LoadingContent
+import com.features.ui.Res
+import com.features.ui.dialog.DialogError
 import com.features.ui.extension.BackHandler
+import com.features.ui.onboarding
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEvent
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -54,4 +59,18 @@ fun OnboardingScreen(
         lazyListState = lazyListState,
         onEvent = viewModel::onEvent
     )
+
+    if (state.isLoading) {
+        LoadingContent()
+    }
+
+    state.error?.let {  error ->
+        DialogError(
+            title = stringResource(Res.string.onboarding),
+            error = error,
+            onClose = {
+                viewModel.onEvent(OnboardingEvents.OnCloseErrorDialog)
+            }
+        )
+    }
 }

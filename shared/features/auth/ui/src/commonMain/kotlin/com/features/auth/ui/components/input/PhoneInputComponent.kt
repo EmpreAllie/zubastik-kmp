@@ -23,7 +23,6 @@ fun PhoneInputComponent(
     phoneNumber: PhoneNumber,
     onTextChange: (String) -> Unit,
     isError: Boolean,
-    errorText: String?
 ) {
     Row(
         modifier = Modifier,
@@ -51,9 +50,7 @@ fun PhoneInputComponent(
             modifier = Modifier.weight(1f),
             text = phoneNumber.number,
             hintText = stringResource(Res.string.enterNumber),
-            //isError = !phoneNumber.isCorrect(),
             isError = isError,
-            errorText = errorText,
             keyboardType = KeyboardType.Phone,
             singleLine = true,
             maxLength = 10,

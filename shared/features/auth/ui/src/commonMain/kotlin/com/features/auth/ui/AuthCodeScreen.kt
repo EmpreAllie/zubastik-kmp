@@ -12,9 +12,13 @@ import com.features.auth.presentation.model.AuthEffects
 import com.features.auth.presentation.model.AuthEvents
 import com.features.auth.ui.components.content.AuthCodeScreenContent
 import com.features.base.domain.enum.Screen
+import com.features.ui.LoadingContent
+import com.features.ui.Res
+import com.features.ui.code
 import com.features.ui.dialog.DialogError
 import com.root.presentation.RootViewModel
 import com.root.presentation.model.RootEvent
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -35,9 +39,13 @@ fun AuthCodeScreen(
 
                     AuthEffects.NavigateBack -> rootViewModel.onEvent(RootEvent.OnClickBack)
 
-                    AuthEffects.NavigateToOnboarding -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.ONBOARDING, isClearStack = true))
+                    AuthEffects.NavigateToOnboarding -> {
+                        rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.ONBOARDING, isClearStack = true))
+                    }
 
-                    AuthEffects.NavigateToMain -> rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN, isClearStack = true))
+                    AuthEffects.NavigateToMain -> {
+                        rootViewModel.onEvent(RootEvent.OnSetScreen(Screen.MAIN, isClearStack = true))
+                    }
 
                     else -> {}
 
@@ -46,24 +54,22 @@ fun AuthCodeScreen(
         }
     }
 
-    LaunchedEffect(viewModel, lifecycleOwner.lifecycle) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-        }
-    }
-
     AuthCodeScreenContent(
         state = state,
         onEvent = viewModel::onEvent
     )
 
+    if (state.isLoading) {
+        LoadingContent()
+    }
+
 
     state.error?.let { error ->
         DialogError(
-            title = "Code Screen",
+            title = stringResource(Res.string.code),
             error = error,
             onClose = {
-                viewModel.onEvent(AuthEvents.OnCloseDialog)
+                viewModel.onEvent(AuthEvents.OnCloseErrorDialog)
             }
         )
     }

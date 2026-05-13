@@ -54,15 +54,6 @@ fun MainButton(
     onClick: () -> Unit,
 ) {
 
-    val interactionSource = remember { MutableInteractionSource() }
-
-/*
-    LaunchedEffect(interactionSource, text) {
-        interactionSource.interactions.collectLatest { interaction ->
-            //println("ZUB_DEBUG_BUTTON ($text): Interaction -> $interaction")
-        }
-    }*/
-
     Row(
         modifier = modifier
             .clip(shape)
@@ -73,7 +64,6 @@ fun MainButton(
                 enabled = isEnabled && !isLoading,
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                //interactionSource = interactionSource,
                 indication = LocalIndication.current
             ),
         verticalAlignment = Alignment.CenterVertically,

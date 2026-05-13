@@ -18,23 +18,9 @@ sealed interface Error {
     data class AUTH(val type: AuthErrorType) : Error
 
     fun toResult() = Result.Failure(this)
+
     fun isRecoverableError() = when (this) {
         TOKEN, CONNECTION -> true
         else -> false
-    }
-
-
-    @Composable
-    fun getDisplayMessage(): String {
-        return when (this) {
-            CONNECTION -> stringResource(Res.string.connectionError)
-
-            is AUTH -> when (this.type) {
-                AuthErrorType.PHONE -> stringResource(Res.string.phoneError)
-                AuthErrorType.CODE -> stringResource(Res.string.codeError)
-            }
-
-            else -> stringResource(Res.string.otherError)
-        }
     }
 }

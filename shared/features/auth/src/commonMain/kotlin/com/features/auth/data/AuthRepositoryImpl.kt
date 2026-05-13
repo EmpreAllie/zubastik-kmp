@@ -8,9 +8,11 @@ import com.features.base.domain.model.error.Error
 import com.network.api.apis.AuthApi
 import com.network.api.models.ApiV1AuthSendCodePostRequest
 import com.network.api.models.VerifyCodeRequest
+import com.network.data.exception.CustomResponseException
 import com.network.domain.model.isConnectionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -30,21 +32,21 @@ class AuthRepositoryImpl(
         return this.phone
     }
 
-    override suspend fun sendPhoneNumberToServer(phone: String): Result<Unit, Error> {
-
-        return withContext(Dispatchers.IO) {
-            try {
-                // обращение к серверу
-                 authApi.apiV1AuthSendCodePost(ApiV1AuthSendCodePostRequest(phone))
-
-                Result.Success(Unit)
-            }
-            catch (e: Exception) {
-                Result.Failure(Error.CONNECTION)
-            }
+    override fun sendPhoneNumberToServer(phone: String): Flow<Result<Unit, Error>> = flow {
+        emit(Result.Loading)
+        try {
+            authApi.apiV1AuthSendCodePost(ApiV1AuthSendCodePostRequest(phone))
+            emit(Result.Success(Unit))
+        } catch (e: CustomResponseException) {
+            emit(Error.OTHER(e.message.orEmpty()).toResult())
+        } catch (e: Exception) {
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
+            emit(result)
         }
-
-    }
+    }.flowOn(Dispatchers.IO)
 
 
 

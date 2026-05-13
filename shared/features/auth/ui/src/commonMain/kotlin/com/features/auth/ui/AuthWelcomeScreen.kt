@@ -67,7 +67,7 @@ fun AuthWelcomeScreen(
             title = stringResource(Res.string.authorization),
             error = error,
             onClose = {
-                viewModel.onEvent(AuthEvents.OnCloseDialog)
+                viewModel.onEvent(AuthEvents.OnCloseErrorDialog)
             }
         )
     }

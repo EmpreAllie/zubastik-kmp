@@ -23,7 +23,7 @@ sealed interface AuthEvents {
 
 
     // Общие ивенты
-    data object OnCloseDialog: AuthEvents // Событие при закрытии диалогового окна с ошибкой
+    data object OnCloseErrorDialog: AuthEvents // Событие при закрытии диалогового окна с ошибкой
     data object OnBackClicked: AuthEvents
 }
 

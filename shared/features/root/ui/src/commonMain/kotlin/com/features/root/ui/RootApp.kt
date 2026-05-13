@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.features.base.AppEvent
 import com.features.base.AuthEventBus
 import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
@@ -44,10 +45,15 @@ fun RootApp(
 
     // дргуие эффекты
     LaunchedEffect(Unit) {
-        AuthEventBus.logoutEvent.collect {
-            viewModel.onEvent(
-                RootEvent.OnSetScreen(destination = Graph.AUTH, isClearStack = true)
-            )
+        AuthEventBus.event.collect { event ->
+            when(event) {
+                AppEvent.Logout -> {
+                    viewModel.onEvent(
+                        RootEvent.OnSetScreen(destination = Graph.AUTH, isClearStack = true)
+                    )
+                }
+            }
+
         }
     }
 

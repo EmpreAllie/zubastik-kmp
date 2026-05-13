@@ -48,7 +48,7 @@ fun CalendarDateGrid(
     ) {
         items(days) {
             DayItem(
-                today = today,
+                isToday = it.date == today,
                 day = it,
                 onClick = onDayClick,
             )
@@ -58,19 +58,18 @@ fun CalendarDateGrid(
 
 @Composable
 fun DayItem(
-    today: LocalDate,
+    isToday: Boolean,
     day: CalendarDay,
     onClick: (LocalDate) -> Unit,
 ) {
-    val date = day.date
-
     val textColor = if (day.statuses.isNotEmpty()) MainTheme.colors.containerBackground else MainTheme.colors.black
 
-    val isToday = today == date
     val cellBackground = when {
         isToday -> MainTheme.colors.button
         else -> MainTheme.colors.transparent
     }
+
+    val date = day.date
 
     Box(
         modifier =

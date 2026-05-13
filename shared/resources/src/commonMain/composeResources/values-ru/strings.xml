@@ -26,6 +26,7 @@
     <string name="otherError">Что-то пошло не так...</string>
 
     <!-- Регистрация (онбординг) -->
+    <string name="onboarding">Onboarding</string>
     <string name="welcome">Добро пожаловать</string>
     <string name="onboardingInfo1">Привет, я Зубастик. Готов помочь тебе с первой настройкой приложения!</string>
     <string name="onboardingInfo1_1">Привет, я </string>
@@ -56,6 +57,7 @@
     <string name="consent">* Нажимая "Далее", вы соглашаетесь с условиями обработки персональных данных согласно 152-ФЗ.</string>
 
     <!-- Панель с зубами -->
+    <string name="teethPanel">Панель зубов</string>
     <string name="nothingIsSelected">Ничего не выбрано</string>
     <string name="tooth">Зуб %1$s</string>
     <string name="incisor">резец</string>

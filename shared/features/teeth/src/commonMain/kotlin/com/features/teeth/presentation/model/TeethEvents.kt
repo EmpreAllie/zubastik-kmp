@@ -9,6 +9,8 @@ sealed interface TeethEvents {
     data object OnEditClicked: TeethEvents
     data object OnDismissDialog: TeethEvents
 
+    data object OnCloseErrorDialog: TeethEvents
+
     data class OnToothStatusChanged(
         val toothId: Int,
         val status: ToothStatus,

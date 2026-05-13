@@ -1,5 +1,6 @@
 package com.features.teeth.data
 
+import com.features.base.domain.Result
 import com.features.teeth.domain.TeethRepository
 import com.features.teeth.domain.model.Tooth
 import com.features.teeth.domain.model.ToothStatus
@@ -10,11 +11,17 @@ import com.network.api.models.UpdateTeethRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlin.collections.emptyList
+import com.features.base.domain.model.error.Error
+import com.network.data.exception.CustomResponseException
+import com.network.domain.model.isConnectionException
 
 class TeethRepositoryImpl(
     private val profileApi: ProfileApi
@@ -22,27 +29,37 @@ class TeethRepositoryImpl(
     private val _teeth = MutableStateFlow(emptyList<Tooth>())
     override val teeth: StateFlow<List<Tooth>> = _teeth.asStateFlow()
 
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val serverTeeth = profileApi.apiV1ProfileTeethGet().body()
-                _teeth.value = serverTeeth.map { serverTooth ->
-                    Tooth(
-                        id = serverIndexToToothId(serverTooth.toothIndex ?: 0),
-                        type = ToothType.fromPosition(serverTooth.toothIndex ?: 0),
-                        status = serverStateToToothStatus(serverTooth.toothState),
-                        note = serverTooth.toothNote
-                    )
-                }
-            } catch (e: Exception) {
-
-            }
-        }
-    }
-
     override fun getToothById(id: Int): Tooth? {
         return _teeth.value.find { it.id == id }
     }
+
+
+    override fun loadTeethFromServer(): Flow<Result<Unit, Error>> = flow {
+        emit(Result.Loading)
+        try {
+            val serverTeeth = profileApi.apiV1ProfileTeethGet().body()
+            _teeth.value = serverTeeth.map { serverTooth ->
+                Tooth(
+                    id = serverIndexToToothId(serverTooth.toothIndex ?: 0),
+                    type = ToothType.fromPosition(serverTooth.toothIndex ?: 0),
+                    status = serverStateToToothStatus(serverTooth.toothState),
+                    note = serverTooth.toothNote
+                )
+            }
+            emit(Result.Success(Unit))
+        } catch (e: CustomResponseException) {
+            emit(Error.OTHER(e.message.orEmpty()).toResult())
+        } catch (e: Exception) {
+            val result = if (e.isConnectionException())
+                Result.ConnectionError
+            else
+                Error.OTHER(e.message.orEmpty()).toResult()
+
+            emit(result)
+        }
+    }.flowOn(Dispatchers.IO)
+
+
 
     override fun updateToothStatus(id: Int, newStatus: ToothStatus, note: String) {
         _teeth.value = _teeth.value.map { tooth ->

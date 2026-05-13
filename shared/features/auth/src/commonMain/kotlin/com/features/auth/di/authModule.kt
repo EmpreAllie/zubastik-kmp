@@ -8,6 +8,7 @@ import com.features.auth.presentation.AuthPhoneViewModel
 import com.features.auth.presentation.AuthWelcomeViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -19,5 +20,5 @@ val authModule: Module = module {
     factoryOf(::AuthPhoneViewModel)
     factoryOf(::AuthCodeViewModel)
 
-    single { AuthRepositoryImpl(get(), get()) } bind AuthRepository::class
+    singleOf(::AuthRepositoryImpl) bind AuthRepository::class
 }

@@ -20,6 +20,7 @@ import com.features.auth.presentation.model.AuthState
 import com.features.auth.ui.components.input.PhoneInputComponent
 import com.features.ui.Res
 import com.features.ui.button.MainButton
+import com.features.ui.dialog.toText
 import com.features.ui.enterPhoneNumber
 import com.features.ui.next
 import com.features.ui.theme.MainTheme
@@ -53,16 +54,13 @@ fun AuthPhoneScreenContent(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-
             PhoneInputComponent(
                 phoneNumber = state.phoneNumber,
                 onTextChange = { value ->
                     onEvent(AuthEvents.OnPhoneNumberChanged(state.phoneNumber.copy(number = value)))
                 },
                 isError = state.error != null || !state.phoneNumber.isCorrect(),
-                errorText = state.error?.getDisplayMessage()
             )
-
 
             Spacer(modifier = Modifier.height(56.dp))
 
@@ -70,6 +68,7 @@ fun AuthPhoneScreenContent(
                 text = stringResource(Res.string.next),
                 backgroundColor = MainTheme.colors.secondary,
                 contentColor = MainTheme.colors.white,
+                isLoading = state.isLoading,
                 isEnabled = state.phoneNumber.isCorrect(),
                 onClick = { onEvent(AuthEvents.OnGotoCodeClicked) }
             )

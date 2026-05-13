@@ -280,6 +280,85 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorMessage"
 
+  /api/v1/calendar/events:
+    get:
+      tags: [Calendar]
+      summary: Get all calendar events
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Array of calendar events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+    post:
+      tags: [Calendar]
+      summary: Create calendar event
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCalendarEventRequest"
+      responses:
+        "201":
+          description: Created event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEvent"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/calendar/events/{event_id}:
+    delete:
+      tags: [Calendar]
+      summary: Delete calendar event
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
   /api/v1/profile/conversations:
     get:
       tags: [Profile]
@@ -1064,6 +1143,47 @@ components:
         ToothNote:
           type: string
           nullable: true
+
+    CalendarEvent:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        UserUUID:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        Date:
+          type: string
+          example: "2026-05-13"
+        Time:
+          type: string
+          example: "09:00"
+        Description:
+          type: string
+          example: "Визит к врачу"
+        Status:
+          type: string
+          enum: [VISITED_DOCTOR, CONDITION_CHANGE_PROBLEM, CONDITION_CHANGE_SOLUTION, BRUSH_CHANGE, PLANNED_VISIT]
+          example: "VISITED_DOCTOR"
+
+    CreateCalendarEventRequest:
+      type: object
+      required: [date, time, status]
+      properties:
+        date:
+          type: string
+          example: "2026-05-13"
+        time:
+          type: string
+          example: "09:00"
+        description:
+          type: string
+          example: "Визит к врачу"
+        status:
+          type: string
+          enum: [VISITED_DOCTOR, CONDITION_CHANGE_PROBLEM, CONDITION_CHANGE_SOLUTION, BRUSH_CHANGE, PLANNED_VISIT]
+          example: "VISITED_DOCTOR"
 
     BrushTime:
       type: object

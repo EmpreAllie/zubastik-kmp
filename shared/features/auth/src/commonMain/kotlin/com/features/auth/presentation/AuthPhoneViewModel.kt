@@ -8,6 +8,7 @@ import com.features.auth.presentation.model.AuthState
 import com.features.base.domain.Result
 import com.features.base.presentation.model.BaseViewModel
 import kotlinx.coroutines.launch
+import com.features.base.domain.model.error.Error
 
 // ViewModel экрана с вводом телефона, отвечает только за этот самый ввод телефона
 class AuthPhoneViewModel(
@@ -32,6 +33,8 @@ class AuthPhoneViewModel(
                 sendEffect(AuthEffects.NavigateBack)
             }
 
+            AuthEvents.OnCloseErrorDialog -> updateState { it.copy(error = null) }
+
             else -> {}
         }
 
@@ -40,31 +43,38 @@ class AuthPhoneViewModel(
 
 
     private fun sendPhoneNumberToServer() = viewModelScope.launch {
-        updateState { it.copy(isLoading = true) }
         val formattedPhone = state.value.phoneNumber.toE164()
 
-        when (val result = repository.sendPhoneNumberToServer(formattedPhone)) {
+        repository.sendPhoneNumberToServer(formattedPhone).collect { result ->
+            when(result) {
+                Result.Loading -> updateState { it.copy(isLoading = true) }
 
-            is Result.Success -> {
-                updateState { it.copy(isLoading = false) }
-
-                repository.setPhone(state.value.phoneNumber.number)
-                // repository.setPhone(state.value.phoneNumber.toE164())
-
-                sendEffect(AuthEffects.NavigateToCodeInput)
-            }
-
-            is Result.Failure -> {
-                updateState {
-                    it.copy(
-                        isLoading = false,
-                        error = result.error
-                    )
+                is Result.Success -> {
+                    updateState { it.copy(isLoading = false) }
+                    repository.setPhone(state.value.phoneNumber.number)
+                    sendEffect(AuthEffects.NavigateToCodeInput)
                 }
+
+                is Result.Failure -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            error = result.error
+                        )
+                    }
+                }
+
+                Result.ConnectionError -> {
+                    updateState {
+                        it.copy(
+                            isLoading = false,
+                            error = Error.CONNECTION
+                        )
+                    }
+                }
+
+                else -> {}
             }
-
-            else -> {}
-
         }
     }
 }

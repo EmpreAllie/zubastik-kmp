@@ -2,10 +2,10 @@ package com.features.calendar.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.core.data.utils.DateTimeManager
+import com.features.base.domain.Result
+import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseViewModel
-import com.features.calendar.data.CalendarRepositoryImpl
 import com.features.calendar.domain.CalendarRepository
-import com.features.calendar.domain.model.CalendarDay
 import com.features.calendar.domain.model.CalendarEvent
 import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.presentation.model.CalendarEffects
@@ -21,16 +21,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.Month
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import kotlinx.datetime.todayIn
-import kotlinx.datetime.yearMonth
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -43,6 +37,15 @@ class CalendarViewModel(
         ),
     ) {
     init {
+
+        updateState { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            repository.loadEventsFromServer().collect { result ->
+                handleResult(result) {}
+            }
+        }
+
         repository.allEvents
             .onEach { eventsMap ->
                 val updatedDays =
@@ -119,6 +122,8 @@ class CalendarViewModel(
             is CalendarEvents.OnEventMinuteChanged -> {
                 updateState { it.copy(selectedTime = it.selectedTime.hour andMinute event.minute) }
             }
+
+            CalendarEvents.OnCloseErrorDialog -> { updateState { it.copy(error = null) }}
         }
     }
 
@@ -156,28 +161,87 @@ class CalendarViewModel(
                 status = state.value.newEventStatus,
             )
 
-        repository.saveEvent(
-            date = date,
-            newEvent = newEvent,
-        )
+        viewModelScope.launch {
+            repository.saveEvent(
+                date = date,
+                newEvent = newEvent
+            ).collect { result ->
 
-        updateState {
-            it.copy(
-                isInAddEventMode = false,
-                newEventStatus = CalendarEventStatus.VISITED_DOCTOR,
-                eventDescription = "",
-                selectedTime =
-                    DefaultTimePickerConfig.CALENDAR_DEFAULT.hour andMinute
-                        DefaultTimePickerConfig.CALENDAR_DEFAULT.minute,
-            )
+                when(result) {
+
+                    Result.Loading -> updateState { it.copy(isLoading = true) }
+
+                    is Result.Success -> {
+                        updateState {
+                            it.copy(
+                                isInAddEventMode = false,
+                                newEventStatus = CalendarEventStatus.VISITED_DOCTOR,
+                                eventDescription = "",
+                                selectedTime =
+                                    DefaultTimePickerConfig.CALENDAR_DEFAULT.hour andMinute
+                                            DefaultTimePickerConfig.CALENDAR_DEFAULT.minute,
+                                isLoading = false
+                            )
+                        }
+                    }
+
+                    is Result.Failure -> updateState { it.copy(isLoading = false, error = result.error) }
+
+                    Result.ConnectionError -> {
+                        updateState {
+                            it.copy(
+                                isLoading = false,
+                                error = Error.CONNECTION
+                            )
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
         }
     }
 
     private fun processDeleteEvent(event: CalendarEvent) {
         val date = state.value.selectedDateForEdit ?: return
-        repository.deleteEvent(
-            date = date,
-            event = event,
-        )
+
+        viewModelScope.launch {
+            repository.deleteEvent(
+                date = date,
+                event = event,
+            ).collect { result ->
+
+                handleResult(result) {}
+
+            }
+        }
+    }
+
+    private fun handleResult(
+        result: Result<Unit, Error>,
+        onError: () -> Unit
+    ) {
+
+        when(result) {
+            Result.Loading -> updateState { it.copy(isLoading = true) }
+            is Result.Success -> updateState { it.copy(isLoading = false) }
+
+            is Result.Failure -> {
+                updateState { it.copy(isLoading = false, error = result.error) }
+                onError()
+            }
+
+            Result.ConnectionError -> {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        error = Error.CONNECTION
+                    )
+                }
+                onError()
+            }
+
+            else -> {}
+        }
     }
 }

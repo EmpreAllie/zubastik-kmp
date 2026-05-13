@@ -5,11 +5,12 @@ import com.features.base.domain.model.error.AuthErrorType
 import com.features.base.domain.model.error.Error
 import com.features.ui.Res
 import com.features.ui.appName
+import com.features.ui.connectionError
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Error.toText() = when (this) {
-    Error.CONNECTION -> stringResource(Res.string.appName) // TODO: Change text to String Resource
+    Error.CONNECTION -> stringResource(Res.string.connectionError)
     Error.TOKEN -> stringResource(Res.string.appName) // TODO: Change text to Token
     is Error.OTHER -> message.ifBlank { stringResource(Res.string.appName) } // TODO: Change default text
     is Error.AUTH -> this.toText()

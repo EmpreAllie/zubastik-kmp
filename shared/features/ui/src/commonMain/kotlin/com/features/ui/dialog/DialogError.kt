@@ -23,6 +23,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.features.base.domain.model.error.Error
 import com.features.ui.Res
 import com.features.ui.ic_back_arrow
+import com.features.ui.ic_cross
 import com.features.ui.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -51,12 +52,13 @@ fun DialogError(
                     .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                /*
                 Image(
                     painter = painterResource(Res.drawable.ic_back_arrow),
                     modifier = Modifier
                         .size(48.dp),
                     contentDescription = null,
-                )
+                )*/
 
                 Text(
                     text = title,
@@ -83,10 +85,11 @@ fun DialogError(
                 .size(42.dp)
                 .background(MainTheme.colors.error)
                 .clickable(onClick = onClose),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier,
-                painter = painterResource(Res.drawable.ic_back_arrow),
+                painter = painterResource(Res.drawable.ic_cross),
                 tint = MainTheme.colors.white,
                 contentDescription = null
             )

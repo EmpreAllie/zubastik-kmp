@@ -38,4 +38,6 @@ sealed interface CalendarEvents {
     data class OnEventMinuteChanged(
         val minute: Int,
     ) : CalendarEvents
+
+    data object OnCloseErrorDialog: CalendarEvents
 }

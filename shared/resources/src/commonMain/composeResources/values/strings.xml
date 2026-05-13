@@ -28,6 +28,7 @@
     <string name="otherError">Что-то пошло не так...</string>
 
     <!-- Регистрация (онбординг) -->
+    <string name="onboarding">Заполнение профиля</string>
     <string name="welcome">Добро пожаловать</string>
     <string name="chatWithZub">Диалог с Зубастиком</string>
     <string name="teethType">Тип зубов</string>
@@ -57,6 +58,7 @@
     <string name="consent">* Нажимая "Далее", вы соглашаетесь с условиями обработки персональных данных согласно 152-ФЗ.</string>
 
     <!-- Панель с зубами -->
+    <string name="teethPanel">Панель зубов</string>
     <string name="nothingIsSelected">Ничего не выбрано</string>
     <string name="tooth">Зуб %1$s</string>
     <string name="incisor">резец</string>

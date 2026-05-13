@@ -1,5 +1,6 @@
 package com.features.calendar.presentation.model
 
+import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseState
 import com.features.calendar.domain.model.CalendarDay
 import com.features.calendar.domain.model.CalendarEvent
@@ -17,7 +18,10 @@ data class CalendarState(
     val allEvents: Map<LocalDate, List<CalendarEvent>> = emptyMap(),
     val days: List<CalendarDay> = emptyList(),
     val selectedTime: Time = 12 andMinute 0,
+
+    override val isLoading: Boolean = false,
+    override val error: Error? = null
 ) : BaseState(
-        isLoading = false,
-        error = null,
+        isLoading = isLoading,
+        error = error,
     )
