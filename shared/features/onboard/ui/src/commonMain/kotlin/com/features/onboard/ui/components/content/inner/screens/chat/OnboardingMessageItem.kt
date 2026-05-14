@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.features.onboard.presentation.model.chat.Author
-import com.features.onboard.presentation.model.chat.ChatMessage
+import com.features.onboard.presentation.model.chat.OnboardingChatMessage
 import com.features.onboard.presentation.model.state.OnboardingStep
 import com.features.ui.InlineMessageTextField
 import com.features.ui.Res
@@ -43,7 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MessageItem(
-    message: ChatMessage,
+    message: OnboardingChatMessage,
     curStep: OnboardingStep,
     userTextInput: String,
     userName: String,

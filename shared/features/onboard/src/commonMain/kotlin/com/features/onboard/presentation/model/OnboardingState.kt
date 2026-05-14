@@ -2,7 +2,7 @@ package com.features.onboard.presentation.model
 
 import com.features.base.domain.model.error.Error
 import com.features.base.presentation.model.BaseState
-import com.features.onboard.presentation.model.chat.ChatMessage
+import com.features.onboard.presentation.model.chat.OnboardingChatMessage
 import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.onboard.presentation.model.state.OnboardingStep
 
@@ -15,6 +15,6 @@ data class OnboardingState(
     val userTextInput: String = "",
     val screenState: OnboardingScreenState = OnboardingScreenState.WELCOME,
     val curStep: OnboardingStep = OnboardingStep.ASK_NAME,
-    val chatMessages: List<ChatMessage> = emptyList(),
+    val onboardingChatMessages: List<OnboardingChatMessage> = emptyList(),
     val brushingTimes: List<String> = listOf("9:00"),
 ) : BaseState(isLoading = isLoading, error = error)

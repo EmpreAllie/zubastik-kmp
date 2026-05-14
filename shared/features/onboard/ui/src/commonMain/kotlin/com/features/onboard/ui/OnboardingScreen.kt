@@ -29,8 +29,8 @@ fun OnboardingScreen(
     val state by viewModel.state.collectAsState()
 
     val lazyListState = rememberLazyListState()
-    LaunchedEffect(state.chatMessages.size) {
-        if (state.chatMessages.isNotEmpty()) {
+    LaunchedEffect(state.onboardingChatMessages.size) {
+        if (state.onboardingChatMessages.isNotEmpty()) {
             lazyListState.animateScrollToItem(index = 0)
         }
     }

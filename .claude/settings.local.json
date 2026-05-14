@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python *)",
+      "PowerShell(& 'C:\\\\Users\\\\empreallie\\\\AndroidStudioProjects\\\\zubastik-mobile\\\\ПРАРХ\\\\replace_docx.ps1')",
+      "PowerShell(python --version; python -c \"import docx; print\\('docx ok'\\)\" 2>&1)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\empreallie\\\\AndroidStudioProjects\\\\zubastik-mobile\\\\ПРАРХ\\\\\" | Where-Object { $_.Extension -eq \".docx\" } | Select-Object Name, Length, LastWriteTime)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\empreallie\\\\AndroidStudioProjects\\\\zubastik-mobile\\\\ПРАРХ\\\\\" | ForEach-Object { $_.Name + \" \" + $_.Length })",
+      "Bash(xargs grep *)",
+      "PowerShell(Remove-Item *)",
+      "Bash(pip install *)"
+    ]
+  }
+}

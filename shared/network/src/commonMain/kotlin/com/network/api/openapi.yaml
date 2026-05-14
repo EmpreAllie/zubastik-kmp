@@ -458,9 +458,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorMessage"
 
-  /api/v1/chat/message:
+  /api/v1/ai-chat/message:
     post:
-      tags: [Chat]
+      tags: [AiChat]
       summary: Send a message to AI assistant
       security:
         - bearerAuth: []
@@ -484,9 +484,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorMessage"
 
-  /api/v1/chat/history:
+  /api/v1/ai-chat/history:
     get:
-      tags: [Chat]
+      tags: [AiChat]
       summary: Get conversation history with AI
       security:
         - bearerAuth: []

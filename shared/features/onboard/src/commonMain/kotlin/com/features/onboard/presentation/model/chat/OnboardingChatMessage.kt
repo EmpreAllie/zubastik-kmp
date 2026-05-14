@@ -3,7 +3,7 @@ package com.features.onboard.presentation.model.chat
 import com.features.onboard.presentation.model.state.OnboardingStep
 import org.jetbrains.compose.resources.StringResource
 
-data class ChatMessage(
+data class OnboardingChatMessage(
     val id: Int,
     val textRes: StringResource? = null,
     val simpleText: String? = null,
@@ -19,7 +19,7 @@ data class ChatMessage(
             formatArgs: List<Any> = emptyList(),
             timeStamp: String,
             step: OnboardingStep? = null
-        ) = ChatMessage(
+        ) = OnboardingChatMessage(
             id = id,
             textRes = textRes,
             formatArgs = formatArgs,
@@ -33,7 +33,7 @@ data class ChatMessage(
             textRes: StringResource,
             formatArgs: List<Any> = emptyList(),
             timeStamp: String
-        ) = ChatMessage(
+        ) = OnboardingChatMessage(
             id = id,
             textRes = textRes,
             formatArgs = formatArgs,

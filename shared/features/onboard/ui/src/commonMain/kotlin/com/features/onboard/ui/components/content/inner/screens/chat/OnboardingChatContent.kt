@@ -21,7 +21,7 @@ fun OnboardingChatContent(
         state = lazyListState,
     ) {
         items(
-            items = state.chatMessages.reversed(),
+            items = state.onboardingChatMessages.reversed(),
             key = { it.id },
         ) { message ->
 

@@ -10,7 +10,7 @@ import com.features.onboard.domain.OnboardingRepository
 import com.features.onboard.presentation.model.OnboardingEffects
 import com.features.onboard.presentation.model.OnboardingEvents
 import com.features.onboard.presentation.model.OnboardingState
-import com.features.onboard.presentation.model.chat.ChatMessage
+import com.features.onboard.presentation.model.chat.OnboardingChatMessage
 import com.features.onboard.presentation.model.state.OnboardingScreenState
 import com.features.onboard.presentation.model.state.OnboardingStep
 import com.features.teeth.domain.TeethRepository
@@ -21,12 +21,7 @@ import com.features.ui.myNameIs
 import com.features.ui.niceToMeetYou
 import com.features.ui.timesADay
 import com.features.ui.whatsYourName
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class OnboardingViewModel(
     private val dateTimeManager: DateTimeManager,
@@ -212,22 +207,22 @@ class OnboardingViewModel(
     }
 
     private fun showNextZubMessage() {
-        val lastId = state.value.chatMessages.lastOrNull()?.id ?: 0
+        val lastId = state.value.onboardingChatMessages.lastOrNull()?.id ?: 0
         val nextMessage = when(state.value.curStep) {
-            OnboardingStep.ASK_NAME -> ChatMessage.zub(
+            OnboardingStep.ASK_NAME -> OnboardingChatMessage.zub(
                 id = 1,
                 textRes = Res.string.whatsYourName,
                 timeStamp = dateTimeManager.getCurrentTimeStamp()
             )
 
-            OnboardingStep.ASK_AGE -> ChatMessage.zub(
+            OnboardingStep.ASK_AGE -> OnboardingChatMessage.zub(
                 id = lastId + 1,
                 textRes = Res.string.niceToMeetYou,
                 formatArgs = listOf(state.value.userName),
                 timeStamp = dateTimeManager.getCurrentTimeStamp()
             )
 
-            OnboardingStep.ASK_BRUSHING -> ChatMessage.zub(
+            OnboardingStep.ASK_BRUSHING -> OnboardingChatMessage.zub(
                 id = lastId + 1,
                 textRes = Res.string.askBrushing,
                 timeStamp = dateTimeManager.getCurrentTimeStamp()
@@ -239,18 +234,18 @@ class OnboardingViewModel(
         nextMessage?.let { msg ->
             updateState {
                 it.copy(
-                    chatMessages = if (state.value.curStep == OnboardingStep.ASK_NAME)
+                    onboardingChatMessages = if (state.value.curStep == OnboardingStep.ASK_NAME)
                         listOf(msg)
                     else
-                        it.chatMessages + msg
+                        it.onboardingChatMessages + msg
                 )
             }
         }
     }
 
     private fun showNextUserMessage(step: OnboardingStep) {
-        val lastId = state.value.chatMessages.lastOrNull()?.id ?: 0
-        val userMessage = ChatMessage.user(
+        val lastId = state.value.onboardingChatMessages.lastOrNull()?.id ?: 0
+        val userMessage = OnboardingChatMessage.user(
             id = lastId + 1,
             textRes = Res.string.myNameIs,
             timeStamp = dateTimeManager.getCurrentTimeStamp(),
@@ -259,14 +254,14 @@ class OnboardingViewModel(
 
         updateState {
             it.copy(
-                chatMessages = it.chatMessages + userMessage
+                onboardingChatMessages = it.onboardingChatMessages + userMessage
             )
         }
     }
 
     private fun renderFinalMessage(count: Int) {
-        val lastId = state.value.chatMessages.lastOrNull()?.id ?: 0
-        val finalUserMessage = ChatMessage.user(
+        val lastId = state.value.onboardingChatMessages.lastOrNull()?.id ?: 0
+        val finalUserMessage = OnboardingChatMessage.user(
             id = lastId + 1,
             textRes = Res.string.iBrushMyTeeth,
             formatArgs = listOf(count, Res.string.timesADay),
@@ -275,7 +270,7 @@ class OnboardingViewModel(
 
         updateState {
             it.copy(
-                chatMessages = state.value.chatMessages + finalUserMessage,
+                onboardingChatMessages = state.value.onboardingChatMessages + finalUserMessage,
                 curStep = OnboardingStep.COMPLETE
             )
         }
@@ -307,7 +302,7 @@ class OnboardingViewModel(
                 updateState {
                     it.copy(
                         curStep = OnboardingStep.ASK_NAME,
-                        chatMessages = state.value.chatMessages.dropLast(2),
+                        onboardingChatMessages = state.value.onboardingChatMessages.dropLast(2),
                         userTextInput = ""
                     )
                 }
@@ -317,7 +312,7 @@ class OnboardingViewModel(
                 updateState {
                     it.copy(
                         curStep = OnboardingStep.ASK_AGE,
-                        chatMessages = state.value.chatMessages.dropLast(1),
+                        onboardingChatMessages = state.value.onboardingChatMessages.dropLast(1),
                         userTextInput = ""
                     )
                 }
@@ -327,7 +322,7 @@ class OnboardingViewModel(
                 updateState {
                     it.copy(
                         curStep = OnboardingStep.ASK_BRUSHING,
-                        chatMessages = state.value.chatMessages.dropLast(1),
+                        onboardingChatMessages = state.value.onboardingChatMessages.dropLast(1),
                         isBrushingDialogVisible = true
                     )
                 }
