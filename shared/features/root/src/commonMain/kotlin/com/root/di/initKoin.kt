@@ -3,6 +3,7 @@ package com.root.di
 import com.core.di.coreModule
 import com.core.di.platformModule
 import com.database.di.databaseModule
+import com.features.ai.di.aiModule
 import com.features.auth.di.authModule
 import com.features.calendar.di.calendarModule
 import com.features.onboard.di.onboardingModule
@@ -26,6 +27,7 @@ fun startKoin(koinAppDeclaration: KoinAppDeclaration) {
             onboardingModule,
             teethModule,
             calendarModule,
+            aiModule,
         )
     }
 }

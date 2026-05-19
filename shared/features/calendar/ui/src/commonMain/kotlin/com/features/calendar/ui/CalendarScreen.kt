@@ -14,7 +14,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CalendarScreen(viewModel: CalendarViewModel = koinViewModel()) {
+fun CalendarScreen(
+    viewModel: CalendarViewModel = koinViewModel()
+) {
     val state by viewModel.state.collectAsState()
 
     CalendarScreenContent(

@@ -130,4 +130,8 @@
     <string name="enterDescription">Введите описание...</string>
     <string name="noDescription">Без описания</string>
 
+    <!-- Zub AI -->
+    <string name="ai">ИИ-ассистент</string>
+    <string name="message">Сообщение...</string>
+
 </resources>

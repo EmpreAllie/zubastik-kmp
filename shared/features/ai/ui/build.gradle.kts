@@ -60,6 +60,7 @@ kotlin {
             implementation(projects.shared.resources)
             implementation(projects.shared.entity)
             implementation(projects.shared.features.ai)
+            implementation(projects.shared.features.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

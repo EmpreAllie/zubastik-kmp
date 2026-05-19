@@ -8,5 +8,7 @@ import com.features.base.domain.model.error.Error
 interface AiRepository {
     fun getHistory(): Flow<Result<List<AiChatMessage>, Error>>
 
-    fun sendUserMessageToServer(userMessageText: String): Flow<Result<AiChatMessage, Error>>
+    fun sendUserMessageToServer(userMessageText: String): Flow<Result<List<AiChatMessage>, Error>>
+
+    fun greetUser(language: String): Flow<Result<AiChatMessage, Error>>
 }

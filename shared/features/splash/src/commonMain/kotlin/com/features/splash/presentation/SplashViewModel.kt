@@ -12,8 +12,9 @@ import com.features.splash.presentation.model.SplashState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashViewModel(private val repository: SplashRepository) :
-    BaseViewModel<SplashState, SplashEvents, SplashEffects>(SplashState()) {
+class SplashViewModel(
+    private val repository: SplashRepository
+) : BaseViewModel<SplashState, SplashEvents, SplashEffects>(SplashState()) {
         init {
             loadAndNavigate()
         }
@@ -33,7 +34,14 @@ class SplashViewModel(private val repository: SplashRepository) :
         delay(1500)
 
         val isAuthenticated = repository.isAuthenticated()
-        val destination: Destination = if (isAuthenticated) Screen.MAIN else Graph.AUTH
+        val destination: Destination = if (isAuthenticated) {
+            if (repository.refreshToken())
+                Screen.MAIN
+            else
+                Graph.AUTH
+        } else {
+            Graph.AUTH
+        }
 
         sendEffect(SplashEffects.NavigateToScreen(destination))
     }

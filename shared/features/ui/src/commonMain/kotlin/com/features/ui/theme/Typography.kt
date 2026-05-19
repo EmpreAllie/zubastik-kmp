@@ -42,6 +42,9 @@ data class Typography(
 
     val calendarDialog: CalendarDialogTypography =
         CalendarDialogTypography(font)
+
+    val ai: AiTypography =
+        AiTypography(font)
 }
 
 @Immutable
@@ -640,6 +643,43 @@ data class CalendarDialogTypography(
         TextStyle(
             fontSize = 20.sp,
             lineHeight = 30.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+}
+
+@Immutable
+data class AiTypography(
+    private val font: FontFamily,
+) {
+    val screenHeader: TextStyle =
+        TextStyle(
+            fontSize = 24.sp,
+            lineHeight = 30.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+
+    val messageAuthorHeader: TextStyle =
+        TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Bold,
+        )
+
+    val messageContent: TextStyle =
+        TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+
+    val messageTimeStamp: TextStyle =
+        TextStyle(
+            fontSize = 8.sp,
+            lineHeight = 10.sp,
             fontFamily = font,
             fontWeight = FontWeight.Normal,
         )

@@ -129,4 +129,8 @@
     <string name="enterDescription">Enter event description...</string>
     <string name="noDescription">No description provided</string>
 
+    <!-- Zub AI -->
+    <string name="ai">AI assistant</string>
+    <string name="message">Message...</string>
+
 </resources>

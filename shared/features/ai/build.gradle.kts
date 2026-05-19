@@ -26,11 +26,12 @@ kotlin {
             implementation(projects.shared.entity)
             implementation(projects.shared.network)
             implementation(projects.shared.resources)
-            implementation(projects.shared.features.base)
+            api(projects.shared.features.base)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)
             implementation(libs.koinCore)
+            implementation(libs.kotlinxDateTime)
         }
 
         commonTest.dependencies {

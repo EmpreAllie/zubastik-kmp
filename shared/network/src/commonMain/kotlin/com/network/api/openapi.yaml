@@ -476,7 +476,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatMessage"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
         "401":
           description: Missing or invalid access token
           content:
@@ -499,6 +501,32 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ChatMessage"
+        "401":
+          description: Missing or invalid access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/ai-chat/greet:
+    post:
+      tags: [AiChat]
+      summary: Generate a greeting message from AI
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GreetRequest"
+      responses:
+        "200":
+          description: AI greeting message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
         "401":
           description: Missing or invalid access token
           content:
@@ -878,6 +906,14 @@ components:
       bearerFormat: JWT
 
   schemas:
+    GreetRequest:
+      type: object
+      required:
+        - language
+      properties:
+        language:
+          type: string
+
     TokenPair:
       type: object
       properties:

@@ -55,6 +55,7 @@ kotlin {
             implementation(projects.shared.features.onboard.ui)
             implementation(projects.shared.features.teeth.ui)
             implementation(projects.shared.features.calendar.ui)
+            implementation(projects.shared.features.ai.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

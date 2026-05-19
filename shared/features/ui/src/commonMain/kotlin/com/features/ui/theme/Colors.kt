@@ -35,6 +35,8 @@ sealed class Colors {
     abstract val weekDaysGray: Color
     abstract val eventTimeGray: Color
     abstract val timeSelectorBoxGray: Color
+    abstract val loginButtonLightGray: Color
+    abstract val aiMessageLightGray: Color
 
     data class Light(
         override val primary: Color = Color(0xFFD0E4FF), // голубой для фона
@@ -69,6 +71,8 @@ sealed class Colors {
         override val weekDaysGray: Color = Color(0xFF292929),
         override val eventTimeGray: Color = Color(0xFF666666),
         override val timeSelectorBoxGray: Color = Color(0xFFE3E3E3),
+        override val loginButtonLightGray: Color = Color(0xFFD3D3D3),
+        override val aiMessageLightGray: Color = Color(0xFFF2F2F7),
     ) : Colors()
 
     data class Dark(
@@ -104,6 +108,8 @@ sealed class Colors {
         override val weekDaysGray: Color = Color(0xFF292929),
         override val eventTimeGray: Color = Color(0xFF666666),
         override val timeSelectorBoxGray: Color = Color(0xFFE3E3E3),
+        override val loginButtonLightGray: Color = Color(0xFFD3D3D3),
+        override val aiMessageLightGray: Color = Color(0xFFF2F2F7),
     ) : Colors()
 }
 

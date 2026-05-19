@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import coil3.compose.setSingletonImageLoaderFactory
+import com.features.ai.ui.AiScreen
 import com.features.auth.ui.AuthCodeScreen
 import com.features.auth.ui.AuthPhoneScreen
 import com.features.auth.ui.AuthWelcomeScreen
@@ -116,9 +117,8 @@ fun AppNavHost(
 
         composable(BottomNavItem.NeuralNetwork.route) {
             MainScreen(navHostController) {
-                Text("AI Screen")
-                // CalendarScreen()
-                BackHandler {}
+                AiScreen()
+                // BackHandler {}
             }
         }
 
