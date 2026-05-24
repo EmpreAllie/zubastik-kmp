@@ -1,5 +1,6 @@
 package com.features.main.ui.model
 
+import com.features.base.domain.enum.Screen
 import com.features.ui.Res
 import com.features.ui.ic_calendar_check
 import com.features.ui.ic_lectures
@@ -28,7 +29,7 @@ sealed class BottomNavItem(
     )
 
     data object Lectures: BottomNavItem(
-        route = "lectures",
+        route = Screen.LECTURE_LIST.route, // "lectures"
         icon = Res.drawable.ic_lectures
     )
 

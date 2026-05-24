@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.bundles.android)
             implementation(compose.preview)
             implementation(libs.activityCompose)
+            implementation(libs.coil.okhttp)
         }
 
         commonMain.dependencies {
@@ -56,6 +57,7 @@ kotlin {
             implementation(projects.shared.features.teeth.ui)
             implementation(projects.shared.features.calendar.ui)
             implementation(projects.shared.features.ai.ui)
+            implementation(projects.shared.features.lectures.ui)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

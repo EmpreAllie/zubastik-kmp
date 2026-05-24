@@ -4,11 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
@@ -64,7 +70,8 @@ fun MainScreen(
                 Modifier
                     .fillMaxSize()
                     .background(backgroundColor)
-                    .padding(paddingValues),
+                    .padding(paddingValues)
+                    .consumeWindowInsets(paddingValues),
         ) {
             content()
         }
@@ -77,43 +84,52 @@ private fun CustomBottomBar(
     onItemClick: (BottomNavItem) -> Unit,
 ) {
     Surface(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(64.dp),
+        modifier = Modifier.fillMaxWidth(),
         color = MainTheme.colors.bottomNavBarBackground,
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            BottomNavItem.items.forEach { item ->
-                val isSelected = currentRoute == item.route
-                val painter = painterResource(item.icon)
+        Column {
+            
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BottomNavItem.items.forEach { item ->
+                    val isSelected = currentRoute == item.route
+                    val painter = painterResource(item.icon)
 
-                Box(
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) {
-                                onItemClick(item)
-                            },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        painter = painter,
-                        contentDescription = null,
+                    Box(
                         modifier =
                             Modifier
-                                .size(24.dp),
-                        tint = if (isSelected) MainTheme.colors.secondary else MainTheme.colors.gray,
-                    )
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                ) {
+                                    onItemClick(item)
+                                },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painter,
+                            contentDescription = null,
+                            modifier =
+                                Modifier
+                                    .size(24.dp),
+                            tint = if (isSelected) MainTheme.colors.secondary else MainTheme.colors.gray,
+                        )
+                    }
                 }
             }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+            )
+
         }
     }
 }

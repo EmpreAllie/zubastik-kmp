@@ -5,6 +5,7 @@ import com.core.di.platformModule
 import com.database.di.databaseModule
 import com.features.ai.di.aiModule
 import com.features.auth.di.authModule
+import com.features.lectures.di.lecturesModule
 import com.features.calendar.di.calendarModule
 import com.features.onboard.di.onboardingModule
 import com.features.splash.di.splashModule
@@ -28,6 +29,7 @@ fun startKoin(koinAppDeclaration: KoinAppDeclaration) {
             teethModule,
             calendarModule,
             aiModule,
+            lecturesModule,
         )
     }
 }

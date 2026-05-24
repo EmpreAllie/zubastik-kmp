@@ -9,7 +9,20 @@
       "PowerShell(Get-ChildItem \"C:\\\\Users\\\\empreallie\\\\AndroidStudioProjects\\\\zubastik-mobile\\\\ПРАРХ\\\\\" | ForEach-Object { $_.Name + \" \" + $_.Length })",
       "Bash(xargs grep *)",
       "PowerShell(Remove-Item *)",
-      "Bash(pip install *)"
+      "Bash(pip install *)",
+      "PowerShell(winget install *)",
+      "PowerShell(winget search *)",
+      "PowerShell(pdftotext *)",
+      "PowerShell(python -c \"import docx; print\\('ok'\\)\" 2>&1)",
+      "PowerShell(python \"C:\\\\Users\\\\empreallie\\\\Desktop\\\\диплом\\\\generate_section3.py\" 2>&1)",
+      "PowerShell(python \"C:\\\\Users\\\\empreallie\\\\Desktop\\\\диплом\\\\append_conclusion.py\" 2>&1)",
+      "PowerShell(python \"C:\\\\Users\\\\empreallie\\\\Desktop\\\\диплом\\\\patch_vkr.py\" 2>&1)",
+      "PowerShell(python \"C:\\\\Users\\\\empreallie\\\\Desktop\\\\диплом\\\\patch_vkr_final.py\" 2>&1)",
+      "Bash(python3 -c ' *)",
+      "Bash(py -3 -c ' *)",
+      "Bash(py *)",
+      "WebSearch",
+      "WebFetch(domain:commons.wikimedia.org)"
     ]
   }
 }

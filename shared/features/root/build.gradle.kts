@@ -35,6 +35,7 @@ kotlin {
             implementation(projects.shared.features.teeth)
             implementation(projects.shared.features.calendar)
             implementation(projects.shared.features.ai)
+            implementation(projects.shared.features.lectures)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.viewmodel)

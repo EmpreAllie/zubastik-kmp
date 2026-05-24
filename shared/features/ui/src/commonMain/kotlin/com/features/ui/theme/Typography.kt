@@ -45,6 +45,9 @@ data class Typography(
 
     val ai: AiTypography =
         AiTypography(font)
+
+    val lectures: LecturesTypography =
+        LecturesTypography(font)
 }
 
 @Immutable
@@ -279,8 +282,8 @@ data class OnboardingTypography(
 
     val buttonText: TextStyle =
         TextStyle(
-            fontSize = 24.sp,
-            lineHeight = 30.sp,
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
             fontFamily = font,
             fontWeight = FontWeight.Medium,
         )
@@ -609,7 +612,7 @@ data class CalendarDialogTypography(
 
     val addButtonText: TextStyle =
         TextStyle(
-            fontSize = 15.sp,
+            fontSize = 13.sp,
             lineHeight = 30.sp,
             fontFamily = font,
             fontWeight = FontWeight.Medium,
@@ -679,6 +682,43 @@ data class AiTypography(
     val messageTimeStamp: TextStyle =
         TextStyle(
             fontSize = 8.sp,
+            lineHeight = 10.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+}
+
+@Immutable
+data class LecturesTypography(
+    private val font: FontFamily,
+) {
+    val screenHeader: TextStyle =
+        TextStyle(
+            fontSize = 24.sp,
+            lineHeight = 30.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+
+    val noArticlesYet: TextStyle =
+        TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 30.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Normal,
+        )
+
+    val articleHeader: TextStyle =
+        TextStyle(
+            fontSize = 20.sp,
+            lineHeight = 25.sp,
+            fontFamily = font,
+            fontWeight = FontWeight.Medium,
+        )
+
+    val articleAuthor: TextStyle =
+        TextStyle(
+            fontSize = 10.sp,
             lineHeight = 10.sp,
             fontFamily = font,
             fontWeight = FontWeight.Normal,

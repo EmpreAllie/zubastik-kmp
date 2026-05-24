@@ -135,4 +135,9 @@
     <string name="ai">ИИ-ассистент</string>
     <string name="message">Сообщение...</string>
 
+    <!-- Лекции -->
+    <string name="lectures">Лекции</string>
+    <string name="author">Автор</string>
+    <string name="noArticlesYet">Образовательных материалов пока нет...</string>
+
 </resources>

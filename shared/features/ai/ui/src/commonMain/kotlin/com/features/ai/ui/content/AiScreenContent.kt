@@ -5,6 +5,7 @@ import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,6 +62,7 @@ fun AiScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
             .padding(10.dp)
     ) {
         AiChatHeader()

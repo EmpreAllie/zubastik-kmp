@@ -7,6 +7,7 @@ import com.features.base.AuthEventBus
 import com.network.api.apis.AuthApi
 import com.network.api.apis.CalendarApi
 import com.network.api.apis.AiChatApi
+import com.network.api.apis.LecturesApi
 import com.network.api.apis.ProfileApi
 import com.network.api.models.TokenPair
 import com.network.data.exception.CustomExceptionParser
@@ -78,6 +79,18 @@ val networkModule: Module = module {
     single<AiChatApi> {
         val httpClient = HttpClient()
         AiChatApi(
+            baseUrl = baseUrl,
+            httpClientConfig = createHttpClientConfig(
+                authApi = get(),
+                json = get()
+            ),
+            httpClientEngine = httpClient.engine
+        )
+    }
+
+    single<LecturesApi> {
+        val httpClient = HttpClient()
+        LecturesApi(
             baseUrl = baseUrl,
             httpClientConfig = createHttpClientConfig(
                 authApi = get(),

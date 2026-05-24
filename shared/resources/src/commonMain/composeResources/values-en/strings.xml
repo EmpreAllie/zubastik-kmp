@@ -133,4 +133,9 @@
     <string name="ai">AI assistant</string>
     <string name="message">Message...</string>
 
+    <!-- Лекции -->
+    <string name="educationMaterials">Educative assets</string>
+    <string name="author">Author</string>
+    <string name="noArticlesYet">No articles yet...</string>
+
 </resources>

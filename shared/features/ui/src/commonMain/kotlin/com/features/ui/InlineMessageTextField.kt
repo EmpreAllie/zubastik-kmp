@@ -56,7 +56,7 @@ fun InlineMessageTextField(
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Box {
                         if (text.isEmpty()) {
                             Text(

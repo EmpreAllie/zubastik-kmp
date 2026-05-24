@@ -21,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.features.calendar.domain.model.CalendarEvent
 import com.features.calendar.domain.model.CalendarEventStatus
 import com.features.calendar.presentation.model.CalendarEvents
@@ -54,11 +56,13 @@ fun CalendarDialog(
 
     Dialog(
         onDismissRequest = { onEvent(CalendarEvents.OnDismissDialog) },
+        properties = DialogProperties(decorFitsSystemWindows = false),
     ) {
         Column(
             modifier =
                 Modifier
                     .fillMaxWidth()
+                    .imePadding()
                     .clip(RoundedCornerShape(40.dp))
                     .background(MainTheme.colors.white)
                     .padding(24.dp),

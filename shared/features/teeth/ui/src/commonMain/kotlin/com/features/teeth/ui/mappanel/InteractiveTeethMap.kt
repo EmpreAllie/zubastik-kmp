@@ -150,7 +150,7 @@ private fun SelectedToothInfoPanel(
                 modifier =
                     Modifier
                         .height(32.dp)
-                        .width(112.dp),
+                        .width(180.dp),
                 text = stringResource(Res.string.edit),
                 textStyle = MainTheme.typography.teeth.buttonText,
                 contentColor = MainTheme.colors.secondary,

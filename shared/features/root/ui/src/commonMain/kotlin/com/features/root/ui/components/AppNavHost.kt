@@ -17,6 +17,8 @@ import com.features.auth.ui.AuthWelcomeScreen
 import com.features.base.domain.enum.Graph
 import com.features.base.domain.enum.Screen
 import com.features.calendar.ui.CalendarScreen
+import com.features.lectures.ui.LectureDetailScreen
+import com.features.lectures.ui.LecturesScreen
 import com.features.main.ui.MainScreen
 import com.features.main.ui.model.BottomNavItem
 import com.features.onboard.ui.OnboardingScreen
@@ -67,6 +69,17 @@ fun AppNavHost(
 
                             Screen.CODE -> {
                                 AuthCodeScreen()
+                                BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
+                            }
+
+                            Screen.LECTURE_LIST -> {
+                                MainScreen(navHostController) {
+                                    LecturesScreen()
+                                }
+                            }
+
+                            Screen.LECTURE_DETAIL -> {
+                                LectureDetailScreen()
                                 BackHandler { viewModel.onEvent(RootEvent.OnClickBack) }
                             }
 
@@ -122,12 +135,13 @@ fun AppNavHost(
             }
         }
 
+/*
         composable(BottomNavItem.Lectures.route) {
             MainScreen(navHostController) {
-                Text("Lectures Screen")
-                // CalendarScreen()
-                BackHandler {}
+                LecturesScreen()
+                // BackHandler {}
             }
-        }
+        }*/
+
     }
 }
