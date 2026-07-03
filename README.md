@@ -10,14 +10,22 @@ and Compose Multiplatform, targeting Android and iOS from a single codebase.
 <img width="1387" height="692" alt="two" src="https://github.com/user-attachments/assets/0d2f66ff-45ea-41e8-bb54-cdcb597bfcad" />
 
 
+## About
+
+Zubastik is a cross-platform mobile application designed to help users 
+monitor their dental health, communicate with doctors, and access 
+educational content — all in one place. The app is built entirely in 
+Kotlin using Kotlin Multiplatform, sharing business logic and UI across 
+Android and iOS.
+
 ## Features
 
-- Interactive tooth map with condition tracking per tooth
+- Interactive tooth map with per-tooth condition tracking
 - Custom event calendar for dental appointments
 - AI assistant for dental health guidance
 - Real-time chat with doctors
-- Educational content library
-- Phone number authentication with OTP
+- Educational content library with articles
+- Phone number authentication with OTP verification
 
 ## Tech Stack
 
@@ -25,18 +33,19 @@ and Compose Multiplatform, targeting Android and iOS from a single codebase.
 |-------|-----------|
 | UI | Compose Multiplatform |
 | Networking | Ktor |
-| DI | Koin |
+| Dependency Injection | Koin |
 | Async | Coroutines + Flow |
 | Serialization | Kotlinx Serialization |
 | Architecture | MVI + Clean Architecture |
 
 ## Architecture
 
-The project follows Clean Architecture principles with MVI pattern, 
-separating concerns into data, domain, and presentation layers. 
-Shared business logic runs on both Android and iOS platforms.
+The project follows Clean Architecture with MVI pattern, organized into 
+three layers: data, domain, and presentation. All business logic is 
+shared across platforms via the common module, while platform-specific 
+entry points remain minimal.
 
 ## Requirements
 
-- Android 8.0+
+- Android 8.0 (API 26)+
 - iOS 14.0+
